@@ -7,7 +7,7 @@
 </head>
 <body>
   <div class="app">
-    <h1>Frozen Lake — 100 Units 가중치 업데이트 시각화 (60fps)</h1>
+    <h1>Frozen Lake — 가중치 업데이트 시각화 (Units / FPS 조절 가능)</h1>
     <div class="layout">
       <canvas id="lake" width="640" height="640"></canvas>
       <div class="panel">
@@ -23,10 +23,18 @@
           <div><span class="swatch agent"></span>Unit (agent)</div>
         </div>
         <p class="desc">
-          100개의 에이전트가 동시에 Frozen Lake 그리드 위에서 Q-Learning으로
+          여러 에이전트가 동시에 Frozen Lake 그리드 위에서 Q-Learning으로
           가중치(Q-table)를 업데이트하며 이동합니다. 셀의 배경 밝기는 해당 상태의
           최대 Q값(학습된 가중치)을 나타냅니다.
         </p>
+        <div class="control">
+          <label for="units-slider">Units <span id="units-value">100</span></label>
+          <input type="range" id="units-slider" min="1" max="300" value="100" step="1">
+        </div>
+        <div class="control">
+          <label for="fps-slider">Target FPS <span id="fps-value">60</span></label>
+          <input type="range" id="fps-slider" min="1" max="60" value="60" step="1">
+        </div>
         <button id="toggle">일시정지</button>
       </div>
     </div>

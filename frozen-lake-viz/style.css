@@ -87,6 +87,24 @@ canvas {
   margin: 0;
 }
 
+.control {
+  background: #101c30;
+  border: 1px solid #223049;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #b7c6de;
+}
+.control label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.control span { color: #7fd1ff; font-weight: 600; }
+.control input[type="range"] {
+  width: 100%;
+}
+
 button {
   background: #1b2c4a;
   border: 1px solid #2c4270;

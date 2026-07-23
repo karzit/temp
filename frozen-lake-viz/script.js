@@ -57,14 +57,16 @@ function bestAction(r, c) {
 function step(r, c, a) {
   let nr = r + ACTIONS[a].dr;
   let nc = c + ACTIONS[a].dc;
-  if (nr < 0 || nr >= GRID || nc < 0 || nc >= GRID) { nr = r; nc = c; }
+  // out of bounds or a hole: treated as a wall, unit stays put
+  if (nr < 0 || nr >= GRID || nc < 0 || nc >= GRID || cellType(nr, nc) === 1) {
+    nr = r; nc = c;
+  }
   return { nr, nc };
 }
 
 function reward(type) {
   if (type === 3) return 1;
-  if (type === 1) return -1;
-  return -0.01;
+  return -0.01; // holes are walls now, never a landing type
 }
 
 class Unit {
@@ -79,7 +81,6 @@ class Unit {
     this.px = this.c;
     this.py = this.r;
     this.respawnTimer = 0;
-    this.fellInHole = false;
   }
   learnStep() {
     if (this.respawnTimer > 0) {
@@ -102,35 +103,40 @@ class Unit {
     this.r = nr;
     this.c = nc;
 
-    if (type === 1 || type === 3) {
-      if (type === 3) goalsReached++;
-      this.fellInHole = type === 1;
-      this.respawnTimer = 18; // let the unit visibly sit on the hole/goal before respawning
+    if (type === 3) {
+      goalsReached++;
+      this.respawnTimer = 18; // let the unit visibly sit on the goal before respawning
       episode++;
     }
   }
   render(ctx) {
-    // smooth interpolation toward target grid cell
-    this.px += (this.c - this.px) * 0.25;
-    this.py += (this.r - this.py) * 0.25;
+    // interpolate one axis at a time so the path is always orthogonal
+    // (never cuts diagonally across a corner, e.g. through a hole)
+    const EPS = 0.02;
+    if (Math.abs(this.py - this.r) > EPS) {
+      this.py += (this.r - this.py) * 0.35;
+    } else if (Math.abs(this.px - this.c) > EPS) {
+      this.px += (this.c - this.px) * 0.35;
+    } else {
+      this.px = this.c;
+      this.py = this.r;
+    }
     const x = this.px * CELL + CELL / 2;
     const y = this.py * CELL + CELL / 2;
     ctx.beginPath();
-    if (this.respawnTimer > 0 && this.fellInHole) {
-      ctx.fillStyle = `hsla(0, 90%, 55%, 0.6)`;
-    } else {
-      ctx.fillStyle = `hsla(${this.hue}, 90%, 65%, 0.85)`;
-    }
+    ctx.fillStyle = `hsla(${this.hue}, 90%, 65%, 0.85)`;
     ctx.arc(x, y, 3.2, 0, Math.PI * 2);
     ctx.fill();
   }
 }
 
-const units = Array.from({ length: N_UNITS }, (_, i) => new Unit(i));
+let units = Array.from({ length: N_UNITS }, (_, i) => new Unit(i));
+let nextUnitId = units.length;
 
 let episode = 0;
 let goalsReached = 0;
 let running = true;
+let targetFps = 60;
 
 const canvas = document.getElementById("lake");
 const ctx = canvas.getContext("2d");
@@ -184,6 +190,26 @@ toggleBtn.addEventListener("click", () => {
   toggleBtn.textContent = running ? "일시정지" : "재개";
 });
 
+const unitsSlider = document.getElementById("units-slider");
+const unitsValue = document.getElementById("units-value");
+const fpsSlider = document.getElementById("fps-slider");
+const fpsValue = document.getElementById("fps-value");
+
+unitsSlider.addEventListener("input", () => {
+  const target = parseInt(unitsSlider.value, 10);
+  unitsValue.textContent = target;
+  if (target > units.length) {
+    while (units.length < target) units.push(new Unit(nextUnitId++));
+  } else if (target < units.length) {
+    units.length = target;
+  }
+});
+
+fpsSlider.addEventListener("input", () => {
+  targetFps = parseInt(fpsSlider.value, 10);
+  fpsValue.textContent = targetFps;
+});
+
 let lastTime = performance.now();
 let frameCount = 0;
 let fpsAccum = 0;
@@ -199,10 +225,18 @@ function avgMaxQ() {
   return n ? sum / n : 0;
 }
 
+let sinceLastFrame = 0;
+
 function tick(now) {
   requestAnimationFrame(tick);
   const dt = now - lastTime;
   lastTime = now;
+
+  const frameInterval = 1000 / targetFps;
+  sinceLastFrame += dt;
+  if (sinceLastFrame < frameInterval) return;
+  sinceLastFrame = sinceLastFrame % frameInterval;
+
   frameCount++;
   fpsAccum += dt;
   if (fpsAccum >= 500) {
