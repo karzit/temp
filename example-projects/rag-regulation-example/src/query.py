@@ -122,9 +122,13 @@ def build_prompt(question: str, docs) -> str:
     return PROMPT_TEMPLATE.format(context=context, question=question)
 
 
-def answer(question: str) -> str:
-    """질문 하나를 받아서 검색부터 답변 생성까지 전부 처리해주는 대표 함수."""
-    docs = search_hybrid_docs(question)
+def answer_with_docs(question: str, docs: list[Document]) -> str:
+    """이미 찾아온 규정 조각(docs)을 근거로 답변만 생성한다.
+
+    api.py처럼 출처 목록도 화면에 보여줘야 해서 검색 결과(docs)를 먼저 가지고 있는 경우,
+    answer()를 그대로 쓰면 search_hybrid_docs()가 중복으로 한 번 더 실행된다.
+    이 함수를 쓰면 검색은 한 번만 하고, 그 결과를 답변 생성에도 재사용할 수 있다.
+    """
     prompt = build_prompt(question, docs)
 
     # temperature는 AI 답변의 "즉흥성"을 조절하는 다이얼이라고 생각하면 돼.
@@ -134,6 +138,12 @@ def answer(question: str) -> str:
     llm = ChatOpenAI(model=CHAT_MODEL, temperature=0)
     response = llm.invoke(prompt)
     return response.content
+
+
+def answer(question: str) -> str:
+    """질문 하나를 받아서 검색부터 답변 생성까지 전부 처리해주는 대표 함수."""
+    docs = search_hybrid_docs(question)
+    return answer_with_docs(question, docs)
 
 
 if __name__ == "__main__":
