@@ -57,6 +57,7 @@ python src/query.py "육아휴직 기간은 최대 몇 개월인가요?"
 - 청크 크기/overlap 튜닝 (표/조항 번호가 많은 규정 문서는 chunk_size를 줄이는 게 유리할 수 있음)
 - 하이브리드 검색(BM25 + kNN) 적용
 - 답변에 출처(source, page) 표시는 이미 `query.py`의 프롬프트 컨텍스트에 포함됨
+- **보안**: `query.py`처럼 검색된 문서를 프롬프트에 그대로 이어붙이는 구조는 [프롬프트 인젝션/탈옥](../../glossary.md#prompt-injection)에 취약할 수 있다. PDF 안에 숨겨진 지시문이 실제로 어떻게 시스템 프롬프트를 무력화시키는지, 그리고 데이터/지시 분리·입력 가드레일로 어떻게 방어하는지는 [`notebooks/rag-pipeline-practice/05_prompt_injection_defense/`](../../notebooks/rag-pipeline-practice/05_prompt_injection_defense/05_prompt_injection_defense.ipynb)에서 실습해볼 수 있다.
 
 ## 다른 선택지가 궁금하다면
 

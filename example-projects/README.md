@@ -60,7 +60,10 @@
 
 각 프로젝트의 상세 실행 방법은 폴더 안 `README.md`를 참고하세요. 라이브러리 자체를 하나씩 손으로
 연습해보고 싶다면 [`../notebooks/rag-pipeline-practice/`](../notebooks/rag-pipeline-practice)의
-Colab 노트북 4개가 이 파이프라인 순서(A-1 → A-2 → B → C) 그대로 구성되어 있습니다.
+Colab 노트북 4개가 이 파이프라인 순서(A-1 → A-2 → B → C) 그대로 구성되어 있습니다. C파트
+(`rag-regulation-example`)처럼 검색된 문서를 프롬프트에 그대로 이어붙이는 구조는
+[프롬프트 인젝션/탈옥](../glossary.md#prompt-injection)에 취약할 수 있는데, 이를 재현하고 방어하는
+5번째 노트북([`05_prompt_injection_defense`](../notebooks/rag-pipeline-practice/05_prompt_injection_defense/05_prompt_injection_defense.ipynb))도 추가로 준비되어 있습니다.
 
 각 프로젝트 폴더에는 `README.md` 외에 **`ALTERNATIVES.md`**도 있습니다. 여기 쓰인 라이브러리를
 대신할 수 있는 다른 선택지(예: `requests` 대신 `httpx`/`Scrapy`, `opensearch-py` 대신
