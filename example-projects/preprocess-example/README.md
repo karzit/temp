@@ -40,3 +40,9 @@ PostgreSQL의 `crawled_documents` 테이블에 있는 모든 문서를 순회하
 
 여기서 만들어진 OpenSearch 인덱스는 [`../rag-regulation-example`](../rag-regulation-example)의
 `query.py`가 그대로 검색해서 쓸 수 있다 (같은 `OPENSEARCH_INDEX` 이름을 쓰면 됨).
+
+## 다른 선택지가 궁금하다면
+
+`langchain`/`PyMuPDF`/`opensearch-py` 대신 쓸 수 있는 라이브러리(`LlamaIndex`, `pdfplumber`,
+`pgvector`, `Qdrant` 등)와 언제 그걸 고려하면 좋을지는 [`ALTERNATIVES.md`](ALTERNATIVES.md)에
+정리해두었다.

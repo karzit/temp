@@ -55,3 +55,9 @@ python src/query.py "육아휴직 기간은 최대 몇 개월인가요?"
 - 청크 크기/overlap 튜닝 (표/조항 번호가 많은 규정 문서는 chunk_size를 줄이는 게 유리할 수 있음)
 - 하이브리드 검색(BM25 + kNN) 적용
 - 답변에 출처(source, page) 표시는 이미 `query.py`의 프롬프트 컨텍스트에 포함됨
+
+## 다른 선택지가 궁금하다면
+
+`langchain`/`opensearch-py`/`pypdf`/`openai` 대신 쓸 수 있는 라이브러리(`LlamaIndex`, `pgvector`,
+`Qdrant`, `anthropic` 등)와 언제 그걸 고려하면 좋을지는 [`ALTERNATIVES.md`](ALTERNATIVES.md)에
+정리해두었다.

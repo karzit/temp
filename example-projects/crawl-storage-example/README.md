@@ -44,3 +44,8 @@ python src/crawl.py
 
 여기서 저장한 원본 데이터는 [`../preprocess-example`](../preprocess-example)에서
 꺼내어 청킹 -> 임베딩 -> OpenSearch 인덱싱까지 처리한다.
+
+## 다른 선택지가 궁금하다면
+
+`requests`/`beautifulsoup4`/`psycopg2` 대신 쓸 수 있는 라이브러리(`httpx`, `Scrapy`, `SQLAlchemy` 등)와
+언제 그걸 고려하면 좋을지는 [`ALTERNATIVES.md`](ALTERNATIVES.md)에 정리해두었다.

@@ -61,6 +61,12 @@
 연습해보고 싶다면 [`../notebooks/rag-pipeline-practice/`](../notebooks/rag-pipeline-practice)의
 Colab 노트북 4개가 이 파이프라인 순서(A-1 → A-2 → B → C) 그대로 구성되어 있습니다.
 
+각 프로젝트 폴더에는 `README.md` 외에 **`ALTERNATIVES.md`**도 있습니다. 여기 쓰인 라이브러리를
+대신할 수 있는 다른 선택지(예: `requests` 대신 `httpx`/`Scrapy`, `opensearch-py` 대신
+`pgvector`/`Qdrant`, `openai` 대신 `anthropic`/`ollama` 등)와 "언제 그걸 고려하면 좋은지"를
+정리해둔 참고 문서입니다. 실습 코드를 그 대안으로 바꾸는 건 다루지 않고, 딱 "이럴 때는 이런
+선택지도 있다"는 감을 잡는 용도입니다.
+
 ## 청킹 전략은 문서 특성에 맞춰 다르게 잡았습니다
 
 같은 "PDF/텍스트를 청크로 잘라 OpenSearch에 넣는다"는 로직이지만, 두 프로젝트의 청크 크기가 다릅니다.

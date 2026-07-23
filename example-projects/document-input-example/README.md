@@ -43,3 +43,8 @@ streamlit run src/app.py
 
 여기서 만들어진 JSON은 [`../rag-regulation-example`](../rag-regulation-example)의
 `query.py`처럼 관련 규정을 검색하는 C파트 RAG 단계로 전달된다.
+
+## 다른 선택지가 궁금하다면
+
+`streamlit`/`google-cloud-vision`/`openai` 대신 쓸 수 있는 라이브러리(`Gradio`, `Tesseract`,
+`anthropic` 등)와 언제 그걸 고려하면 좋을지는 [`ALTERNATIVES.md`](ALTERNATIVES.md)에 정리해두었다.
