@@ -4,6 +4,7 @@ Google Colab에서 실습하는 머신러닝 입문 튜토리얼입니다.
 
 - `notebooks/01_basic_classification/`: scikit-learn으로 Iris 분류 파이프라인(로드 → EDA → 전처리 → 학습 → 평가 → 저장) 감 잡기
 - `notebooks/02~06`: 김성훈 교수님의 [모두를 위한 머신러닝과 딥러닝](https://hunkim.github.io/ml/) 시즌 1 커리큘럼을 이론+실습으로 재구성한 시리즈 — 자세한 목차와 학습 순서는 **[CURRICULUM.md](CURRICULUM.md)** 참고
+- `notebooks/07~10`: [`example-projects/`](example-projects)의 4개 예제 프로젝트(크롤링 → 청킹 → 문서 구조화 → RAG)에서 쓰인 라이브러리(`requests`/`BeautifulSoup`, `langchain-text-splitters`/`PyMuPDF`/`pypdf`/`tiktoken`, `pydantic`/`openai`, 임베딩/벡터 검색)를 실습하는 시리즈. Docker나 API 키가 없어도 끝까지 실행되도록 만들어져 있습니다(자세한 내용은 각 노트북 상단 이론 참고).
 
 ## 바로 열기 (Colab 배지)
 
@@ -17,6 +18,10 @@ Google Colab에서 실습하는 머신러닝 입문 튜토리얼입니다.
 | 04. Neural Networks | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/04_neural_networks/04_neural_networks.ipynb) |
 | 05. CNN | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/05_cnn/05_cnn.ipynb) |
 | 06. RNN | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/06_rnn/06_rnn.ipynb) |
+| 07. 웹 크롤링 (requests + BeautifulSoup) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/07_web_crawling/07_web_crawling.ipynb) |
+| 08. 텍스트 청킹 & PDF 처리 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/08_text_chunking/08_text_chunking.ipynb) |
+| 09. 문서 구조화 (Pydantic + OpenAI) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/09_document_structuring/09_document_structuring.ipynb) |
+| 10. RAG 파이프라인 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/10_rag_pipeline/10_rag_pipeline.ipynb) |
 
 ## 폴더 구조
 
@@ -28,6 +33,11 @@ notebooks/
   04_neural_networks/        Lec 7-10: 실전 팁, XOR, ReLU, Dropout, MNIST
   05_cnn/                    Lec 11: CNN
   06_rnn/                    Lec 12: RNN
+  07_web_crawling/           requests + BeautifulSoup 크롤링, sqlite3/dotenv 실습 (crawl-storage-example)
+  08_text_chunking/          langchain-text-splitters, PyMuPDF/pypdf, tiktoken 실습 (preprocess/rag-regulation-example)
+  09_document_structuring/   Pydantic + OpenAI 정형 출력, Streamlit 실습 (document-input-example)
+  10_rag_pipeline/           임베딩, 벡터 유사도 검색, opensearch-py, 프롬프트 조립 실습 (rag-regulation-example)
+example-projects/  실전 예제 프로젝트 4종 (07~10 노트북이 여기서 쓰인 라이브러리를 실습용으로 재구성)
 data/          직접 추가하거나 노트북이 내려받는 데이터셋 (git에는 커밋 안 됨)
 models/        학습된 모델 저장 위치 (git에는 커밋 안 됨)
 CURRICULUM.md  이론+실습 커리큘럼 목차 (원본 강의 매핑 포함)
