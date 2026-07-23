@@ -9,8 +9,8 @@
       JSON은 "document_type은 무엇, reason은 무엇"처럼 항목별로 값이 딱 정해져 있어서
       다음 단계(RAG 검색)에서 컴퓨터가 정확하게 활용하기 훨씬 쉬워진다.
 """
-from openai import OpenAI
-from pydantic import BaseModel, Field
+from openai import OpenAI  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/03_document_structuring/03_document_structuring.ipynb
+from pydantic import BaseModel, Field  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/03_document_structuring/03_document_structuring.ipynb
 
 from config import CHAT_MODEL, OPENAI_API_KEY
 

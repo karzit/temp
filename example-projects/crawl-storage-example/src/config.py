@@ -3,7 +3,7 @@
 크롤러가 "어느 DB에 접속할지", "요청 사이에 얼마나 쉬어갈지"를 여기서 정해둔다.
 """
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/01_web_crawling/01_web_crawling.ipynb
 
 load_dotenv()
 

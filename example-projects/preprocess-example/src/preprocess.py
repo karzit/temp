@@ -17,11 +17,11 @@ rag-regulation-example의 ingest.py와 하는 일은 거의 같다. 차이점은
 """
 import io
 
-import fitz  # PyMuPDF. import 이름이 패키지명(PyMuPDF)과 달라서 헷갈리기 쉬우니 주의!
-from langchain_community.vectorstores import OpenSearchVectorSearch
-from langchain_core.documents import Document
-from langchain_openai import OpenAIEmbeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+import fitz  # PyMuPDF. import 이름이 패키지명(PyMuPDF)과 달라서 헷갈리기 쉬우니 주의! 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/02_text_chunking/02_text_chunking.ipynb
+from langchain_community.vectorstores import OpenSearchVectorSearch  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/04_rag_pipeline/04_rag_pipeline.ipynb
+from langchain_core.documents import Document  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/02_text_chunking/02_text_chunking.ipynb
+from langchain_openai import OpenAIEmbeddings  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/04_rag_pipeline/04_rag_pipeline.ipynb
+from langchain_text_splitters import RecursiveCharacterTextSplitter  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/02_text_chunking/02_text_chunking.ipynb
 
 from config import EMBEDDING_MODEL, OPENSEARCH_INDEX, OPENSEARCH_URL
 from reader import RawDocument, fetch_raw_documents

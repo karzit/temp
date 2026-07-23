@@ -4,7 +4,7 @@
 "어떻게 저장할지(SQL 문법 등)"는 이 파일한테 맡긴다. 이렇게 역할을 나누면
 나중에 DB를 바꾸더라도 이 파일만 고치면 되니까 유지보수가 편해진다.
 """
-import psycopg2
+import psycopg2  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/01_web_crawling/01_web_crawling.ipynb (sqlite3로 같은 패턴 실습, psycopg2 비교 포함)
 
 from config import DATABASE_URL
 

@@ -36,7 +36,7 @@ CHUNK_SIZE = 1000  # 조각 하나의 최대 글자 수 (대략 A4 반 페이지
 CHUNK_OVERLAP = 150  # 옆 조각과 살짝 겹치는 글자 수.
 # 왜 겹치게 자를까? 문장 중간에서 뚝 잘리면 앞뒤 문맥을 잃어버릴 수 있어서,
 # 자른 경계 부분을 살짝 겹쳐서 이어붙여야 내용이 자연스럽게 연결돼.
-# 더 알고 싶다면: https://python.langchain.com/docs/how_to/recursive_text_splitter/
+# 참고 https://python.langchain.com/docs/how_to/recursive_text_splitter/
 
 
 def load_and_split(pdf_paths: list[str]):

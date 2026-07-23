@@ -8,7 +8,7 @@ Google Vision이라는 AI가 사진을 보고 대신 글자를 읽어주는 것.
 오타나 이상한 기호가 섞여 나올 수 있다. 그래서 다음 단계(structurer.py)에서
 AI가 한 번 더 "이 오타 섞인 글을 정리해줘"라는 작업을 거치게 된다.
 """
-from google.cloud import vision
+from google.cloud import vision  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/03_document_structuring/03_document_structuring.ipynb (Vision API 호출은 다루지 않지만 OCR 개념과 다음 단계인 구조화를 실습)
 
 # config를 import하기만 해도 .env의 GOOGLE_APPLICATION_CREDENTIALS 값이 로드된다.
 import config  # noqa: F401  (환경변수 로딩을 위해 import만 하고 직접 쓰지는 않음)

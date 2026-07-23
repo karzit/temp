@@ -5,7 +5,7 @@ crawl-storage-example이 만들어둔 crawled_documents 테이블에서
 """
 from dataclasses import dataclass
 
-import psycopg2
+import psycopg2  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/01_web_crawling/01_web_crawling.ipynb (sqlite3로 같은 패턴 실습, psycopg2 비교 포함)
 
 from config import DATABASE_URL
 

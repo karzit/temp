@@ -1,6 +1,6 @@
 """이 프로젝트에서 공통으로 쓰는 설정값 모음."""
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/01_web_crawling/01_web_crawling.ipynb
 
 load_dotenv()
 

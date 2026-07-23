@@ -8,7 +8,7 @@
 질문이 들어오면 그중 관련 있는 부분만 찾아서 AI에게 "이거 보고 답해줘"라고 알려주는 방식(query.py가 하는 일)을 쓸 거야.
 이런 방식을 RAG(검색 증강 생성)라고 불러. "검색해서(Retrieval) 찾은 걸 더해서(Augmented) 답을 생성한다(Generation)"는 뜻.
 쉽게 말하면 "오픈북 시험"이랑 비슷해. AI가 모든 걸 외우고 있지 않아도, 책(문서)을 펼쳐서 보여주면 그걸 보고 답할 수 있는 것처럼!
-더 알고 싶다면: https://python.langchain.com/docs/concepts/rag/
+참고 https://python.langchain.com/docs/concepts/rag/
 """
 import os
 from dotenv import load_dotenv

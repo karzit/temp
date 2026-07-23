@@ -12,8 +12,8 @@
 """
 import time
 
-import requests
-from bs4 import BeautifulSoup
+import requests  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/01_web_crawling/01_web_crawling.ipynb
+from bs4 import BeautifulSoup  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/01_web_crawling/01_web_crawling.ipynb
 
 from config import CRAWL_DELAY_SECONDS
 from db import init_db, save_document
