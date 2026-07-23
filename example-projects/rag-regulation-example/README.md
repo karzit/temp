@@ -58,7 +58,8 @@ uvicorn src.api:app --reload
 ```
 
 브라우저에서 http://localhost:8000 을 열면 `static/index.html` 채팅 화면이 뜬다. 입력한 질문은
-`POST /chat`으로 전달되어 `answer()`가 처리하고, 답변과 함께 근거가 된 조항의 출처(source, page)가
+`POST /chat`으로 전달되어 `search_hybrid_docs()`로 찾은 근거 조각을 `answer_with_docs()`에 넘겨 답변을
+생성하고(검색은 한 번만 실행), 답변과 함께 근거가 된 조항의 출처(source, page)가
 같이 표시된다. FastAPI로 API를 감싸고 그 위에 HTML/JS 화면을 얇게 얹는 구조는
 [`04_rag_pipeline.ipynb`](../../notebooks/rag-pipeline-practice/04_rag_pipeline/04_rag_pipeline.ipynb) 실습 9에서 다룬다.
 

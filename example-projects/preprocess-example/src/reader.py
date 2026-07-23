@@ -1,7 +1,7 @@
 """PostgreSQL에 쌓인 원본 크롤링 데이터를 읽어오는 부분.
 
-crawl-storage-example이 만들어둔 crawled_documents 테이블에서
-"아직 처리 안 된" 원본들을 하나씩 꺼내오는 역할을 한다.
+crawl-storage-example이 만들어둔 crawled_documents 테이블의 원본을
+모두 꺼내오는 역할을 한다 (처리 여부를 구분하는 별도 플래그는 없다).
 """
 from dataclasses import dataclass
 
