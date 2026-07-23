@@ -6,6 +6,7 @@ venv/
 *.egg-info/
 .DS_Store
 feed/
+why-plan/
 
 # Large artifacts — keep repo light for Colab clone/upload
 data/*

@@ -15,6 +15,7 @@
 | [04_neural_networks/04_neural_networks.ipynb](notebooks/ml-curriculum/04_neural_networks/04_neural_networks.ipynb) | Lec 7–10 | [학습률](glossary.md#learning-rate)/[Overfitting](glossary.md#overfitting)/[Regularization](glossary.md#regularization), [XOR](glossary.md#xor-problem)과 [Backpropagation](glossary.md#backpropagation), [ReLU](glossary.md#relu), [가중치 초기화](glossary.md#weight-initialization), [Dropout](glossary.md#dropout), MNIST | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/04_neural_networks/04_neural_networks.ipynb) | [해설](notebooks/ml-curriculum/04_neural_networks/04_neural_networks_solutions.ipynb) |
 | [05_cnn/05_cnn.ipynb](notebooks/ml-curriculum/05_cnn/05_cnn.ipynb) | Lec 11 | [Convolution](glossary.md#convolution), [Pooling](glossary.md#pooling), [CNN](glossary.md#cnn)으로 이미지 분류 | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/05_cnn/05_cnn.ipynb) | [해설](notebooks/ml-curriculum/05_cnn/05_cnn_solutions.ipynb) |
 | [06_rnn/06_rnn.ipynb](notebooks/ml-curriculum/06_rnn/06_rnn.ipynb) | Lec 12 | [RNN](glossary.md#rnn) 기본, Char-RNN("hihello"), 시계열 예측 | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/06_rnn/06_rnn.ipynb) | [해설](notebooks/ml-curriculum/06_rnn/06_rnn_solutions.ipynb) |
+| [07_tensorflow_practice/07_tensorflow_practice.ipynb](notebooks/ml-curriculum/07_tensorflow_practice/07_tensorflow_practice.ipynb) | (선택, 원본 강의 프레임워크) | 02/04의 Linear Regression·XOR 예제를 [TensorFlow](glossary.md#tensorflow)/[Keras](glossary.md#keras)로 재구현, PyTorch ↔ TF 대응표 | - | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/07_tensorflow_practice/07_tensorflow_practice.ipynb) | [해설](notebooks/ml-curriculum/07_tensorflow_practice/07_tensorflow_practice_solutions.ipynb) |
 
 각 `_solutions.ipynb`는 본문 노트북 끝의 "연습 문제"에 대한 정답 코드 + 해설입니다. 먼저 직접 풀어본 뒤 참고하는 걸 권장합니다.
 
@@ -26,6 +27,7 @@
 1. **02 → 03**: 지도학습의 기본 축인 회귀와 분류를 손코드(numpy)로 먼저 이해하고, scikit-learn으로 검증합니다.
 2. **04**: 신경망이 왜 필요한지(XOR 문제)부터 시작해서, 딥러닝 실무 팁(ReLU, Dropout, 초기화)까지 PyTorch로 직접 구현합니다.
 3. **05 → 06**: 이미지(CNN), 시퀀스(RNN) 데이터로 확장합니다.
+4. (선택) **07**: 원본 강의가 사용한 TensorFlow/Keras로 02·04 예제를 다시 풀어보며 PyTorch와의 API 차이를 익힙니다.
 
 각 노트북은 Colab에서 바로 열어 실행할 수 있도록 첫 셀에 환경 감지 + 패키지 설치 코드가 포함되어 있습니다 (프로젝트 루트 [README.md](README.md)의 "Colab에서 열기" 참고).
 

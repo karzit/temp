@@ -69,6 +69,21 @@
 직접 구현하지 않아도 된다. `04_neural_networks`부터 본격적으로 사용하며, `00_python_essentials`에서
 기본기를 실습한다.
 
+#### <a id="tensorflow"></a>TensorFlow
+Google이 만든 딥러닝 프레임워크. [PyTorch](#pytorch)와 마찬가지로 `Tensor` 연산과 자동미분
+(`tf.GradientTape`)을 제공하며, 원본 강의([모두를 위한 머신러닝과 딥러닝](https://hunkim.github.io/ml/))가
+사용한 프레임워크다. 이 커리큘럼은 최신 Colab 환경 호환을 위해 PyTorch로 다시 작성했지만,
+`07_tensorflow_practice`에서 TensorFlow/Keras 버전을 별도로 실습할 수 있다.
+
+#### <a id="keras"></a>Keras (`tf.keras`)
+TensorFlow에 내장된 고수준 신경망 API. `Sequential`로 레이어를 쌓고 `compile`/`fit`으로 학습 루프를
+대신 처리해준다. PyTorch의 `nn.Sequential` + 직접 짠 학습 루프에 대응된다.
+
+#### <a id="gradienttape"></a>GradientTape (`tf.GradientTape`)
+TensorFlow의 자동미분 도구. `with tf.GradientTape():` 블록 안에서 실행된 연산만 미분 대상으로
+기록하고, `tape.gradient(cost, [변수들])`로 gradient를 계산한다. PyTorch의
+`requires_grad=True` + `.backward()`에 대응하지만, 추적 범위를 명시적으로 지정한다는 점이 다르다.
+
 #### <a id="hypothesis"></a>가설 함수 (Hypothesis, H(x))
 입력으로부터 출력을 예측하는 모델의 수식 형태 (예: H(x) = Wx + b).
 

@@ -6,6 +6,7 @@ seaborn
 joblib
 torch
 torchvision
+tensorflow
 requests
 beautifulsoup4
 python-dotenv
