@@ -22,3 +22,4 @@ streamlit
 langchain-openai
 langchain-community
 opensearch-py
+rank_bm25
