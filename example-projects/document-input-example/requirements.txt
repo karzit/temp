@@ -1,0 +1,5 @@
+streamlit==1.40.1
+google-cloud-vision==3.8.1
+pydantic==2.9.2
+openai==1.55.3
+python-dotenv==1.0.1
