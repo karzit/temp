@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>사내 규정 챗봇</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 16px; }
+    #log { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .msg { padding: 10px 14px; border-radius: 8px; white-space: pre-wrap; }
+    .msg.user { background: #e8f0fe; align-self: flex-end; }
+    .msg.bot { background: #f1f1f1; }
+    .msg .sources { margin-top: 6px; font-size: 0.85em; color: #666; }
+    form { display: flex; gap: 8px; }
+    input { flex: 1; padding: 8px; }
+    button { padding: 8px 16px; }
+  </style>
+</head>
+<body>
+  <h1>사내 규정 챗봇</h1>
+  <div id="log"></div>
+  <form id="chat-form">
+    <input id="question" placeholder="예: 육아휴직은 최대 몇 개월까지 쓸 수 있어?" autocomplete="off">
+    <button type="submit">전송</button>
+  </form>
+
+  <script>
+    const log = document.getElementById("log");
+    const form = document.getElementById("chat-form");
+    const input = document.getElementById("question");
+
+    function addMessage(text, role, sources) {
+      const div = document.createElement("div");
+      div.className = `msg ${role}`;
+      div.textContent = text;
+      if (sources && sources.length) {
+        const s = document.createElement("div");
+        s.className = "sources";
+        s.textContent = "출처: " + sources.join(", ");
+        div.appendChild(s);
+      }
+      log.appendChild(div);
+      div.scrollIntoView({ behavior: "smooth" });
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const question = input.value.trim();
+      if (!question) return;
+
+      addMessage(question, "user");
+      input.value = "";
+
+      const response = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question }),
+      });
+      const data = await response.json();
+      addMessage(data.answer, "bot", data.sources);
+    });
+  </script>
+</body>
+</html>

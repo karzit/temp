@@ -6,3 +6,4 @@ opensearch-py==2.7.1
 PyMuPDF==1.24.13
 psycopg2-binary==2.9.10
 python-dotenv==1.0.1
+kiwipiepy==0.23.2

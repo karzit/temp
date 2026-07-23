@@ -6,6 +6,7 @@ ingest.py가 "책을 도서관에 정리해두는 작업"이었다면,
 전체 흐름 (오픈북 시험을 본다고 상상해봐):
     1. 질문을 숫자 좌표(벡터)로 바꾼다
     2. OpenSearch(도서관)에서 그 좌표와 가까운, 즉 의미가 비슷한 규정 조각들을 찾는다 (top-k개)
+       + 동시에 질문 속 단어가 정확히 등장하는 조각도 키워드 검색으로 찾는다 (하이브리드 검색)
     3. 찾은 조각들을 "여기 참고할 내용이야"라며 프롬프트에 끼워 넣는다
     4. AI(LLM)가 그 내용만 보고 답을 적는다
 
@@ -15,7 +16,9 @@ ingest.py가 "책을 도서관에 정리해두는 작업"이었다면,
 import sys
 
 from langchain_community.vectorstores import OpenSearchVectorSearch
+from langchain_core.documents import Document
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from opensearchpy import OpenSearch
 
 from config import CHAT_MODEL, EMBEDDING_MODEL, OPENSEARCH_INDEX, OPENSEARCH_URL
 
@@ -61,6 +64,53 @@ def search_similar_docs(question: str, k: int = TOP_K):
     return vector_store.similarity_search(question, k=k)
 
 
+def search_keyword_docs(question: str, k: int = TOP_K) -> list[Document]:
+    """OpenSearch의 match 쿼리로, 질문에 쓰인 단어가 그대로 등장하는 조각을 찾아온다 (BM25 스코어링).
+
+    벡터 검색은 "의미가 비슷한 문장"을 잘 찾지만, 조항 번호나 특정 단어를 정확히 맞혀야 하는
+    질문에는 오히려 약할 수 있다. 반대로 이 함수처럼 역색인 기반 키워드 검색은 정확한 단어
+    매칭에 강하다. 개념과 numpy 기반 미니 구현은
+    https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/04_rag_pipeline/04_rag_pipeline.ipynb
+    실습 4를 참고.
+
+    주의: 이 인덱스는 ingest.py가 만드는 기본 매핑을 그대로 쓰기 때문에, "text" 필드는
+    OpenSearch의 기본(standard) 분석기로 색인된다. 한국어는 조사가 붙기 때문에 기본 분석기로는
+    "제2조"는 잘 맞아도 "휴가를"/"휴가가"처럼 조사가 다르면 놓칠 수 있다. 실제 서비스에서는
+    인덱스 매핑에 노리(Nori) 형태소 분석 플러그인을 적용하는 것이 정확도에 유리하다.
+    """
+    client = OpenSearch(OPENSEARCH_URL)
+    body = {"size": k, "query": {"match": {"text": question}}}
+    response = client.search(index=OPENSEARCH_INDEX, body=body)
+    return [
+        Document(page_content=hit["_source"]["text"], metadata=hit["_source"].get("metadata", {}))
+        for hit in response["hits"]["hits"]
+    ]
+
+
+def reciprocal_rank_fusion(*ranked_lists: list[Document], k: int = 60) -> list[Document]:
+    """벡터 검색 결과와 키워드 검색 결과를, 각각 몇 등이었는지(rank)만 보고 하나로 합친다 (RRF).
+
+    두 검색은 점수의 스케일이 다르기 때문에(코사인 유사도 vs BM25) 점수를 직접 더하면 안 된다.
+    `1 / (k + rank)`를 검색별로 더해서, 두 검색 모두에서 상위에 있던 문서일수록 높은 점수를 받게 만든다.
+    """
+    scores: dict[str, float] = {}
+    doc_lookup: dict[str, Document] = {}
+    for ranked in ranked_lists:
+        for rank, doc in enumerate(ranked, start=1):
+            key = doc.page_content
+            scores[key] = scores.get(key, 0.0) + 1.0 / (k + rank)
+            doc_lookup[key] = doc
+    fused = sorted(scores.items(), key=lambda item: item[1], reverse=True)
+    return [doc_lookup[key] for key, _score in fused]
+
+
+def search_hybrid_docs(question: str, k: int = TOP_K) -> list[Document]:
+    """벡터 검색 + 키워드 검색을 RRF로 합친 하이브리드 검색. answer()가 기본으로 쓰는 검색 방식."""
+    vector_docs = search_similar_docs(question, k=k * 3)
+    keyword_docs = search_keyword_docs(question, k=k * 3)
+    return reciprocal_rank_fusion(vector_docs, keyword_docs)[:k]
+
+
 def build_prompt(question: str, docs) -> str:
     """찾아온 규정 조각들을 "[파일명 몇 페이지]" 표시와 함께 이어붙여 하나의 참고자료 텍스트로 만든다."""
     # 이렇게 출처를 남겨두면, 나중에 답변을 볼 때 "이 답은 취업규칙.pdf 3페이지 내용이구나"처럼
@@ -74,7 +124,7 @@ def build_prompt(question: str, docs) -> str:
 
 def answer(question: str) -> str:
     """질문 하나를 받아서 검색부터 답변 생성까지 전부 처리해주는 대표 함수."""
-    docs = search_similar_docs(question)
+    docs = search_hybrid_docs(question)
     prompt = build_prompt(question, docs)
 
     # temperature는 AI 답변의 "즉흥성"을 조절하는 다이얼이라고 생각하면 돼.

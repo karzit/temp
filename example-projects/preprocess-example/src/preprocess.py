@@ -8,7 +8,9 @@ rag-regulation-example의 ingest.py와 하는 일은 거의 같다. 차이점은
 전체 흐름:
     PostgreSQL에서 원본 문서 읽기
     -> PDF면 PyMuPDF로 텍스트 추출, HTML이면 저장된 텍스트 그대로 사용
+    -> 정규식으로 잡음(중복 공백, 과도한 줄바꿈 등) 정리
     -> LangChain으로 500자 청크로 자르기
+    -> 형태소 분석으로 청크별 대표 명사 키워드 추출 (메타데이터로 저장)
     -> OpenAIEmbeddings로 벡터 변환
     -> OpenSearch에 저장
 
@@ -16,8 +18,10 @@ rag-regulation-example의 ingest.py와 하는 일은 거의 같다. 차이점은
     python src/preprocess.py
 """
 import io
+import re
 
 import fitz  # PyMuPDF. import 이름이 패키지명(PyMuPDF)과 달라서 헷갈리기 쉬우니 주의! 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/02_text_chunking/02_text_chunking.ipynb
+from kiwipiepy import Kiwi  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/02_text_chunking/02_text_chunking.ipynb (실습 9. 한국어 형태소 분석)
 from langchain_community.vectorstores import OpenSearchVectorSearch  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/04_rag_pipeline/04_rag_pipeline.ipynb
 from langchain_core.documents import Document  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/02_text_chunking/02_text_chunking.ipynb
 from langchain_openai import OpenAIEmbeddings  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/04_rag_pipeline/04_rag_pipeline.ipynb
@@ -31,6 +35,41 @@ from reader import RawDocument, fetch_raw_documents
 # "질문과 정확히 관련된 조항 하나"를 콕 집어서 찾기 쉬워진다.
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 75  # CHUNK_SIZE가 작아진 만큼 겹침도 비례해서 줄였다 (기존 1000자 대비 150자 = 15% 비율 유지)
+
+# Kiwi는 초기화(사전 로딩)에 비용이 좀 들어서, 문서마다 새로 만들지 않고 모듈 레벨에서 한 번만 만든다.
+_kiwi = Kiwi()
+
+
+def clean_text(text: str) -> str:
+    """크롤링/OCR로 얻은 원문의 잡음을 정규식으로 정리한다.
+
+    HTML을 텍스트로 바꾸거나 PDF에서 글자를 뽑다 보면 연속된 공백, 과도한 빈 줄,
+    반복된 특수문자(마침표·느낌표 등)가 섞여 들어오는 경우가 흔하다. 청킹 전에 한 번
+    정리해두면 청크 경계가 잡음 때문에 이상하게 갈리는 것을 줄일 수 있다.
+    자세한 설명과 실습은
+    https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/02_text_chunking/02_text_chunking.ipynb
+    실습 8 참고.
+    """
+    text = re.sub(r"[ \t]+", " ", text)  # 연속 공백을 하나로
+    text = re.sub(r"\n{3,}", "\n\n", text)  # 빈 줄이 3개 이상이면 2개로
+    text = re.sub(r"\.{2,}", ".", text)  # 반복된 마침표 정리
+    text = re.sub(r"!{2,}", "!", text)  # 반복된 느낌표 정리
+    return text.strip()
+
+
+def extract_keywords(text: str, limit: int = 10) -> list[str]:
+    """형태소 분석으로 명사(NNG/NNP)만 뽑아 청크의 대표 키워드로 남긴다.
+
+    "휴가를"/"휴가가"처럼 조사가 붙어도 형태소 분석을 거치면 같은 명사("휴가")로 인식되기
+    때문에, 공백 기준 분리보다 안정적인 키워드 태깅이 가능하다. 등장 빈도가 높은 순으로
+    최대 `limit`개만 남긴다. 자세한 설명과 실습은 위 노트북의 실습 9 참고.
+    """
+    nouns = [token.form for token in _kiwi.tokenize(text) if token.tag in ("NNG", "NNP")]
+    counts: dict[str, int] = {}
+    for noun in nouns:
+        counts[noun] = counts.get(noun, 0) + 1
+    ranked = sorted(counts.items(), key=lambda item: item[1], reverse=True)
+    return [noun for noun, _count in ranked[:limit]]
 
 
 def extract_pdf_text(binary_content: bytes) -> str:
@@ -48,10 +87,12 @@ def extract_pdf_text(binary_content: bytes) -> str:
 
 
 def raw_document_to_text(raw_doc: RawDocument) -> str:
-    """RawDocument 하나를 (PDF든 HTML이든 상관없이) 순수 텍스트로 통일해서 반환한다."""
+    """RawDocument 하나를 (PDF든 HTML이든 상관없이) 정제된 순수 텍스트로 통일해서 반환한다."""
     if raw_doc.content_type == "pdf":
-        return extract_pdf_text(raw_doc.binary_content)
-    return raw_doc.text_content or ""
+        text = extract_pdf_text(raw_doc.binary_content)
+    else:
+        text = raw_doc.text_content or ""
+    return clean_text(text)
 
 
 def split_into_chunks(raw_docs: list[RawDocument]) -> list[Document]:
@@ -74,6 +115,9 @@ def split_into_chunks(raw_docs: list[RawDocument]) -> list[Document]:
         # 순수 텍스트를 먼저 Document로 감싸준다. metadata에 출처 URL을 함께 담아둔다.
         doc = Document(page_content=text, metadata={"source": raw_doc.url})
         chunks = splitter.split_documents([doc])
+        for chunk in chunks:
+            # 검색 필터링/태깅에 쓸 수 있도록 청크별 대표 명사를 메타데이터로 남겨둔다.
+            chunk.metadata["keywords"] = extract_keywords(chunk.page_content)
         all_chunks.extend(chunks)
         print(f"{raw_doc.url}: {len(chunks)} chunks")
 
