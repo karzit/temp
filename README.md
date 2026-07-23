@@ -5,6 +5,19 @@ Google Colab에서 실습하는 머신러닝 입문 튜토리얼입니다.
 - `notebooks/01_basic_classification/`: scikit-learn으로 Iris 분류 파이프라인(로드 → EDA → 전처리 → 학습 → 평가 → 저장) 감 잡기
 - `notebooks/02~06`: 김성훈 교수님의 [모두를 위한 머신러닝과 딥러닝](https://hunkim.github.io/ml/) 시즌 1 커리큘럼을 이론+실습으로 재구성한 시리즈 — 자세한 목차와 학습 순서는 **[CURRICULUM.md](CURRICULUM.md)** 참고
 
+## 바로 열기 (Colab 배지)
+
+배지를 클릭하면 각 노트북이 Colab에서 바로 열립니다 (GitHub 저장소: [karzit/temp](https://github.com/karzit/temp)).
+
+| 노트북 | 열기 |
+|---|---|
+| 01. 기본 분류 (scikit-learn) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/01_basic_classification/01_basic_classification.ipynb) |
+| 02. Linear Regression | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/02_linear_regression/02_linear_regression.ipynb) |
+| 03. Classification | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/03_classification/03_classification.ipynb) |
+| 04. Neural Networks | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/04_neural_networks/04_neural_networks.ipynb) |
+| 05. CNN | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/05_cnn/05_cnn.ipynb) |
+| 06. RNN | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/06_rnn/06_rnn.ipynb) |
+
 ## 폴더 구조
 
 ```
@@ -25,14 +38,13 @@ requirements.txt
 
 ## Colab에서 열기
 
-**방법 A — 직접 업로드**
-1. [colab.research.google.com](https://colab.research.google.com) 접속
-2. 파일 → 노트북 업로드 → `notebooks/01_basic_classification/01_basic_classification.ipynb` 선택
+**방법 A — 배지 클릭 (가장 쉬움)**
+위 표의 배지를 클릭하면 바로 Colab에서 열립니다.
 
-**방법 B — GitHub 연동 (권장)**
-1. 이 프로젝트를 GitHub 저장소로 push
-2. Colab에서 파일 → GitHub 탭 → 저장소 URL 입력 → 노트북 선택
-3. 이후 Colab에서 수정한 내용은 "GitHub에 사본 저장"으로 다시 push 가능
+**방법 B — GitHub 탭에서 직접 탐색**
+1. [colab.research.google.com](https://colab.research.google.com) 접속
+2. 파일 → GitHub 탭 → 저장소 `karzit/temp` 입력 → 노트북 선택
+3. Colab에서 수정한 내용은 "GitHub에 사본 저장"으로 다시 push 가능
 
 **방법 C — Google Drive**
 1. 이 프로젝트 폴더를 Google Drive에 업로드

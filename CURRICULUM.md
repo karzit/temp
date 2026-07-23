@@ -6,14 +6,14 @@
 
 ## 구성
 
-| 노트북 | 원본 강의 | 다루는 내용 | 이론 | 실습 |
-|---|---|---|---|---|
-| [01_basic_classification/01_basic_classification.ipynb](notebooks/01_basic_classification/01_basic_classification.ipynb) | (사전 준비) | scikit-learn 파이프라인 감 잡기 | - | ✅ |
-| [02_linear_regression/02_linear_regression.ipynb](notebooks/02_linear_regression/02_linear_regression.ipynb) | Lec 1–4 | ML 기본 개념, Linear Regression, Cost 함수, Gradient Descent, 다중 변수 | ✅ | ✅ |
-| [03_classification/03_classification.ipynb](notebooks/03_classification/03_classification.ipynb) | Lec 5–6 | Logistic Regression, Softmax Regression(다중 분류), Cross-Entropy | ✅ | ✅ |
-| [04_neural_networks/04_neural_networks.ipynb](notebooks/04_neural_networks/04_neural_networks.ipynb) | Lec 7–10 | 학습률/Overfitting/Regularization, XOR과 Backpropagation, ReLU, 가중치 초기화, Dropout, MNIST | ✅ | ✅ |
-| [05_cnn/05_cnn.ipynb](notebooks/05_cnn/05_cnn.ipynb) | Lec 11 | Convolution, Pooling, CNN으로 이미지 분류 | ✅ | ✅ |
-| [06_rnn/06_rnn.ipynb](notebooks/06_rnn/06_rnn.ipynb) | Lec 12 | RNN 기본, Char-RNN("hihello"), 시계열 예측 | ✅ | ✅ |
+| 노트북 | 원본 강의 | 다루는 내용 | 이론 | 실습 | Colab |
+|---|---|---|---|---|---|
+| [01_basic_classification/01_basic_classification.ipynb](notebooks/01_basic_classification/01_basic_classification.ipynb) | (사전 준비) | scikit-learn 파이프라인 감 잡기 | - | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/01_basic_classification/01_basic_classification.ipynb) |
+| [02_linear_regression/02_linear_regression.ipynb](notebooks/02_linear_regression/02_linear_regression.ipynb) | Lec 1–4 | ML 기본 개념, Linear Regression, Cost 함수, Gradient Descent, 다중 변수 | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/02_linear_regression/02_linear_regression.ipynb) |
+| [03_classification/03_classification.ipynb](notebooks/03_classification/03_classification.ipynb) | Lec 5–6 | Logistic Regression, Softmax Regression(다중 분류), Cross-Entropy | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/03_classification/03_classification.ipynb) |
+| [04_neural_networks/04_neural_networks.ipynb](notebooks/04_neural_networks/04_neural_networks.ipynb) | Lec 7–10 | 학습률/Overfitting/Regularization, XOR과 Backpropagation, ReLU, 가중치 초기화, Dropout, MNIST | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/04_neural_networks/04_neural_networks.ipynb) |
+| [05_cnn/05_cnn.ipynb](notebooks/05_cnn/05_cnn.ipynb) | Lec 11 | Convolution, Pooling, CNN으로 이미지 분류 | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/05_cnn/05_cnn.ipynb) |
+| [06_rnn/06_rnn.ipynb](notebooks/06_rnn/06_rnn.ipynb) | Lec 12 | RNN 기본, Char-RNN("hihello"), 시계열 예측 | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/06_rnn/06_rnn.ipynb) |
 
 ## 학습 순서 제안
 
