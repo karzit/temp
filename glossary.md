@@ -10,6 +10,7 @@
 - [2. ML/DL 이론 (ml-curriculum)](#2-mldl-이론-ml-curriculum)
 - [3. RAG/LLM 실습 (rag-pipeline-practice)](#3-ragllm-실습-rag-pipeline-practice)
 - [4. 인프라/도구 (example-projects)](#4-인프라도구-example-projects)
+- [5. 개발 생태계 기초 (Python)](#5-개발-생태계-기초-python)
 
 ---
 
@@ -52,6 +53,21 @@
 학습에 쓰지 않은 새로운 데이터에서도 모델이 잘 동작하는 능력.
 
 ## 2. ML/DL 이론 (ml-curriculum)
+
+#### <a id="numpy"></a>NumPy
+파이썬에서 다차원 배열(`ndarray`)과 행렬 연산을 다루는 기본 라이브러리. 브로드캐스팅으로 반복문 없이
+원소별 연산을 수행할 수 있어, [Gradient Descent](#gradient-descent)를 직접 구현할 때처럼 수식을
+그대로 코드로 옮길 수 있다. `00_python_essentials`에서 기본기를 실습한다.
+
+#### <a id="pandas"></a>Pandas
+표(행/열) 형태 데이터를 다루는 라이브러리. `DataFrame`으로 CSV 등을 불러와 필터링, 정렬, `groupby`
+집계를 수행한다. `00_python_essentials`에서 기본기를 실습한다.
+
+#### <a id="pytorch"></a>PyTorch
+딥러닝 모델을 만들고 학습시키는 프레임워크. [NumPy](#numpy)와 유사한 `Tensor` 연산에 더해, 미분을
+자동으로 계산해주는 **autograd**(`.backward()`)를 제공해 [Backpropagation](#backpropagation)을
+직접 구현하지 않아도 된다. `04_neural_networks`부터 본격적으로 사용하며, `00_python_essentials`에서
+기본기를 실습한다.
 
 #### <a id="hypothesis"></a>가설 함수 (Hypothesis, H(x))
 입력으로부터 출력을 예측하는 모델의 수식 형태 (예: H(x) = Wx + b).
@@ -257,3 +273,35 @@ PDF에서 텍스트를 추출하는 두 라이브러리(PyMuPDF는 빠르고 레
 
 #### <a id="openai-structured-output"></a>OpenAI structured output (beta.chat.completions.parse)
 OpenAI API가 [Pydantic](#pydantic) 모델 형식에 맞춰 응답을 자동 변환해주는 기능.
+
+## 5. 개발 생태계 기초 (Python)
+
+이 프로젝트는 Python 생태계를 기반으로 한다. 다른 언어의 Maven/Gradle(Java), npm(JavaScript) 같은
+빌드·패키지 관리 도구에 익숙하다면, 아래는 그에 대응하는 Python 쪽 개념들이다. AI 실습 코드를
+직접 돌리거나 새 프로젝트를 세팅할 때 알아야 하는 최소한의 생태계 지식을 정리했다.
+
+#### <a id="venv"></a>가상환경 (Virtual Environment, venv)
+프로젝트별로 독립된 Python 패키지 설치 공간을 만드는 기능(`python -m venv`). 프로젝트마다 다른
+라이브러리 버전이 필요할 때 시스템 전역 환경과 충돌하지 않게 해준다.
+
+#### <a id="pip"></a>pip / requirements.txt
+pip은 Python의 기본 패키지 설치 도구(`pip install`)이며, `requirements.txt`는 프로젝트가 필요로
+하는 패키지 목록을 적어두는 파일(`pip install -r requirements.txt`)이다. Java의 `pom.xml`(Maven),
+`build.gradle`(Gradle)이나 Node의 `package.json`에 대응한다.
+
+#### <a id="conda"></a>conda / Anaconda
+패키지 관리와 가상환경 관리를 함께 제공하는 도구. [pip](#pip)/[venv](#venv)와 달리 Python 자체
+버전이나 비-Python 의존성(예: CUDA)까지 다룰 수 있어 데이터 과학/딥러닝 환경에서 자주 쓰인다.
+
+#### <a id="poetry-pyproject"></a>pyproject.toml / Poetry
+의존성 목록, 버전, 빌드 설정을 한 파일로 통합 관리하는 최신 방식. [requirements.txt](#pip)보다
+의존성 잠금(lock)과 버전 충돌 관리가 엄격하다. Java의 Gradle, Node의 `package.json`+lockfile과
+유사한 역할.
+
+#### <a id="jupyter"></a>Jupyter Notebook/Lab
+코드, 실행 결과, 설명 텍스트를 한 문서(.ipynb) 안에서 셀 단위로 실행하며 볼 수 있는 대화형 개발
+환경. 이 저장소의 `notebooks/` 실습 대부분이 이 형식으로 작성돼 있다.
+
+#### <a id="fastapi-uvicorn"></a>FastAPI / uvicorn
+Python으로 REST API 서버를 만드는 웹 프레임워크(FastAPI)와 이를 실제로 구동하는 ASGI 서버
+(uvicorn). Java의 Spring(Boot)에 대응하는 역할로, LLM/RAG 파이프라인을 API로 노출할 때 쓰인다.

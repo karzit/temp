@@ -8,6 +8,7 @@
 
 | 노트북 | 원본 강의 | 다루는 내용 | 이론 | 실습 | Colab | 연습문제 해설 |
 |---|---|---|---|---|---|---|
+| [00_python_essentials/00_python_essentials.ipynb](notebooks/ml-curriculum/00_python_essentials/00_python_essentials.ipynb) | (사전 준비) | [NumPy](glossary.md#numpy) 배열/행렬 연산, [Pandas](glossary.md#pandas) DataFrame, [PyTorch](glossary.md#pytorch) 텐서와 autograd | - | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/00_python_essentials/00_python_essentials.ipynb) | [해설](notebooks/ml-curriculum/00_python_essentials/00_python_essentials_solutions.ipynb) |
 | [01_basic_classification/01_basic_classification.ipynb](notebooks/ml-curriculum/01_basic_classification/01_basic_classification.ipynb) | (사전 준비) | scikit-learn 파이프라인 감 잡기 | - | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/01_basic_classification/01_basic_classification.ipynb) | - |
 | [02_linear_regression/02_linear_regression.ipynb](notebooks/ml-curriculum/02_linear_regression/02_linear_regression.ipynb) | Lec 1–4 | ML 기본 개념, Linear Regression, [Cost 함수](glossary.md#cost-function), [Gradient Descent](glossary.md#gradient-descent), 다중 변수 | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/02_linear_regression/02_linear_regression.ipynb) | [해설](notebooks/ml-curriculum/02_linear_regression/02_linear_regression_solutions.ipynb) |
 | [03_classification/03_classification.ipynb](notebooks/ml-curriculum/03_classification/03_classification.ipynb) | Lec 5–6 | [Logistic Regression](glossary.md#logistic-regression), [Softmax Regression](glossary.md#softmax-regression)(다중 분류), [Cross-Entropy](glossary.md#cross-entropy) | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/03_classification/03_classification.ipynb) | [해설](notebooks/ml-curriculum/03_classification/03_classification_solutions.ipynb) |
@@ -21,6 +22,7 @@
 
 ## 학습 순서 제안
 
+0. **00**: NumPy/Pandas/PyTorch가 처음이거나 오래 안 써봤다면 먼저 손에 익힙니다. 익숙하다면 건너뛰어도 됩니다.
 1. **02 → 03**: 지도학습의 기본 축인 회귀와 분류를 손코드(numpy)로 먼저 이해하고, scikit-learn으로 검증합니다.
 2. **04**: 신경망이 왜 필요한지(XOR 문제)부터 시작해서, 딥러닝 실무 팁(ReLU, Dropout, 초기화)까지 PyTorch로 직접 구현합니다.
 3. **05 → 06**: 이미지(CNN), 시퀀스(RNN) 데이터로 확장합니다.
