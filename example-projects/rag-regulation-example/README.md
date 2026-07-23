@@ -1,15 +1,17 @@
-# 사내 규정 RAG 예시 프로젝트
+# 사내 규정 [RAG](../../glossary.md#rag) 예시 프로젝트
 
 LangChain + OpenSearch + gpt-4o-mini 기반 규정 문서 검색/응답 예시.
 200페이지 PDF 2건 기준 최소 구성으로 설계됨.
 
+용어가 낯설다면 **[../../glossary.md](../../glossary.md)**를 참고하세요.
+
 ## 파이프라인
 
 ```
-PDF (2건, 200p) -> 청킹 (RecursiveCharacterTextSplitter)
-                 -> 임베딩 (text-embedding-3-small)
-                 -> OpenSearch 인덱싱 (knn_vector)
-사용자 질문 -> 임베딩 -> OpenSearch 유사도 검색 -> 프롬프트 조합 -> gpt-4o-mini 응답
+PDF (2건, 200p) -> [청킹](../../glossary.md#chunking) (RecursiveCharacterTextSplitter)
+                 -> [임베딩](../../glossary.md#embedding) (text-embedding-3-small)
+                 -> [OpenSearch](../../glossary.md#opensearch) 인덱싱 (knn_vector)
+사용자 질문 -> 임베딩 -> [벡터 검색](../../glossary.md#vector-search) -> [프롬프트 조립](../../glossary.md#prompt-assembly) -> gpt-4o-mini 응답
 ```
 
 ## 1. 환경 준비

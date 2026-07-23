@@ -1,7 +1,9 @@
-# B파트 사용자 입력 처리 예시 (서류 사진 -> 정형 JSON)
+# B파트 사용자 입력 처리 예시 (서류 사진 -> [정형 출력](../../glossary.md#structured-output) JSON)
 
-서류 이미지를 업로드하면 OCR로 글자를 읽고, 그 지저분한 원문을 AI가 정리해서
-정형화된 JSON으로 바꿔주는 예시. C파트(RAG)가 검색 질의를 만들 때 이 JSON을 사용한다.
+서류 이미지를 업로드하면 [OCR](../../glossary.md#ocr)로 글자를 읽고, 그 지저분한 원문을 AI가 정리해서
+정형화된 JSON으로 바꿔주는 예시. C파트([RAG](../../glossary.md#rag))가 검색 질의를 만들 때 이 JSON을 사용한다.
+
+용어가 낯설다면 **[../../glossary.md](../../glossary.md)**를 참고하세요.
 
 ## 왜 이 단계가 필요한가?
 
@@ -15,7 +17,7 @@ OCR로 뽑은 텍스트는 오타, 줄바꿈 깨짐, 표 구조 붕괴가 섞여
 ```
 사용자가 Streamlit 화면에 서류 사진 업로드
     -> Google Vision OCR: 이미지 -> 오타 섞인 날것의 줄글 텍스트
-    -> gpt-4o-mini + Pydantic: 날것의 텍스트 -> 정형화된 JSON (문서 종류/사유/날짜 등)
+    -> gpt-4o-mini + [Pydantic](../../glossary.md#pydantic): 날것의 텍스트 -> 정형화된 JSON (문서 종류/사유/날짜 등)
     -> (다음 단계) 이 JSON을 C파트(RAG)로 넘겨서 관련 규정 검색
 ```
 
