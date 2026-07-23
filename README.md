@@ -82,6 +82,9 @@ example-projects/               실전 예제 (③) — 자세한 내용은 exam
   document-input-example/       [B]   서류 사진 -> OCR -> LLM 정형 출력(JSON), Streamlit UI
   rag-regulation-example/       [C]   PDF/OpenSearch 검색 -> LLM 응답(RAG)
 
+frozen-lake-viz/   ①과 무관한 별도 보조 자료 — Q-Learning(RL)을 브라우저에서 바로 보는 시각화 데모.
+                   RL은 ml-curriculum 범위 밖이라 정식 노트북은 없고, 그 자리를 미리 맛보는 자료입니다.
+                   설치 없이 index.html만 열면 됩니다 (자세한 내용은 frozen-lake-viz/README.md).
 data/          직접 추가하거나 노트북이 내려받는 데이터셋 (git에는 커밋 안 됨)
 models/        학습된 모델 저장 위치 (git에는 커밋 안 됨)
 CURRICULUM.md  ①의 이론+실습 목차 (원본 강의 매핑 포함)
