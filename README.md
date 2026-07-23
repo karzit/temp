@@ -1,21 +1,33 @@
 # ML 튜토리얼 프로젝트
 
-Google Colab에서 실습하는 머신러닝 입문 튜토리얼입니다. 첫 노트북은 scikit-learn으로 Iris 데이터셋을 분류하는 전체 파이프라인(로드 → EDA → 전처리 → 학습 → 평가 → 저장)을 다룹니다.
+Google Colab에서 실습하는 머신러닝 입문 튜토리얼입니다.
+
+- `notebooks/01_basic_classification/`: scikit-learn으로 Iris 분류 파이프라인(로드 → EDA → 전처리 → 학습 → 평가 → 저장) 감 잡기
+- `notebooks/02~06`: 김성훈 교수님의 [모두를 위한 머신러닝과 딥러닝](https://hunkim.github.io/ml/) 시즌 1 커리큘럼을 이론+실습으로 재구성한 시리즈 — 자세한 목차와 학습 순서는 **[CURRICULUM.md](CURRICULUM.md)** 참고
 
 ## 폴더 구조
 
 ```
-notebooks/   실습 노트북 (.ipynb)
-data/        직접 추가할 데이터셋 (git에는 커밋 안 됨)
-models/      학습된 모델 저장 위치 (git에는 커밋 안 됨)
+notebooks/
+  01_basic_classification/   scikit-learn 파이프라인 입문
+  02_linear_regression/      Lec 1-4: Linear Regression
+  03_classification/         Lec 5-6: Logistic/Softmax Regression
+  04_neural_networks/        Lec 7-10: 실전 팁, XOR, ReLU, Dropout, MNIST
+  05_cnn/                    Lec 11: CNN
+  06_rnn/                    Lec 12: RNN
+data/          직접 추가하거나 노트북이 내려받는 데이터셋 (git에는 커밋 안 됨)
+models/        학습된 모델 저장 위치 (git에는 커밋 안 됨)
+CURRICULUM.md  이론+실습 커리큘럼 목차 (원본 강의 매핑 포함)
 requirements.txt
 ```
+
+각 노트북은 주제별 하위 폴더에 있고, 노트북 안에서 데이터/모델 폴더는 `../../data`, `../../models`로 참조합니다(프로젝트 루트 기준 2단계 아래에 위치하므로).
 
 ## Colab에서 열기
 
 **방법 A — 직접 업로드**
 1. [colab.research.google.com](https://colab.research.google.com) 접속
-2. 파일 → 노트북 업로드 → `notebooks/01_basic_classification.ipynb` 선택
+2. 파일 → 노트북 업로드 → `notebooks/01_basic_classification/01_basic_classification.ipynb` 선택
 
 **방법 B — GitHub 연동 (권장)**
 1. 이 프로젝트를 GitHub 저장소로 push
@@ -30,7 +42,7 @@ requirements.txt
 
 ```bash
 pip install -r requirements.txt
-jupyter notebook notebooks/01_basic_classification.ipynb
+jupyter notebook notebooks/01_basic_classification/01_basic_classification.ipynb
 ```
 
 ## 다음 튜토리얼 아이디어
