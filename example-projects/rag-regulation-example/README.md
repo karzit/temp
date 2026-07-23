@@ -62,5 +62,5 @@ python src/query.py "육아휴직 기간은 최대 몇 개월인가요?"
 ## 다른 선택지가 궁금하다면
 
 `langchain`/`opensearch-py`/`pypdf`/`openai` 대신 쓸 수 있는 라이브러리(`LlamaIndex`, `pgvector`,
-`Qdrant`, `anthropic` 등)와 언제 그걸 고려하면 좋을지는 [`ALTERNATIVES.md`](ALTERNATIVES.md)에
-정리해두었다.
+`Qdrant`, `anthropic`, [Hugging Face](../../glossary.md#huggingface) `sentence-transformers` 등)와
+언제 그걸 고려하면 좋을지는 [`ALTERNATIVES.md`](ALTERNATIVES.md)에 정리해두었다.

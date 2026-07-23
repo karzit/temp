@@ -19,6 +19,13 @@
 | `pdfplumber` | 규정 문서에 표(급여 기준표 등)가 많아 구조를 유지해야 할 때 |
 | `unstructured` / `Docling` | 레이아웃이 복잡한 문서를 자동으로 구조화해서 뽑고 싶을 때 |
 
+## 임베딩 (text-embedding-3-small / openai)
+
+| 대안 | 언제 고려하나 |
+|---|---|
+| [Hugging Face](../../glossary.md#huggingface) `sentence-transformers` | 임베딩 API 비용 없이 로컬에서 처리하고 싶을 때, 규정 문서처럼 민감한 내용을 외부로 보내지 않아야 할 때 |
+| Cohere Embed | 다국어 검색 품질이 중요할 때 |
+
 ## 벡터 저장/검색 (opensearch-py)
 
 | 대안 | 언제 고려하나 |

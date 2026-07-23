@@ -187,6 +187,9 @@ LLM의 응답을 자유 텍스트가 아닌, 미리 정의된 스키마(JSON 등
 #### <a id="embedding"></a>임베딩 (Embedding)
 문장이나 단어를 숫자 벡터(좌표)로 변환해, 의미가 비슷한 텍스트일수록 벡터가 가깝게 만드는 기법.
 
+#### <a id="huggingface"></a>Hugging Face
+사전학습 모델(임베딩, LLM 등)과 데이터셋을 공유하는 오픈소스 생태계이자 플랫폼(Model Hub). `transformers` 라이브러리로 모델을 직접 불러와 로컬에서 돌릴 수 있고, `sentence-transformers`는 그중 [임베딩](#embedding) 전용 모델을 다루는 라이브러리다. OpenAI 임베딩/LLM API의 대안으로, 비용 없이 로컬 환경에서(또는 데이터를 외부로 보내지 않고) 처리하고 싶을 때 고려한다.
+
 #### <a id="vector-search"></a>벡터 검색/유사도 검색 (Vector Search / Similarity Search)
 [임베딩](#embedding) 벡터 간 거리(코사인 유사도 등)를 계산해 의미상 가장 가까운 문서를 찾는 검색 방식.
 

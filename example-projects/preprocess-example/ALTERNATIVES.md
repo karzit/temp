@@ -20,6 +20,13 @@
 | `unstructured` | PDF 외에 다양한 포맷(docx, html 등)까지 한 번에 처리하고 싶을 때 |
 | `Docling` (IBM) | 레이아웃 인식 품질이 중요한 복잡한 문서일 때 |
 
+## 임베딩 (OpenAIEmbeddings)
+
+| 대안 | 언제 고려하나 |
+|---|---|
+| [Hugging Face](../../glossary.md#huggingface) `sentence-transformers` | 임베딩 API 비용 없이 로컬에서 처리하고 싶을 때, 사내 문서를 외부로 보내지 않아야 할 때 |
+| Cohere Embed | 다국어 검색 품질이 중요할 때 |
+
 ## 벡터 저장/검색 (opensearch-py)
 
 | 대안 | 언제 고려하나 |

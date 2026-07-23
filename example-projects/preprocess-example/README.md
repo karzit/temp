@@ -46,5 +46,5 @@ PostgreSQL의 `crawled_documents` 테이블에 있는 모든 문서를 순회하
 ## 다른 선택지가 궁금하다면
 
 `langchain`/`PyMuPDF`/`opensearch-py` 대신 쓸 수 있는 라이브러리(`LlamaIndex`, `pdfplumber`,
-`pgvector`, `Qdrant` 등)와 언제 그걸 고려하면 좋을지는 [`ALTERNATIVES.md`](ALTERNATIVES.md)에
-정리해두었다.
+`pgvector`, `Qdrant`, [Hugging Face](../../glossary.md#huggingface) `sentence-transformers` 등)와
+언제 그걸 고려하면 좋을지는 [`ALTERNATIVES.md`](ALTERNATIVES.md)에 정리해두었다.
