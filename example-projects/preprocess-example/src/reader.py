@@ -27,7 +27,7 @@ class RawDocument:
     id: int
     url: str
     content_type: str  # 'html' 또는 'pdf'
-    text_content: str | None
+    text_content: str | None  # str | None 문법은 Python 3.10+ 필요
     binary_content: bytes | None
 
 
