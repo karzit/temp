@@ -13,4 +13,6 @@ data/*
 !data/.gitkeep
 models/*.joblib
 models/*.pkl
+models/*.keras
+models/*.h5
 !models/.gitkeep

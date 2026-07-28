@@ -1,6 +1,6 @@
 # ML 튜토리얼 프로젝트
 
-Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소입니다. 성격이 다른 세 종류의 콘텐츠로
+Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소입니다. 성격이 다른 네 종류의 콘텐츠로
 구성되어 있습니다. 낯선 용어가 나오면 **[glossary.md](glossary.md)** (통합 용어집)에서 찾아보세요.
 
 | 구분 | 위치 | 성격 |
@@ -8,9 +8,13 @@ Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소�
 | ① 이론 커리큘럼 | `notebooks/ml-curriculum/` | scikit-learn/PyTorch로 배우는 전통적인 머신러닝·딥러닝 입문 (이론 + 실습 + 연습문제) |
 | ② 라이브러리 실습 | `notebooks/rag-pipeline-practice/` | 문서 기반 LLM 앱(크롤링→청킹→구조화→RAG→프롬프트 인젝션 방어)에 쓰이는 라이브러리를 Colab에서 손으로 익히는 실습 |
 | ③ 실전 예제 | `example-projects/` | ②에서 익힌 라이브러리로 실제 동작하는 미니 프로젝트 4개를 이어붙인 파이프라인 |
+| ④ 정형 데이터 워크플로우 | `notebooks/tabular-ml-practice/` | 결측치·이상치·문자열이 섞인 **실제 표 데이터**로 EDA → 전처리 → 모델링 → 평가까지 하는 전 과정 |
 
-①은 ②/③과 주제가 겹치지 않는 별도 커리큘럼입니다. ②와 ③은 같은 파이프라인(사내 규정 검색 챗봇)을
+①과 ④는 ②/③과 주제가 겹치지 않는 별도 커리큘럼입니다. ②와 ③은 같은 파이프라인(사내 규정 검색 챗봇)을
 다루며, ②는 "라이브러리 하나씩 실습", ③은 "그 라이브러리들로 만든 실제 프로젝트"라는 관계입니다.
+
+①과 ④는 서로를 보완합니다. **①이 "머신러닝이 어떻게 작동하는가"(경사 하강법·역전파를 직접 구현)라면,
+④는 "현실의 데이터로 실제로 어떻게 하는가"**입니다. 순서는 상관없습니다.
 
 ## 학습 가이드 — 어떻게 진행하면 되나요?
 
@@ -18,6 +22,10 @@ Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소�
 
 - **머신러닝/딥러닝을 처음부터 배우고 싶다** → `notebooks/ml-curriculum/` 01번부터 순서대로.
   자세한 목차는 **[CURRICULUM.md](CURRICULUM.md)** 참고.
+- **내 CSV 데이터로 예측 모델을 만들고 싶다, 실무에서 쓰는 순서를 알고 싶다**
+  → `notebooks/tabular-ml-practice/` 01 → 02 → 03 → 04 순서대로.
+  결측치·이상치 처리부터 모델 평가·데이터 누출 진단까지 다룹니다.
+  자세한 내용은 **[시리즈 README](notebooks/tabular-ml-practice/README.md)** 참고.
 - **LLM/RAG 앱을 만들 때 쓰는 라이브러리(크롤링, 청킹, 구조화 출력, 임베딩/벡터 검색, 프롬프트 인젝션 방어)를
   익히고 싶다, ML 기초는 필요 없다** → `notebooks/rag-pipeline-practice/` 01 → 02 → 03 → 04 → 05 순서대로.
   Colab에서 API 키나 Docker 없이도 끝까지 실행되도록 만들어져 있어 설치 걱정 없이 바로 시작할 수 있습니다.
@@ -33,9 +41,11 @@ Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소�
 3. (선택) `notebooks/ml-curriculum/01~06` — ML/딥러닝 기초 이론까지 확장하고 싶을 때.
    `07_tensorflow_practice`는 02/04를 TensorFlow/Keras로 다시 풀어보는 보너스 실습이니 06까지
    끝낸 뒤 여유가 있을 때 봐도 됩니다.
+4. (선택) `notebooks/tabular-ml-practice/00~04` — 실제 표 데이터를 다루는 전 과정.
+   ①과 독립적이라 먼저 봐도 되고, ①을 끝낸 뒤 "그래서 실무에서는 어떻게 하나"로 이어봐도 됩니다.
 
-각 단계 안에서도 `_solutions.ipynb`(rag-pipeline-practice, ml-curriculum 00, 02~07)는 정답 코드이므로
-먼저 혼자 풀어본 뒤에 열어보는 걸 권장합니다.
+각 단계 안에서도 `_solutions.ipynb`(rag-pipeline-practice, tabular-ml-practice, ml-curriculum 00, 02~07)는
+정답 코드이므로 먼저 혼자 풀어본 뒤에 열어보는 걸 권장합니다.
 
 ## 바로 열기 (Colab 배지)
 
@@ -64,6 +74,16 @@ Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소�
 | 04. RAG 파이프라인 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/04_rag_pipeline/04_rag_pipeline.ipynb) |
 | 05. 프롬프트 인젝션/탈옥 방어 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/05_prompt_injection_defense/05_prompt_injection_defense.ipynb) |
 
+### ④ tabular-ml-practice
+
+| 노트북 | 열기 |
+|---|---|
+| 00. 이 시리즈에서 쓰는 pandas 문법 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/tabular-ml-practice/00_pandas_for_tabular/00_pandas_for_tabular.ipynb) |
+| 01. 데이터 탐색과 시각화 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/tabular-ml-practice/01_eda_visualization/01_eda_visualization.ipynb) |
+| 02. 전처리 (이상치·결측치·인코딩·스케일링) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/tabular-ml-practice/02_preprocessing/02_preprocessing.ipynb) |
+| 03. 트리 모델과 평가 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/tabular-ml-practice/03_tree_models/03_tree_models.ipynb) |
+| 04. 신경망 (Keras) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/tabular-ml-practice/04_dnn_keras/04_dnn_keras.ipynb) |
+
 ## 폴더 구조 (각 폴더에는 무엇이 있나요)
 
 ```
@@ -83,6 +103,11 @@ notebooks/
     03_document_structuring/    Pydantic + OpenAI 정형 출력, Streamlit 실습 (document-input-example)
     04_rag_pipeline/            임베딩, 벡터 유사도 검색, opensearch-py, 프롬프트 조립 실습 (rag-regulation-example)
     05_prompt_injection_defense/ 프롬프트 인젝션/탈옥 재현과 방어(데이터·지시 분리, 입력 가드레일) 실습 (rag-regulation-example 확장)
+  tabular-ml-practice/          정형 데이터 워크플로우 (④) — 자세한 내용은 notebooks/tabular-ml-practice/README.md
+    01_eda_visualization/       info/describe로 문제 찾기, 그래프 선택 기준, 데이터 누출 감지
+    02_preprocessing/           이상치(IQR), 결측치, 원-핫 인코딩, train_test_split, 스케일러 3종
+    03_tree_models/             결정 트리·랜덤 포레스트, 평가 지표, 교차검증, GridSearchCV, 변수중요도
+    04_dnn_keras/               Keras 신경망, 학습 곡선 진단, EarlyStopping/Dropout, 트리 모델과 비교
 
 example-projects/               실전 예제 (③) — 자세한 내용은 example-projects/README.md
   crawl-storage-example/        [A-1] 웹 크롤링 -> PostgreSQL 원본 저장
@@ -96,13 +121,17 @@ frozen-lake-viz/   ①과 무관한 별도 보조 자료 — Q-Learning(RL)을 �
 data/          직접 추가하거나 노트북이 내려받는 데이터셋 (git에는 커밋 안 됨)
 models/        학습된 모델 저장 위치 (git에는 커밋 안 됨)
 CURRICULUM.md  ①의 이론+실습 목차 (원본 강의 매핑 포함)
-glossary.md    전체 통합 용어집 (①②③ 공통)
+glossary.md    전체 통합 용어집 (①②③④ 공통)
 requirements.txt
 ```
 
-각 노트북은 `notebooks/<시리즈>/<주제>/`처럼 시리즈별 하위 폴더에 있습니다. `ml-curriculum` 노트북 안에서
-데이터/모델 폴더는 `../../../data`, `../../../models`로 참조하고(프로젝트 루트 기준 3단계 아래에 위치하므로),
-`rag-pipeline-practice` 노트북은 예제 프로젝트를 `../../../example-projects/...`로 참조합니다.
+각 노트북은 `notebooks/<시리즈>/<주제>/`처럼 시리즈별 하위 폴더에 있습니다. `ml-curriculum`과
+`tabular-ml-practice` 노트북 안에서 데이터/모델 폴더는 `../../../data`, `../../../models`로
+참조하고(프로젝트 루트 기준 3단계 아래에 위치하므로), `rag-pipeline-practice` 노트북은 예제 프로젝트를
+`../../../example-projects/...`로 참조합니다.
+
+`tabular-ml-practice`는 데이터를 파일로 두지 않고 seaborn 내장 데이터셋(`taxis`, `titanic`)을
+그때그때 내려받으므로 `data/`에 아무것도 준비할 필요가 없습니다.
 
 ## Colab에서 열기
 
