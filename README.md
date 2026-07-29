@@ -3,6 +3,24 @@
 Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소입니다. 성격이 다른 네 종류의 콘텐츠로
 구성되어 있습니다. 낯선 용어가 나오면 **[glossary.md](glossary.md)** (통합 용어집)에서 찾아보세요.
 
+## 이 저장소는 누구를 위한 것인가요?
+
+아래에 해당한다면 이 자료가 맞습니다.
+
+- ✔ 파이썬 기초 문법(변수, 리스트/딕셔너리, `for`/`if`, 함수 정의)은 읽고 쓸 수 있다
+- ✔ AI/머신러닝은 처음이거나, 용어만 들어봤다
+- ✔ 논문이나 수학 증명보다 **돌아가는 코드**로 이해하고 싶다
+- ✔ 설치 없이 Colab에서 바로 실습하고 싶다
+- ✔ ChatGPT API나 RAG를 직접 써보고 싶다
+
+**필요한 선수 지식은 파이썬 기초 문법까지입니다.** 클래스·데코레이터 같은 고급 문법은 몰라도 됩니다.
+①의 이론 섹션에는 미분·행렬 수식이 나오지만, 수식을 못 읽어도 코드 실습과 결과 해석은 따라갈 수
+있도록 되어 있습니다(대신 수식 자체를 처음부터 가르치지는 않습니다). NumPy/Pandas/PyTorch가
+처음이라면 [`00_python_essentials`](notebooks/ml-curriculum/00_python_essentials/00_python_essentials.ipynb)부터
+시작하세요. 파이썬 자체가 처음이라면 다른 파이썬 입문 자료를 먼저 보고 오시는 편이 빠릅니다.
+
+## 무엇이 들어 있나요?
+
 | 구분 | 위치 | 성격 |
 |---|---|---|
 | ① 이론 커리큘럼 | `notebooks/ml-curriculum/` | scikit-learn/PyTorch로 배우는 전통적인 머신러닝·딥러닝 입문 (이론 + 실습 + 연습문제) |
@@ -15,6 +33,43 @@ Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소�
 
 ①과 ④는 서로를 보완합니다. **①이 "머신러닝이 어떻게 작동하는가"(경사 하강법·역전파를 직접 구현)라면,
 ④는 "현실의 데이터로 실제로 어떻게 하는가"**입니다. 순서는 상관없습니다.
+
+## 전체 지도 — 지금 내가 어디를 배우는 건가요?
+
+```mermaid
+flowchart LR
+    P["Python 기초<br/>변수·함수·리스트·for문"]
+
+    subgraph ML["머신러닝 트랙"]
+        direction TB
+        A["① ml-curriculum<br/>ML·DL이 어떻게 작동하는가<br/>회귀 → 분류 → 신경망 → CNN/RNN"]
+        D["④ tabular-ml-practice<br/>현실 데이터로 실제로 어떻게 하는가<br/>EDA → 전처리 → 모델 → 평가"]
+        A -. 서로 보완 .-> D
+    end
+
+    subgraph LLM["LLM 트랙"]
+        direction TB
+        B["② rag-pipeline-practice<br/>라이브러리를 하나씩 실습<br/>크롤링 → 청킹 → 구조화 → RAG → 방어"]
+        C["③ example-projects<br/>그 라이브러리로 만든 실제 프로젝트"]
+        B --> C
+    end
+
+    P --> ML
+    P --> LLM
+```
+
+**두 트랙은 왜 나뉘어 있나요?** 둘은 사실 한 줄기입니다.
+
+```
+머신러닝 → 딥러닝 → Transformer → LLM(GPT 등) → RAG
+   ①          ①         (범위 밖)      ②③          ②③
+```
+
+①에서 배우는 경사 하강법·역전파는 딥러닝의 기본기이고, 그 딥러닝을 아주 크게 키운 것이
+Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에게 회사 문서처럼 학습되지 않은 내용을
+찾아서 물어보게 만드는 기법이 **RAG**(②③)입니다. 다만 "LLM을 직접 만드는 것"은 개인이 하기 어렵고
+실무에서도 거의 하지 않기 때문에, 이 저장소는 **LLM 내부 구조(Transformer) 대신 이미 만들어진 LLM을
+가져다 쓰는 법**(②③)을 다룹니다. 그래서 ①을 몰라도 ②③을 시작할 수 있고, 반대로 ①만 해도 됩니다.
 
 ## 학습 가이드 — 어떻게 진행하면 되나요?
 
@@ -44,8 +99,10 @@ Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소�
 4. (선택) `notebooks/tabular-ml-practice/00~04` — 실제 표 데이터를 다루는 전 과정.
    ①과 독립적이라 먼저 봐도 되고, ①을 끝낸 뒤 "그래서 실무에서는 어떻게 하나"로 이어봐도 됩니다.
 
-각 단계 안에서도 `_solutions.ipynb`(rag-pipeline-practice, tabular-ml-practice, ml-curriculum 00, 02~07)는
-정답 코드이므로 먼저 혼자 풀어본 뒤에 열어보는 걸 권장합니다.
+각 단계 안에서도 `_solutions.ipynb`는 정답 코드이므로 먼저 혼자 풀어본 뒤에 열어보는 걸 권장합니다.
+ml-curriculum 00~07, rag-pipeline-practice 01~05, tabular-ml-practice 01~04에 각각 해설 노트북이 있고,
+`tabular-ml-practice/00_pandas_for_tabular`만 연습문제 없이 "필요할 때 찾아보는 pandas 문법 사전" 역할이라
+해설 노트북이 없습니다.
 
 ## 바로 열기 (Colab 배지)
 

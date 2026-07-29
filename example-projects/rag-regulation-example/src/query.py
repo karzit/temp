@@ -93,11 +93,14 @@ def reciprocal_rank_fusion(*ranked_lists: list[Document], k: int = 60) -> list[D
     두 검색은 점수의 스케일이 다르기 때문에(코사인 유사도 vs BM25) 점수를 직접 더하면 안 된다.
     `1 / (k + rank)`를 검색별로 더해서, 두 검색 모두에서 상위에 있던 문서일수록 높은 점수를 받게 만든다.
     """
-    scores: dict[str, float] = {}
-    doc_lookup: dict[str, Document] = {}
+    scores: dict[tuple, float] = {}
+    doc_lookup: dict[tuple, Document] = {}
     for ranked in ranked_lists:
         for rank, doc in enumerate(ranked, start=1):
-            key = doc.page_content
+            # page_content만 키로 쓰면, 우연히 본문이 같은 서로 다른 문서(다른 source/page)가
+            # 하나로 합쳐지면서 점수가 더 낮은 쪽 출처가 결과에서 통째로 사라질 수 있다.
+            # source/page까지 함께 넣어야 "정말 같은 조각"만 병합된다.
+            key = (doc.metadata.get("source"), doc.metadata.get("page"), doc.page_content)
             scores[key] = scores.get(key, 0.0) + 1.0 / (k + rank)
             doc_lookup[key] = doc
     fused = sorted(scores.items(), key=lambda item: item[1], reverse=True)
