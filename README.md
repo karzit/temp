@@ -26,10 +26,16 @@ Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소�
 | ① 이론 커리큘럼 | `notebooks/ml-curriculum/` | scikit-learn/PyTorch로 배우는 전통적인 머신러닝·딥러닝 입문 (이론 + 실습 + 연습문제) |
 | ② 라이브러리 실습 | `notebooks/rag-pipeline-practice/` | 문서 기반 LLM 앱(크롤링→청킹→구조화→RAG→프롬프트 인젝션 방어)에 쓰이는 라이브러리를 Colab에서 손으로 익히는 실습 |
 | ③ 실전 예제 | `example-projects/` | ②에서 익힌 라이브러리로 실제 동작하는 미니 프로젝트 4개를 이어붙인 파이프라인 |
+| ③′ 프로젝트 동행 노트북 | `notebooks/project-walkthrough/` | ③의 프로젝트를 **하나씩 옆에 펼쳐놓고 같이 읽는** 노트북 (프로젝트당 1개) |
 | ④ 정형 데이터 워크플로우 | `notebooks/tabular-ml-practice/` | 결측치·이상치·문자열이 섞인 **실제 표 데이터**로 EDA → 전처리 → 모델링 → 평가까지 하는 전 과정 |
 
 ①과 ④는 ②/③과 주제가 겹치지 않는 별도 커리큘럼입니다. ②와 ③은 같은 파이프라인(사내 규정 검색 챗봇)을
 다루며, ②는 "라이브러리 하나씩 실습", ③은 "그 라이브러리들로 만든 실제 프로젝트"라는 관계입니다.
+
+③′는 ②와 **같은 프로젝트를 다른 각도**로 봅니다. ②가 "기법별"(BeautifulSoup은 어떻게 쓰나)이라면,
+③′는 "프로젝트별"(이 프로젝트는 왜 이렇게 짰나)입니다. 설명을 옮겨 적는 대신 **실제 프로젝트 파일을
+열어서 import해 돌려보는** 방식이라 노트북과 코드가 어긋나지 않습니다.
+PostgreSQL·OpenSearch·API 키 없이 Colab에서 전부 실행됩니다.
 
 ①과 ④는 서로를 보완합니다. **①이 "머신러닝이 어떻게 작동하는가"(경사 하강법·역전파를 직접 구현)라면,
 ④는 "현실의 데이터로 실제로 어떻게 하는가"**입니다. 순서는 상관없습니다.
@@ -51,7 +57,9 @@ flowchart LR
         direction TB
         B["② rag-pipeline-practice<br/>라이브러리를 하나씩 실습<br/>크롤링 → 청킹 → 구조화 → RAG → 방어"]
         C["③ example-projects<br/>그 라이브러리로 만든 실제 프로젝트"]
+        W["③′ project-walkthrough<br/>프로젝트를 하나씩 같이 읽는 노트북<br/>프로젝트당 1개, 1:1 대응"]
         B --> C
+        C <-. 같이 본다 .-> W
     end
 
     P --> ML
@@ -86,21 +94,27 @@ Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에�
   Colab에서 API 키나 Docker 없이도 끝까지 실행되도록 만들어져 있어 설치 걱정 없이 바로 시작할 수 있습니다.
 - **동작하는 실전 코드/프로젝트 구조를 보고 싶다** → `example-projects/` 참고. 각 프로젝트는
   로컬 실행 시 PostgreSQL/OpenSearch(Docker)와 OpenAI API 키가 필요합니다.
+- **그 프로젝트 코드를 누가 옆에서 같이 읽어줬으면 좋겠다** → `notebooks/project-walkthrough/` 01~04.
+  프로젝트당 노트북 하나가 붙어서, 실제 소스를 열어 보여주고 함수를 직접 import해 돌려봅니다.
+  **인프라도 API 키도 없이 Colab에서 전부 실행됩니다.**
+  자세한 내용은 **[시리즈 README](notebooks/project-walkthrough/README.md)** 참고.
 
 **전부 다 해보고 싶다면 이 순서를 추천합니다.**
 
 1. `notebooks/rag-pipeline-practice/01~05` — Colab에서 설치 없이 개념과 라이브러리 사용법을 먼저 손에 익힙니다.
-2. `example-projects/` — 같은 파이프라인을 실제 인프라(PostgreSQL, OpenSearch)와 진짜 API로 동작시켜봅니다.
+2. `notebooks/project-walkthrough/01~04` — 그 라이브러리로 만들어진 **실제 프로젝트를 한 줄씩 읽습니다.**
+   여기까지도 설치가 필요 없습니다. 인프라를 띄우기 전에 코드부터 이해하는 단계입니다.
+3. `example-projects/` — 같은 파이프라인을 실제 인프라(PostgreSQL, OpenSearch)와 진짜 API로 동작시켜봅니다.
    시작하기 전에 **[example-projects/README.md](example-projects/README.md)**의 파이프라인 다이어그램을
    먼저 읽으면 4개 프로젝트가 어떻게 이어지는지 한눈에 파악됩니다.
-3. (선택) `notebooks/ml-curriculum/01~06` — ML/딥러닝 기초 이론까지 확장하고 싶을 때.
+4. (선택) `notebooks/ml-curriculum/01~06` — ML/딥러닝 기초 이론까지 확장하고 싶을 때.
    `07_tensorflow_practice`는 02/04를 TensorFlow/Keras로 다시 풀어보는 보너스 실습이니 06까지
    끝낸 뒤 여유가 있을 때 봐도 됩니다.
-4. (선택) `notebooks/tabular-ml-practice/00~04` — 실제 표 데이터를 다루는 전 과정.
+5. (선택) `notebooks/tabular-ml-practice/00~04` — 실제 표 데이터를 다루는 전 과정.
    ①과 독립적이라 먼저 봐도 되고, ①을 끝낸 뒤 "그래서 실무에서는 어떻게 하나"로 이어봐도 됩니다.
 
 각 단계 안에서도 `_solutions.ipynb`는 정답 코드이므로 먼저 혼자 풀어본 뒤에 열어보는 걸 권장합니다.
-ml-curriculum 00~07, rag-pipeline-practice 01~05, tabular-ml-practice 01~04에 각각 해설 노트북이 있고,
+ml-curriculum 00~07, rag-pipeline-practice 01~05, project-walkthrough 01~04, tabular-ml-practice 01~04에 각각 해설 노트북이 있고,
 `tabular-ml-practice/00_pandas_for_tabular`만 연습문제 없이 "필요할 때 찾아보는 pandas 문법 사전" 역할이라
 해설 노트북이 없습니다.
 
@@ -131,6 +145,17 @@ ml-curriculum 00~07, rag-pipeline-practice 01~05, tabular-ml-practice 01~04에 �
 | 04. RAG 파이프라인 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/04_rag_pipeline/04_rag_pipeline.ipynb) |
 | 05. 프롬프트 인젝션/탈옥 방어 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/05_prompt_injection_defense/05_prompt_injection_defense.ipynb) |
 
+### ③′ project-walkthrough (프로젝트 동행)
+
+예제 프로젝트를 옆에 펼쳐놓고 같이 읽는 노트북입니다. 인프라·API 키 없이 실행됩니다.
+
+| 노트북 | 열기 |
+|---|---|
+| 01. `crawl-storage-example` 동행 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/project-walkthrough/01_crawl_storage/01_crawl_storage.ipynb) |
+| 02. `preprocess-example` 동행 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/project-walkthrough/02_preprocess/02_preprocess.ipynb) |
+| 03. `document-input-example` 동행 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/project-walkthrough/03_document_input/03_document_input.ipynb) |
+| 04. `rag-regulation-example` 동행 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/project-walkthrough/04_rag_regulation/04_rag_regulation.ipynb) |
+
 ### ④ tabular-ml-practice
 
 | 노트북 | 열기 |
@@ -160,6 +185,11 @@ notebooks/
     03_document_structuring/    Pydantic + OpenAI 정형 출력, Streamlit 실습 (document-input-example)
     04_rag_pipeline/            임베딩, 벡터 유사도 검색, opensearch-py, 프롬프트 조립 실습 (rag-regulation-example)
     05_prompt_injection_defense/ 프롬프트 인젝션/탈옥 재현과 방어(데이터·지시 분리, 입력 가드레일) 실습 (rag-regulation-example 확장)
+  project-walkthrough/          프로젝트 동행 노트북 (③′) — example-projects와 1:1, 실제 소스를 열어 함께 읽음
+    01_crawl_storage/           crawl-storage-example 읽기 — 원본 보관, UPSERT, 실패 격리
+    02_preprocess/              preprocess-example 읽기 — 형식 통일, 정제, 청킹, 형태소 키워드
+    03_document_input/          document-input-example 읽기 — 정형 출력, 스키마 검증, fail fast
+    04_rag_regulation/          rag-regulation-example 읽기 — 구조 파싱, 조항 청킹, 리랭킹, 평가 하네스
   tabular-ml-practice/          정형 데이터 워크플로우 (④) — 자세한 내용은 notebooks/tabular-ml-practice/README.md
     01_eda_visualization/       info/describe로 문제 찾기, 그래프 선택 기준, 데이터 누출 감지
     02_preprocessing/           이상치(IQR), 결측치, 원-핫 인코딩, train_test_split, 스케일러 3종
@@ -170,7 +200,8 @@ example-projects/               실전 예제 (③) — 자세한 내용은 exam
   crawl-storage-example/        [A-1] 웹 크롤링 -> PostgreSQL 원본 저장
   preprocess-example/           [A-2] PostgreSQL 원본 -> 청킹 -> OpenSearch 인덱싱
   document-input-example/       [B]   서류 사진 -> OCR -> LLM 정형 출력(JSON), Streamlit UI
-  rag-regulation-example/       [C]   PDF/OpenSearch 검색 -> LLM 응답(RAG)
+  rag-regulation-example/       [C]   PDF 구조 파싱 -> 조항 청킹 -> 하이브리드 검색·리랭킹
+                                      -> LLM 응답(RAG) -> 검색 품질 평가(hit@5/MRR)
 
 frozen-lake-viz/   ①과 무관한 별도 보조 자료 — Q-Learning(RL)을 브라우저에서 바로 보는 시각화 데모.
                    RL은 ml-curriculum 범위 밖이라 정식 노트북은 없고, 그 자리를 미리 맛보는 자료입니다.

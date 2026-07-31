@@ -8,6 +8,11 @@ Web URL -> PostgreSQL 테이블에 텍스트/이진(PDF) 데이터를 저장하�
 
 용어가 낯설다면 **[../../glossary.md](../../glossary.md)**를 참고하세요.
 
+> 📓 **이 프로젝트를 같이 읽어주는 노트북이 있습니다** —
+> [`notebooks/project-walkthrough/01_crawl_storage`](../../notebooks/project-walkthrough/01_crawl_storage/01_crawl_storage.ipynb)
+> 아래 코드를 한 줄씩 열어보며 "왜 이렇게 짰는지"를 따라갑니다.
+> PostgreSQL 없이 Colab에서 실행됩니다.
+
 ## 왜 크롤링한 걸 바로 OpenSearch에 넣지 않고 PostgreSQL을 거칠까?
 
 - 크롤링은 네트워크 요청이 많고 느리고, 사이트가 막히거나 실패할 수도 있다.

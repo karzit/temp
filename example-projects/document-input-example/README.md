@@ -5,6 +5,11 @@
 
 용어가 낯설다면 **[../../glossary.md](../../glossary.md)**를 참고하세요.
 
+> 📓 **이 프로젝트를 같이 읽어주는 노트북이 있습니다** —
+> [`notebooks/project-walkthrough/03_document_input`](../../notebooks/project-walkthrough/03_document_input/03_document_input.ipynb)
+> 아래 코드를 한 줄씩 열어보며 "왜 이렇게 짰는지"를 따라갑니다.
+> Google Vision·API 키 없이 Colab에서 실행됩니다.
+
 ## 왜 이 단계가 필요한가?
 
 사용자가 타이핑한 깔끔한 질문이 아니라 "서류를 촬영한 사진"이 입력이기 때문이다.

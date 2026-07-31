@@ -5,6 +5,11 @@
 
 용어가 낯설다면 **[../../glossary.md](../../glossary.md)**를 참고하세요.
 
+> 📓 **이 프로젝트를 같이 읽어주는 노트북이 있습니다** —
+> [`notebooks/project-walkthrough/02_preprocess`](../../notebooks/project-walkthrough/02_preprocess/02_preprocess.ipynb)
+> 아래 코드를 한 줄씩 열어보며 "왜 이렇게 짰는지"를 따라갑니다.
+> PostgreSQL·OpenSearch·API 키 없이 Colab에서 실행됩니다.
+
 ## 왜 필요한가?
 
 PostgreSQL에 있는 원본은 "사람이 읽는 형태"일 뿐, AI 검색에 바로 쓸 수 있는 형태가 아니다.

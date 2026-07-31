@@ -11,8 +11,8 @@
 ```
 [A-1] crawl-storage-example                [C] rag-regulation-example
   웹 URL 목록                                  로컬 PDF 2~3개
-  -> requests/BeautifulSoup                    -> ingest.py
-  -> PostgreSQL (원본 그대로 보관)                (1000자 청킹)
+  -> requests/BeautifulSoup                    -> parse.py (장>절>조>항)
+  -> PostgreSQL (원본 그대로 보관)                -> ingest.py (조항 단위 청킹)
         |                                          |
         v                                          |
 [A-2] preprocess-example                           |
@@ -30,10 +30,11 @@
 ```
 [B] document-input-example                 [C] rag-regulation-example
   서류 사진                                    사용자 질문
-  -> Google Vision OCR                         -> 임베딩
-  -> gpt-4o-mini structured output              -> OpenSearch 유사도 검색
+  -> Google Vision OCR                         -> 벡터 + 키워드 검색 (RRF, 20개)
+  -> gpt-4o-mini structured output              -> 리랭킹 (bge-reranker, 4개)
   -> 정형 JSON                                  -> 프롬프트 조합
      (document_type/keywords/related_dates)     -> gpt-4o-mini 응답
+                                                (evaluate.py로 검색 품질 채점)
         |                                          ^
         +---- JSON의 키워드/사유를 질문으로 활용 ----+
 ```
@@ -56,7 +57,23 @@
 | [`crawl-storage-example`](crawl-storage-example) | A-1 | 웹 [크롤링](../glossary.md#crawling) → DB 원본 보관 | `requests`, `beautifulsoup4`, `psycopg2` |
 | [`preprocess-example`](preprocess-example) | A-2 | DB 원본 → [청킹](../glossary.md#chunking) → 벡터 인덱싱 | `langchain-text-splitters`, `PyMuPDF`, `langchain-openai` |
 | [`document-input-example`](document-input-example) | B | 이미지 [OCR](../glossary.md#ocr) → LLM [정형 출력](../glossary.md#structured-output) | `google-cloud-vision`, `openai`, `pydantic`, `streamlit` |
-| [`rag-regulation-example`](rag-regulation-example) | C | [벡터 검색](../glossary.md#vector-search) → LLM 응답([RAG](../glossary.md#rag)) | `langchain`, `opensearch-py`, `openai` |
+| [`rag-regulation-example`](rag-regulation-example) | C | 구조 파싱 → 조항 청킹 → 하이브리드 검색·리랭킹 → LLM 응답([RAG](../glossary.md#rag)) → 검색 품질 평가 | `langchain`, `opensearch-py`, `openai`, `sentence-transformers` |
+
+## 코드를 같이 읽어줄 노트북이 있습니다
+
+각 프로젝트마다 **동행 노트북**이 하나씩 붙어 있습니다.
+실제 소스를 열어서 보여주고, 함수를 직접 import해서 돌려보며 "왜 이렇게 짰는지"를 따라갑니다.
+**PostgreSQL·OpenSearch·API 키 없이 Colab에서 전부 실행됩니다.**
+
+| 프로젝트 | 동행 노트북 |
+|---|---|
+| `crawl-storage-example` | [01_crawl_storage](../notebooks/project-walkthrough/01_crawl_storage/01_crawl_storage.ipynb) |
+| `preprocess-example` | [02_preprocess](../notebooks/project-walkthrough/02_preprocess/02_preprocess.ipynb) |
+| `document-input-example` | [03_document_input](../notebooks/project-walkthrough/03_document_input/03_document_input.ipynb) |
+| `rag-regulation-example` | [04_rag_regulation](../notebooks/project-walkthrough/04_rag_regulation/04_rag_regulation.ipynb) |
+
+인프라를 띄우기 전에 코드부터 이해하고 싶다면 여기서 시작하세요.
+자세한 내용은 [시리즈 README](../notebooks/project-walkthrough/README.md)를 참고하세요.
 
 각 프로젝트의 상세 실행 방법은 폴더 안 `README.md`를 참고하세요. 라이브러리 자체를 하나씩 손으로
 연습해보고 싶다면 [`../notebooks/rag-pipeline-practice/`](../notebooks/rag-pipeline-practice)의

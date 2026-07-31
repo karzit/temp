@@ -1,4 +1,4 @@
-"""PDF 규정 문서를 "청킹 -> 임베딩 -> OpenSearch 저장" 순서로 처리하는 스크립트.
+"""PDF 규정 문서를 "파싱 -> 조항 단위 청킹 -> 임베딩 -> OpenSearch 저장" 순서로 처리하는 스크립트.
 
 이 파일은 쉽게 말하면 "책을 도서관에 등록하는 작업"을 해.
 나중에 챗봇이 질문을 받았을 때 빠르게 찾아볼 수 있도록,
@@ -9,11 +9,12 @@ PDF 규정집을 미리 잘게 자르고(청킹) 색인을 붙여서(임베딩) 
 찾기 쉽게 서랍에 정리해두는 것과 같아.
 
 전체 흐름:
-    PDF 파일 읽기 -> 페이지별로 글자 꺼내기 -> 작은 조각(청크)으로 자르기
+    PDF 파일 읽기 -> 페이지별로 글자 꺼내기 -> 조/항 단위로 자르기(parse.py)
     -> 각 조각을 숫자 벡터(임베딩)로 바꾸기 -> OpenSearch라는 검색엔진에 저장하기
 
 사용법:
     python src/ingest.py data/pdfs/규정1.pdf data/pdfs/규정2.pdf
+    python src/ingest.py data/sample_regulation.txt      # PDF 없이 연습할 때
 """
 import sys
 from pathlib import Path
@@ -23,53 +24,119 @@ from pathlib import Path
 # 공식 문서: https://python.langchain.com/docs/introduction/
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.vectorstores import OpenSearchVectorSearch
+from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from config import EMBEDDING_MODEL, OPENSEARCH_INDEX, OPENSEARCH_URL
+from parse import Article, check_article_sequence, parse_articles, split_paragraphs
 
-# 왜 문서를 통째로 안 쓰고 잘게 자를까? 두 가지 이유가 있어.
-#   1) AI 모델은 한 번에 읽을 수 있는 글자 양에 한계가 있어. (사람도 책 한 권을 한눈에 못 외우잖아!)
-#   2) 질문이랑 "정확히 관련된 부분만" 쏙 찾아내려면, 문서 전체보다 작은 단위로 나눠야 정확도가 높아져.
-#      (백과사전 전체를 주는 것보다, 딱 필요한 문단 하나만 주는 게 훨씬 도움이 되는 것과 같은 원리)
-CHUNK_SIZE = 1000  # 조각 하나의 최대 글자 수 (대략 A4 반 페이지 정도)
-CHUNK_OVERLAP = 150  # 옆 조각과 살짝 겹치는 글자 수.
-# 왜 겹치게 자를까? 문장 중간에서 뚝 잘리면 앞뒤 문맥을 잃어버릴 수 있어서,
-# 자른 경계 부분을 살짝 겹쳐서 이어붙여야 내용이 자연스럽게 연결돼.
-# 참고 https://python.langchain.com/docs/how_to/recursive_text_splitter/
+# 조 하나가 이 길이를 넘으면 항(①②③) 단위로 한 번 더 쪼갠다.
+# 조 단위를 기본으로 두는 이유는, 조가 곧 "하나의 완결된 규칙"이라서
+# 통째로 있어야 문맥이 살기 때문이다. 다만 너무 긴 조는 검색이 뭉개지므로 상한을 둔다.
+MAX_ARTICLE_CHARS = 900
+
+# 조 표지를 하나도 못 찾았을 때 쓰는 비상용 설정 (아래 fallback_chunks 참고).
+FALLBACK_CHUNK_SIZE = 1000
+FALLBACK_CHUNK_OVERLAP = 150
 
 
-def load_and_split(pdf_paths: list[str]):
-    """PDF들을 읽어서 페이지 단위로 불러온 뒤, 정해진 크기의 작은 조각들로 잘라준다."""
-    # separators는 "이 순서대로 잘라보자"는 우선순위 목록이야.
-    # 먼저 문단 구분(\n\n)으로 잘라보고, 그래도 너무 길면 줄바꿈(\n) -> 마침표(". ") -> 띄어쓰기(" ")
-    # -> 그래도 안 되면 글자 하나하나 순서로 점점 더 잘게 자르면서 CHUNK_SIZE를 맞춰.
-    # 이렇게 하면 최대한 문장이 뚝뚝 끊기지 않고 자연스럽게 잘리게 돼.
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=CHUNK_SIZE,
-        chunk_overlap=CHUNK_OVERLAP,
-        separators=["\n\n", "\n", ". ", " ", ""],
-    )
-
-    all_chunks = []
-    for pdf_path in pdf_paths:
+def load_pages(path: str) -> list[str]:
+    """파일을 페이지별 텍스트 목록으로 읽어온다. (.txt는 통째로 1페이지 취급)"""
+    if path.lower().endswith(".pdf"):
         # PyPDFLoader는 PDF 파일을 열어서 "페이지 1의 글자, 페이지 2의 글자, ..." 식으로
         # 페이지별 텍스트 목록으로 바꿔주는 도구야.
         # 참고: https://python.langchain.com/docs/integrations/document_loaders/pypdfloader/
-        loader = PyPDFLoader(pdf_path)
-        pages = loader.load()
-        chunks = splitter.split_documents(pages)
-        for chunk in chunks:
-            # 조각마다 "이건 어느 파일에서 나온 조각이야"라는 이름표(메타데이터)를 붙여둬.
-            # 나중에 답변할 때 "출처: 취업규칙.pdf" 처럼 근거를 보여주기 위해 필요해.
-            chunk.metadata["source"] = Path(pdf_path).name
+        return [page.page_content for page in PyPDFLoader(path).load()]
+    return [Path(path).read_text(encoding="utf-8")]
+
+
+def articles_to_documents(articles: list[Article], source: str) -> list[Document]:
+    """파싱된 조 목록을, 검색엔진에 넣을 수 있는 Document 조각들로 바꾼다.
+
+    핵심은 본문 앞에 **계층 경로를 프리픽스로 붙이는 것**이다.
+
+        제3장 근무 > 제11조(재택근무)
+        제11조(재택근무)
+        ③ 재택근무 중 발생한 연장근로에 대하여는 제12조에 따른 수당을 지급한다.
+
+    이렇게 해두면 두 가지가 동시에 좋아진다.
+      1) 의미 검색: "재택근무"라는 단어가 조각 안에 실제로 들어 있으니,
+         ③항만 떼어놔도 재택근무 관련 질문에 걸린다.
+      2) 답변 품질: AI가 조각을 읽을 때 "이건 제11조 얘기구나"를 알 수 있어서
+         출처를 조항 번호로 정확히 말해줄 수 있다.
+    """
+    documents: list[Document] = []
+    for article in articles:
+        for marker, body in split_paragraphs(article, max_chars=MAX_ARTICLE_CHARS):
+            documents.append(
+                Document(
+                    page_content=f"{article.full_path}\n{body}",
+                    metadata={
+                        "source": source,
+                        "page": article.page,
+                        # 아래 세 개가 1000자 청킹에는 없던 정보다.
+                        # query.py가 출처를 "취업규칙.pdf 제11조 ③ (p.4)"처럼 보여줄 수 있고,
+                        # evaluate.py가 "정답 조항을 찾았는지"를 채점할 수 있게 된다.
+                        "path": article.full_path,
+                        "article": article.number,
+                        "paragraph": marker,
+                    },
+                )
+            )
+    return documents
+
+
+def fallback_chunks(pages: list[str], source: str) -> list[Document]:
+    """조 표지를 하나도 못 찾았을 때 쓰는 예전 방식(고정 길이 청킹).
+
+    모든 문서가 규정 형식인 건 아니다. 안내문, 회의록, 표만 있는 부속서류처럼
+    "제N조"가 없는 문서도 같은 인덱스에 들어올 수 있다. 그런 문서까지 파서가
+    책임지려 하면 오히려 망가지므로, 구조가 없으면 조용히 예전 방식으로 넘어간다.
+
+    chunk_overlap(조각끼리 살짝 겹치게 자르기)이 여기에만 남아 있는 것도 이유가 있다.
+    고정 길이로 자르면 문장 중간이 잘려서 문맥을 잃기 때문에 겹침으로 보완해야 하지만,
+    조항 단위로 자르면 애초에 경계가 의미 단위와 일치하므로 겹칠 필요가 없다.
+    """
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=FALLBACK_CHUNK_SIZE,
+        chunk_overlap=FALLBACK_CHUNK_OVERLAP,
+        separators=["\n\n", "\n", ". ", " ", ""],
+    )
+    documents = [
+        Document(page_content=page, metadata={"source": source, "page": index})
+        for index, page in enumerate(pages, start=1)
+    ]
+    return splitter.split_documents(documents)
+
+
+def load_and_split(paths: list[str]) -> list[Document]:
+    """문서들을 읽어서 조항 단위 조각으로 자르고, 그 과정에서 무결성 검증도 함께 한다."""
+    all_chunks: list[Document] = []
+
+    for path in paths:
+        source = Path(path).name
+        pages = load_pages(path)
+        articles = parse_articles(pages)
+
+        if articles:
+            chunks = articles_to_documents(articles, source)
+            print(f"{path}: {len(pages)}페이지 -> 조 {len(articles)}개 -> 청크 {len(chunks)}개")
+
+            # 조 번호가 끊긴 곳이 있으면 여기서 알려준다.
+            # 이걸 안 하면 "그 조항만 유독 검색이 안 되는" 상태로 서비스가 나간다.
+            for warning in check_article_sequence(articles):
+                print(f"  ⚠️  [무결성] {warning}")
+        else:
+            chunks = fallback_chunks(pages, source)
+            print(f"{path}: 조 표지를 찾지 못해 고정 길이로 분할 -> 청크 {len(chunks)}개")
+
         all_chunks.extend(chunks)
-        print(f"{pdf_path}: {len(pages)} pages -> {len(chunks)} chunks")
 
     return all_chunks
 
 
-def index_chunks(chunks):
+def index_chunks(chunks: list[Document]) -> None:
     """조각들을 숫자 벡터(임베딩)로 바꿔서 OpenSearch라는 검색엔진에 등록한다."""
     # OpenAIEmbeddings는 글자를 숫자 좌표로 바꿔주는 변환기야.
     # 예를 들면 "연차휴가 규정"이라는 문장이 [0.0123, -0.045, ...] 같은
@@ -98,11 +165,10 @@ def index_chunks(chunks):
 
 if __name__ == "__main__":
     # 터미널에서 "python src/ingest.py 파일1.pdf 파일2.pdf" 처럼 실행하면
-    # 파일1.pdf, 파일2.pdf가 pdf_paths 리스트로 들어와.
-    pdf_paths = sys.argv[1:]
-    if not pdf_paths:
-        print("사용법: python src/ingest.py <pdf1> <pdf2> ...")
+    # 파일1.pdf, 파일2.pdf가 doc_paths 리스트로 들어와.
+    doc_paths = sys.argv[1:]
+    if not doc_paths:
+        print("사용법: python src/ingest.py <pdf1|txt1> <pdf2> ...")
         sys.exit(1)
 
-    chunks = load_and_split(pdf_paths)
-    index_chunks(chunks)
+    index_chunks(load_and_split(doc_paths))

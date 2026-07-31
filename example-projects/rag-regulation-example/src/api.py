@@ -17,7 +17,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from query import answer_with_docs, search_hybrid_docs
+from query import answer_with_docs, format_citation, search_hybrid_docs
 
 app = FastAPI(title="사내 규정 챗봇 API")
 
@@ -44,6 +44,6 @@ def chat(request: ChatRequest) -> ChatResponse:
     # 화면에 출처도 같이 보여줘야 해서, 검색 결과(docs)를 먼저 받아온 뒤
     # 같은 docs를 answer_with_docs()에 넘겨 답변을 생성한다 (검색은 한 번만 실행).
     docs = search_hybrid_docs(request.question)
-    sources = [f"{doc.metadata.get('source', '?')} p.{doc.metadata.get('page', '?')}" for doc in docs]
+    sources = [format_citation(doc) for doc in docs]
     reply = answer_with_docs(request.question, docs)
     return ChatResponse(answer=reply, sources=sources)

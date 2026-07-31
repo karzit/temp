@@ -48,3 +48,16 @@ EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
 # 검색은 OpenSearch가, 최종 글쓰기는 이 채팅 모델이 담당한다고 보면 돼.
 # 참고: https://platform.openai.com/docs/models
 CHAT_MODEL = os.getenv("CHAT_MODEL", "gpt-4o-mini")
+
+# 검색으로 뽑은 후보들을 한 번 더 정확하게 줄 세워주는 모델(리랭커)을 쓸지 여부.
+# 정확도는 확실히 올라가지만, 모델을 내려받아 내 컴퓨터에서 돌리기 때문에
+#   - 처음 실행할 때 모델 다운로드에 몇 분 걸리고 (약 2GB)
+#   - 질문 하나당 몇 백 밀리초가 더 걸린다
+# 그래서 껐다 켤 수 있게 해뒀어. 끄고 켜면서 evaluate.py 점수를 비교해보면 효과가 눈에 보인다.
+# .env에 USE_RERANKER=false 라고 적으면 꺼진다.
+USE_RERANKER = os.getenv("USE_RERANKER", "true").lower() not in ("false", "0", "no")
+
+# 쓸 리랭커 모델 이름. bge-reranker-v2-m3는 한국어를 포함한 여러 언어를 지원하는 모델이야.
+# 더 가볍게 쓰고 싶으면 "BAAI/bge-reranker-base"로 바꿀 수 있어.
+# 참고: https://huggingface.co/BAAI/bge-reranker-v2-m3
+RERANKER_MODEL = os.getenv("RERANKER_MODEL", "BAAI/bge-reranker-v2-m3")

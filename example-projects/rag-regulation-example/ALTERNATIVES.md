@@ -34,6 +34,31 @@
 | `Qdrant` / `Weaviate` | 하이브리드 검색, 메타데이터 필터링 등 검색 기능이 더 필요할 때 |
 | `Chroma` | 로컬 실습/데모 용도로 가장 가볍게 띄우고 싶을 때 |
 
+## 구조 파싱 (직접 만든 정규식 파서 / parse.py)
+
+| 대안 | 언제 고려하나 |
+|---|---|
+| LLM 정형 출력 (`pydantic` + gpt-4o-mini) | 문서마다 조문 형식이 제각각이라 정규식으로 감당이 안 될 때. 다만 조 번호처럼 틀리면 안 되는 값은 규칙 기반이 더 안전하고 비용도 0이다. `document-input-example`에서 쓰는 방식 |
+| `unstructured` / `Docling` | 목차·표·머리말까지 문서 레이아웃 전반을 자동으로 구조화하고 싶을 때 |
+
+## 리랭커 (bge-reranker-v2-m3 / sentence-transformers)
+
+| 대안 | 언제 고려하나 |
+|---|---|
+| `BAAI/bge-reranker-base` | 2GB 모델이 부담스러울 때. 정확도는 조금 낮지만 훨씬 가볍다 |
+| Cohere Rerank API | 로컬 GPU/디스크를 쓰고 싶지 않고, 외부 API 과금이 괜찮을 때 |
+| 리랭커 없이 RRF만 | 문서량이 적어 후보 자체가 몇 개 안 될 때. `.env`에 `USE_RERANKER=false` |
+
+## 평가 (직접 만든 하네스 / evaluate.py)
+
+| 대안 | 언제 고려하나 |
+|---|---|
+| `ragas` | 검색 지표뿐 아니라 답변의 faithfulness·answer relevancy까지 한 번에 재고 싶을 때 |
+| `promptfoo` / `deepeval` | 프롬프트 여러 버전을 회귀 테스트처럼 CI에서 돌리고 싶을 때 |
+
+여기서 굳이 직접 만든 이유는, hit@k와 MRR이 몇 줄이면 계산되는 단순한 지표라서
+**한 번은 직접 짜봐야 숫자가 뭘 뜻하는지 감이 오기 때문**이다. 규모가 커지면 위 도구로 옮겨도 된다.
+
 ## LLM (gpt-4o-mini / openai)
 
 | 대안 | 언제 고려하나 |
