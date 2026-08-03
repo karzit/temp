@@ -71,6 +71,8 @@ seaborn이 내장한 원본 그대로이며, 첫 실행 시 인터넷에서 내�
 - 각 노트북 첫 셀이 Colab 여부를 감지해 필요한 패키지를 설치합니다. 로컬 실행이라면
   프로젝트 루트의 `requirements.txt`를 쓰세요.
 - 낯선 용어는 [glossary.md](../../glossary.md)에서 찾아보세요.
+- 에러가 나거나 결과가 예상과 다르면 [troubleshooting.md](../../troubleshooting.md)를 보세요
+  (설치·한글 깨짐·`NameError`·데이터 다운로드·TensorFlow 경고).
 
 ## `ml-curriculum`과의 관계
 

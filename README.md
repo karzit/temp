@@ -1,7 +1,9 @@
 # ML 튜토리얼 프로젝트
 
 Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소입니다. 성격이 다른 네 종류의 콘텐츠로
-구성되어 있습니다. 낯선 용어가 나오면 **[glossary.md](glossary.md)** (통합 용어집)에서 찾아보세요.
+구성되어 있습니다. 낯선 용어가 나오면 **[glossary.md](glossary.md)** (통합 용어집)에서,
+에러가 나거나 결과가 예상과 다르면 **[troubleshooting.md](troubleshooting.md)** (막혔을 때 보는 문서)에서
+찾아보세요. 설치 실패·한글 깨짐·`NameError`·API 키·GPU처럼 여러 노트북에서 반복되는 문제를 모아뒀습니다.
 
 ## 이 저장소는 누구를 위한 것인가요?
 
@@ -83,8 +85,9 @@ Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에�
 
 **목표에 따라 시작 지점이 다릅니다.**
 
-- **머신러닝/딥러닝을 처음부터 배우고 싶다** → `notebooks/ml-curriculum/` 01번부터 순서대로.
-  자세한 목차는 **[CURRICULUM.md](CURRICULUM.md)** 참고.
+- **머신러닝/딥러닝을 처음부터 배우고 싶다** → `notebooks/ml-curriculum/` 00 → 01 → 02 … 순서대로.
+  00번은 NumPy/Pandas/PyTorch 사전 준비라 익숙하면 건너뛰어도 되고, 01번은 이론 없이 전체 흐름만
+  훑는 워밍업입니다. **이론은 02번부터 시작합니다.** 자세한 목차는 **[CURRICULUM.md](CURRICULUM.md)** 참고.
 - **내 CSV 데이터로 예측 모델을 만들고 싶다, 실무에서 쓰는 순서를 알고 싶다**
   → `notebooks/tabular-ml-practice/` 01 → 02 → 03 → 04 순서대로.
   결측치·이상치 처리부터 모델 평가·데이터 누출 진단까지 다룹니다.
@@ -107,7 +110,7 @@ Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에�
 3. `example-projects/` — 같은 파이프라인을 실제 인프라(PostgreSQL, OpenSearch)와 진짜 API로 동작시켜봅니다.
    시작하기 전에 **[example-projects/README.md](example-projects/README.md)**의 파이프라인 다이어그램을
    먼저 읽으면 4개 프로젝트가 어떻게 이어지는지 한눈에 파악됩니다.
-4. (선택) `notebooks/ml-curriculum/01~06` — ML/딥러닝 기초 이론까지 확장하고 싶을 때.
+4. (선택) `notebooks/ml-curriculum/00~06` — ML/딥러닝 기초 이론까지 확장하고 싶을 때.
    `07_tensorflow_practice`는 02/04를 TensorFlow/Keras로 다시 풀어보는 보너스 실습이니 06까지
    끝낸 뒤 여유가 있을 때 봐도 됩니다.
 5. (선택) `notebooks/tabular-ml-practice/00~04` — 실제 표 데이터를 다루는 전 과정.
@@ -191,6 +194,7 @@ notebooks/
     03_document_input/          document-input-example 읽기 — 정형 출력, 스키마 검증, fail fast
     04_rag_regulation/          rag-regulation-example 읽기 — 구조 파싱, 조항 청킹, 리랭킹, 평가 하네스
   tabular-ml-practice/          정형 데이터 워크플로우 (④) — 자세한 내용은 notebooks/tabular-ml-practice/README.md
+    00_pandas_for_tabular/      01~04번에 나오는 pandas 문법만 모은 사전 (연습문제 없음, 필요할 때 찾아보기)
     01_eda_visualization/       info/describe로 문제 찾기, 그래프 선택 기준, 데이터 누출 감지
     02_preprocessing/           이상치(IQR), 결측치, 원-핫 인코딩, train_test_split, 스케일러 3종
     03_tree_models/             결정 트리·랜덤 포레스트, 평가 지표, 교차검증, GridSearchCV, 변수중요도
@@ -210,6 +214,7 @@ data/          직접 추가하거나 노트북이 내려받는 데이터셋 (gi
 models/        학습된 모델 저장 위치 (git에는 커밋 안 됨)
 CURRICULUM.md  ①의 이론+실습 목차 (원본 강의 매핑 포함)
 glossary.md    전체 통합 용어집 (①②③④ 공통)
+troubleshooting.md  막혔을 때 보는 문서 — 설치·한글 깨짐·NameError·API 키·Docker·GPU (①②③④ 공통)
 requirements.txt
 ```
 
