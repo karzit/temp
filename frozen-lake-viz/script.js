@@ -45,8 +45,6 @@ const Q = Array.from({ length: GRID }, () =>
   Array.from({ length: GRID }, () => [0, 0, 0, 0])
 );
 
-function stateIdx(r, c) { return r * GRID + c; }
-
 function bestAction(r, c) {
   const q = Q[r][c];
   let best = 0;
@@ -106,7 +104,6 @@ class Unit {
     if (type === 3) {
       goalsReached++;
       this.respawnTimer = 18; // let the unit visibly sit on the goal before respawning
-      episode++;
     }
   }
   render(ctx) {
@@ -133,7 +130,8 @@ class Unit {
 let units = Array.from({ length: N_UNITS }, (_, i) => new Unit(i));
 let nextUnitId = units.length;
 
-let episode = 0;
+// Holes act as walls, so a run only ever ends by reaching the goal — an "episode"
+// counter would just mirror this one. Track goals only.
 let goalsReached = 0;
 let running = true;
 let targetFps = 60;
@@ -179,7 +177,6 @@ function drawGrid() {
   }
 }
 
-const statEpisode = document.getElementById("stat-episode");
 const statFps = document.getElementById("stat-fps");
 const statGoals = document.getElementById("stat-goals");
 const statAvgQ = document.getElementById("stat-avgq");
@@ -243,7 +240,6 @@ function tick(now) {
     statFps.textContent = Math.round((frameCount * 1000) / fpsAccum);
     frameCount = 0;
     fpsAccum = 0;
-    statEpisode.textContent = episode;
     statGoals.textContent = goalsReached;
     statAvgQ.textContent = avgMaxQ().toFixed(3);
   }

@@ -95,6 +95,7 @@ Colab 노트북 4개가 이 파이프라인 순서(A-1 → A-2 → B → C) 그�
 
 ```bash
 # 1) A-1: 크롤링 -> PostgreSQL
+#    targets.py 기본값이 크롤링 연습용 공개 사이트(quotes.toscrape.com)라 그대로 돌아갑니다.
 cd crawl-storage-example
 docker compose up -d          # postgres 컨테이너 기동
 pip install -r requirements.txt
@@ -112,7 +113,17 @@ python src/preprocess.py
 cd ../rag-regulation-example
 pip install -r requirements.txt
 cp .env.example .env          # OPENSEARCH_INDEX를 preprocess-example과 동일하게 맞추기
-python src/query.py "육아휴직 기간은 최대 몇 개월인가요?"
+
+#    3-a) 방금 A경로로 들어간 데이터에 질문해보기 (내용이 명언이라 질문도 그 주제로)
+python src/query.py "세상을 바꾸는 것에 대해 아인슈타인이 한 말이 있나요?"
+
+#    3-b) 같은 인덱스에 C경로로 규정 문서를 하나 더 넣고, 규정 질문을 해보기
+python src/ingest.py data/sample_regulation.txt
+python src/query.py "재택근무 중에 야근하면 수당 받을 수 있나요?"
+
+#    3-c) 답변이 어느 쪽 데이터에서 나왔는지 출처까지 보려면 웹 챗봇으로
+#         (--app-dir이 왜 필요한지 등 자세한 설명은 rag-regulation-example README의 7단계)
+uvicorn api:app --reload --app-dir src   # http://localhost:8000
 
 # 4) B: 서류 사진 -> OCR -> 정형 JSON (C와는 별도 입력 경로, 독립 실행)
 cd ../document-input-example
@@ -123,6 +134,27 @@ streamlit run src/app.py
 # B -> C로 이어지는 흐름을 체감할 수 있습니다.
 ```
 
+3-a와 3-b가 이 문서의 핵심을 보여주는 지점입니다. **출처가 전혀 다른 두 데이터(웹에서 긁어온
+명언, 로컬 규정 파일)가 같은 인덱스에 들어가 있고, `query.py`는 어느 쪽에서 왔는지 신경 쓰지 않고
+질문에 맞는 쪽을 찾아옵니다.** 두 경로가 어떻게 구분되는지는 출처 표시에서 드러납니다 —
+A경로 청크는 URL만, C경로 청크는 `sample_regulation.txt 제11조 (p.1)`처럼 조항 번호까지 나옵니다.
+`query.py`는 최종 답변만 출력하므로 이 차이는 3-c의 웹 챗봇에서 눈으로 확인할 수 있습니다
+([7단계 설명](rag-regulation-example/README.md#7-웹-챗봇으로-실행하기)).
+
+3-a와 3-b를 나란히 놓으면 한 가지가 더 보입니다. **3-a는 벡터 검색이 혼자 해내는 경우이고,
+3-b는 키워드 검색이 있어야 하는 경우입니다.**
+
+3-a에서는 보통 **한국어로 물었는데 영어로 된 명언이 걸려 나옵니다.** 임베딩이 글자가 아니라
+의미를 좌표로 바꾸기 때문에, 언어가 달라도 뜻이 같으면 좌표가 가깝게 찍히는 덕분입니다.
+(교차언어 매칭은 모델이 알아서 해주는 부분이라 항상 똑같이 나오지는 않습니다. 엉뚱한 게
+나온다면 질문을 명언 내용 쪽에 더 붙여서 다시 물어보세요.) 대신 하이브리드 검색의 다른 축인
+키워드 검색은 이 질문에서 아무 일도 못 합니다 — "아인슈타인"이라는 글자가 영어 본문에 없으니
+한 건도 못 걸죠.
+
+반대로 3-b는 질문과 문서가 둘 다 한국어이고 "재택근무" 같은 단어가 그대로 나오는 경우라,
+키워드 검색이 제 몫을 합니다. 두 검색을 함께 쓰는 이유가 이 대비에 있습니다 — 어느 한쪽이
+늘 이기는 게 아니라, **각자 놓치는 질문이 서로 다릅니다.**
+
 **주의: 3)에서 `rag-regulation-example`의 `docker compose up -d`는 실행하지 마세요.**
 `preprocess-example`과 `rag-regulation-example`의 `docker-compose.yml`은 둘 다 컨테이너명을
 `opensearch-rag`로 써서 같은 OpenSearch를 가리키도록 되어 있습니다. 2)에서 이미 띄웠다면
@@ -131,13 +163,31 @@ streamlit run src/app.py
 
 ## 청킹 전략은 문서 특성에 맞춰 다르게 잡았습니다
 
-같은 "PDF/텍스트를 청크로 잘라 OpenSearch에 넣는다"는 로직이지만, 두 프로젝트의 [chunk_size / chunk_overlap](../glossary.md#chunk-size-overlap)이 다릅니다.
+같은 "PDF/텍스트를 청크로 잘라 OpenSearch에 넣는다"는 로직이지만, 두 프로젝트가 **자르는 기준 자체**가
+다릅니다. 길이로 자를 때 쓰는 값이 [chunk_size / chunk_overlap](../glossary.md#chunk-size-overlap)입니다.
 
-| | `chunk_size` | `chunk_overlap` | 이유 |
-|---|---|---|---|
-| `rag-regulation-example/src/ingest.py` | 1000자 | 150자(15%) | 200페이지급 일반 규정 PDF, 문단 단위 검색이면 충분 |
-| `preprocess-example/src/preprocess.py` | 500자 | 75자(15%) | 조항 번호가 촘촘한 문서가 많아, 질문과 정확히 관련된 조항 하나를 더 콕 집어 찾기 위해 더 잘게 자름 |
+| | 자르는 기준 | 설정값 |
+|---|---|---|
+| `rag-regulation-example/src/ingest.py` | 조항 단위 (`parse.py`가 찾은 제N조) | `MAX_ARTICLE_CHARS` 900자 — 이걸 넘는 조만 항(①②③)으로 한 번 더 분할 |
+| `preprocess-example/src/preprocess.py` | 고정 길이 | `chunk_size` 500자 / `chunk_overlap` 75자(15%) |
+
+**기준이 갈린 건 입력을 믿을 수 있느냐의 차이입니다.** `ingest.py`는 손에 쥔 규정 PDF를 다루니
+조 표지를 믿을 수 있습니다. 사람이 이미 정해둔 경계를 그대로 쓰면 문맥이 살고, 출처도
+"제11조 ③"으로 정확히 남습니다. 반면 `preprocess.py`가 받는 건 웹에서 긁어온 문서라 형식을
+믿을 수 없습니다. 사이트마다 조 표지를 `<table>`이나 `<div>`로 흩어놓거나 아예 안 쓰기 때문에,
+파서가 조를 못 찾거나 엉뚱한 데서 자를 위험이 큽니다.
+
+그래서 `ingest.py`도 조 표지가 하나도 없는 문서(안내문·회의록 등)를 만나면 고정 길이 방식
+(`FALLBACK_CHUNK_SIZE` 1000자 / `FALLBACK_CHUNK_OVERLAP` 150자, 15%)으로 자동으로 넘어갑니다.
+조항 단위가 "되면 좋은" 방식이고, 고정 길이가 언제나 쓸 수 있는 기본값인 셈입니다.
+
+**그럼 같은 고정 길이인데 `preprocess.py`는 왜 500자인가** — 폴백의 1000자보다 짧습니다.
+크롤링 대상이 규정 게시판이라면 조 하나가 짧아서, 1000자로 자르면 한 청크에 관련 없는 조가
+여러 개 섞입니다. 그러면 검색에 걸리기는 해도 "질문과 정확히 관련된 조항 하나"를 집어내기
+어려워집니다. 형식은 못 믿더라도 내용의 성격에는 맞춰 더 짧게 잡은 것입니다.
+
+오버랩이 고정 길이 쪽에만 있는 것도 이유가 있습니다 — 길이로 자르면 문장 중간이 잘려 문맥을 잃으니
+겹침으로 보완해야 하지만, 조항 단위로 자르면 경계가 이미 의미 단위와 맞아서 겹칠 필요가 없습니다.
 
 두 파일을 나란히 열어 비교해보면 "청킹 전략은 정답이 하나가 아니라 문서 특성에 맞춰 조정하는 것"이라는
-감각을 얻을 수 있습니다. (오버랩 비율은 15%로 동일하게 유지 — `chunk_size`가 작아진 만큼 오버랩도
-비례해서 줄인 것.)
+감각을 얻을 수 있습니다.

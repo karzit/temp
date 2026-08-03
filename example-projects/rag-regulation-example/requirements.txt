@@ -9,6 +9,6 @@ tiktoken==0.8.0
 fastapi==0.115.5
 uvicorn==0.32.1
 
-# 리랭커(query.py의 rerank)용. PyTorch를 함께 설치하므로 용량이 크다(1GB 이상).
-# 리랭킹 없이 돌려보려면 이 줄을 빼고 .env에 USE_RERANKER=false 를 적으면 된다.
+# 리랭커(query.py의 rerank)용. PyTorch를 함께 설치하므로 용량이 큽니다(1GB 이상).
+# 리랭킹 없이 돌려보려면 이 줄을 빼고 .env에 USE_RERANKER=false 를 적으면 됩니다.
 sentence-transformers==3.3.1
