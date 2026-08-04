@@ -259,6 +259,8 @@ if __name__ == "__main__":
     print("\n[무결성 검증]")
     if problems:
         for problem in problems:
-            print(f"  ⚠️  {problem}")
+            # 이모지(⚠️) 대신 [!]를 쓰는 이유: 한국어 Windows 콘솔은 기본 인코딩이 cp949라
+            # 이모지를 출력하려 하면 UnicodeEncodeError로 스크립트가 통째로 죽습니다.
+            print(f"  [!] {problem}")
     else:
         print("  이상 없음")

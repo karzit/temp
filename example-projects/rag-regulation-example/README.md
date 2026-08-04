@@ -61,7 +61,7 @@ python src/parse.py data/sample_regulation.txt
   ...
 
 [무결성 검증]
-  ⚠️  제16조가 없습니다 (제15조 다음이 제17조).
+  [!] 제16조가 없습니다 (제15조 다음이 제17조).
 ```
 
 **이 경고가 이 단계의 핵심입니다.** PDF 텍스트 추출은 2단 조판이나 표 안에 들어간 조문에서
@@ -78,7 +78,7 @@ python src/ingest.py data/sample_regulation.txt
 
 ```
 data/sample_regulation.txt: 1페이지 -> 조 18개 -> 청크 18개
-  ⚠️  [무결성] 제16조가 없습니다 (제15조 다음이 제17조).
+  [!] [무결성] 제16조가 없습니다 (제15조 다음이 제17조).
 Indexed 18 chunks into 'regulation-docs'
 ```
 

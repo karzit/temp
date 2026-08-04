@@ -6,7 +6,7 @@
 
 왜 그냥 텍스트로 안 두고 굳이 JSON(정형 데이터)으로 바꿀까?
     - 텍스트는 "대충 이런 내용이 있다" 정도만 알 수 있지만,
-      JSON은 "document_type은 무엇, reason은 무엇"처럼 항목별로 값이 딱 정해져 있어서
+      JSON은 "document_type은 무엇, applicant_request는 무엇"처럼 항목별로 값이 딱 정해져 있어서
       다음 단계(RAG 검색)에서 컴퓨터가 정확하게 활용하기 훨씬 쉬워집니다.
 """
 from openai import OpenAI  # 참고 https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/rag-pipeline-practice/03_document_structuring/03_document_structuring.ipynb

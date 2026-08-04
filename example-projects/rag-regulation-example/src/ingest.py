@@ -126,7 +126,8 @@ def load_and_split(paths: list[str]) -> list[Document]:
             # 조 번호가 끊긴 곳이 있으면 여기서 알려줍니다.
             # 이걸 안 하면 "그 조항만 유독 검색이 안 되는" 상태로 서비스가 나갑니다.
             for warning in check_article_sequence(articles):
-                print(f"  ⚠️  [무결성] {warning}")
+                # 이모지 대신 [!]를 쓰는 이유는 parse.py 아래쪽 출력부 주석 참고 (cp949 인코딩).
+                print(f"  [!] [무결성] {warning}")
         else:
             chunks = fallback_chunks(pages, source)
             print(f"{path}: 조 표지를 찾지 못해 고정 길이로 분할 -> 청크 {len(chunks)}개")
