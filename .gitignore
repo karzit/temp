@@ -20,3 +20,12 @@ models/*.pkl
 models/*.keras
 models/*.h5
 !models/.gitkeep
+
+# 노트북 실습 산출물 — 셀을 실행하면 생기지만 커밋할 필요는 없다
+crawled.db
+crawled_check.db
+sample_policy.pdf
+fake-google-key.json
+# 03_document_structuring이 streamlit 예제를 써 내려받는 파일.
+# example-projects/.../src/app.py는 진짜 소스이므로 notebooks 아래로만 한정한다.
+notebooks/**/app.py
