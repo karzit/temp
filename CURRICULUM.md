@@ -33,7 +33,7 @@
 
 ## 범위에서 제외한 부분
 
-원본 사이트의 **시즌 RL(강화학습)**과 **시즌 NLP**는 별도 시즌으로, 이 커리큘럼(시즌 1: 딥러닝 기본)을 먼저 끝낸 뒤 확장하는 것을 권장하여 이번 구성에는 포함하지 않았습니다. 필요하면 이후에 `notebooks/ml-curriculum/07_reinforcement_learning/` 등으로 이어서 추가할 수 있습니다. 정식 노트북은 아니지만, RL 개념을 미리 눈으로 보고 싶다면 [`frozen-lake-viz/`](frozen-lake-viz)에 브라우저에서 바로 여는 Q-Learning 시각화 데모가 있습니다.
+원본 사이트의 **시즌 RL(강화학습)**과 **시즌 NLP**는 별도 시즌으로, 이 커리큘럼(시즌 1: 딥러닝 기본)을 먼저 끝낸 뒤 확장하는 것을 권장하여 이번 구성에는 포함하지 않았습니다. 필요하면 이후에 `notebooks/ml-curriculum/07_reinforcement_learning/` 등으로 이어서 추가할 수 있습니다. 정식 노트북은 아니지만, RL 개념을 미리 눈으로 보고 싶다면 [`extras/frozen-lake-viz/`](extras/frozen-lake-viz)에 브라우저에서 바로 여는 Q-Learning 시각화 데모가 있습니다.
 
 원본 강의 **Lec 7**의 일부 주제(학습률 조정, 데이터 표준화, Regularization, 가중치 초기화)도 04번 노트북에서는 다루지 않습니다. 04번은 "왜 층을 쌓아야 하는가"(XOR)와 "층이 깊어지면 무엇이 망가지는가"(기울기 소실 → ReLU, 과적합 → Dropout)라는 한 줄기에 집중했습니다. 스케일링·과적합 통제를 실제 데이터에서 다루는 쪽은 **[`notebooks/tabular-ml-practice/`](notebooks/tabular-ml-practice/README.md)** 02·04번입니다.
 

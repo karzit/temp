@@ -6,8 +6,8 @@ Q-Learning이 게임판(Frozen Lake) 위에서 에이전트가 시행착오를 �
 
 ```bash
 # 예: 파일 탐색기에서 더블클릭하거나
-open frozen-lake-viz/index.html   # macOS
-start frozen-lake-viz/index.html  # Windows
+open extras/frozen-lake-viz/index.html   # macOS
+start extras/frozen-lake-viz/index.html  # Windows
 ```
 
 ## 무엇을 보여주나요
@@ -20,5 +20,5 @@ start frozen-lake-viz/index.html  # Windows
 ## 이 저장소와의 관계
 
 이 프로젝트의 노트북 커리큘럼(`notebooks/ml-curriculum/`)은 강화학습(RL)을 다루지 않습니다
-([CURRICULUM.md](../CURRICULUM.md)의 "범위에서 제외한 부분" 참고). 이 폴더는 그 자리를 메우는
+([CURRICULUM.md](../../CURRICULUM.md)의 "범위에서 제외한 부분" 참고). 이 폴더는 그 자리를 메우는
 정식 커리큘럼이 아니라, Q-Learning 개념을 눈으로 먼저 훑어보는 독립적인 보조 자료입니다.

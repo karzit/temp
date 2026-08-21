@@ -208,9 +208,10 @@ example-projects/               실전 예제 (③) — 자세한 내용은 exam
   rag-regulation-example/       [C]   PDF 구조 파싱 -> 조항 청킹 -> 하이브리드 검색·리랭킹
                                       -> LLM 응답(RAG) -> 검색 품질 평가(hit@5/MRR)
 
-frozen-lake-viz/   ①과 무관한 별도 보조 자료 — Q-Learning(RL)을 브라우저에서 바로 보는 시각화 데모.
-                   RL은 ml-curriculum 범위 밖이라 정식 노트북은 없고, 그 자리를 미리 맛보는 자료입니다.
-                   설치 없이 index.html만 열면 됩니다 (자세한 내용은 frozen-lake-viz/README.md).
+extras/            커리큘럼 본편에 속하지 않는 보조 자료
+  frozen-lake-viz/ Q-Learning(RL)을 브라우저에서 바로 보는 시각화 데모. RL은 ml-curriculum 범위
+                   밖이라 정식 노트북은 없고, 그 자리를 미리 맛보는 자료입니다. 설치 없이
+                   index.html만 열면 됩니다 (자세한 내용은 extras/frozen-lake-viz/README.md).
 data/          MNIST처럼 여러 노트북이 나눠 쓰는 데이터셋 캐시 (git에는 커밋 안 됨)
                노트북이 자기 실습 결과로 만드는 파일은 여기가 아니라 노트북 옆에 생깁니다
 CURRICULUM.md  ①의 이론+실습 목차 (원본 강의 매핑 포함)
