@@ -9,8 +9,10 @@ __pycache__/
 venv/
 *.egg-info/
 .DS_Store
-feed/
-why-plan/
+
+# 개인 작업 공간 — 커리큘럼과 무관한 메모·초안·발표자료는 전부 여기에 둔다
+.scratch/
+*.pptx
 
 # Large artifacts — keep repo light for Colab clone/upload
 data/*

@@ -173,6 +173,7 @@ ml-curriculum 00~07, rag-pipeline-practice 01~05, project-walkthrough 01~04, tab
 
 ```
 notebooks/
+  NOTEBOOK_STYLE.md             (집필자용) 노트북을 새로 쓰거나 고칠 때 지키는 서술 규칙 — 학습자는 안 봐도 됨
   ml-curriculum/                이론 커리큘럼 (①) — scikit-learn/PyTorch
     00_python_essentials/       NumPy/Pandas/PyTorch 필수 라이브러리 실습 (사전 준비, 건너뛰어도 됨)
     01_basic_classification/    scikit-learn 파이프라인 입문
