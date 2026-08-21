@@ -39,6 +39,20 @@ Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소�
 열어서 import해 돌려보는** 방식이라 노트북과 코드가 어긋나지 않습니다.
 PostgreSQL·OpenSearch·API 키 없이 Colab에서 전부 실행됩니다.
 
+②와 ③′는 **번호가 같으면 같은 프로젝트**를 다룹니다. ②에서 배운 라이브러리가 실제로 어떻게
+쓰였는지 보고 싶으면 같은 번호의 ③′로 건너가면 됩니다.
+
+| # | ② 라이브러리 실습 | ③′ 프로젝트 동행 | ③ 대상 프로젝트 |
+|---|---|---|---|
+| 01 | `01_web_crawling` | `01_crawl_storage` | `crawl-storage-example` |
+| 02 | `02_text_chunking` | `02_preprocess` | `preprocess-example` (청킹은 `rag-regulation-example`도 함께) |
+| 03 | `03_document_structuring` | `03_document_input` | `document-input-example` |
+| 04 | `04_rag_pipeline` | `04_rag_regulation` | `rag-regulation-example` |
+| 05 | `05_prompt_injection_defense` | — | `rag-regulation-example` 확장 |
+
+두 시리즈의 폴더 이름이 다른 것은 같은 프로젝트를 다른 각도에서 보기 때문입니다. ②는 기법 이름
+(`web_crawling`), ③′는 프로젝트 이름(`crawl_storage`)을 씁니다.
+
 ①과 ④는 서로를 보완합니다. **①이 "머신러닝이 어떻게 작동하는가"(경사 하강법·역전파를 직접 구현)라면,
 ④는 "현실의 데이터로 실제로 어떻게 하는가"**입니다. 순서는 상관없습니다.
 

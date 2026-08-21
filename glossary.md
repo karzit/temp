@@ -2,8 +2,10 @@
 
 이 프로젝트 전체(① ml-curriculum, ② rag-pipeline-practice, ③ example-projects,
 ④ tabular-ml-practice)에서 반복적으로 등장하는 용어를 모아둔 통합 용어집입니다.
-각 노트북/README에서 낯선 용어를 만나면 `[용어](../glossary.md#anchor)` 링크를 눌러
-여기로 돌아와 확인하면 됩니다.
+각 노트북/README에서 낯선 용어를 만나면 용어집 링크를 눌러 여기로 돌아와 확인하면 됩니다.
+노트북 안의 링크는 절대 URL
+(`https://github.com/karzit/temp/blob/master/glossary.md#anchor`)로 걸려 있습니다.
+Colab에서 노트북 하나만 열면 저장소가 없어 상대 경로가 동작하지 않기 때문입니다.
 
 ## 목차
 
