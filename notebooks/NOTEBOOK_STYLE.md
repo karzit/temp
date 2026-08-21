@@ -129,7 +129,13 @@ print(f"이상치 제거 전: {len(df)}행 → 제거 후: {len(df_clean)}행")
 - 처음 나오는 용어는 **그 자리에서 한 문장**으로 풀어줍니다. 용어집 링크만 걸고 넘어가지 않습니다.
   > 학습률(learning rate): 한 번에 얼마나 크게 움직일지 정하는 값.
   > 크면 목표를 지나쳐 버리고, 작으면 너무 천천히 갑니다.
-- 그와 별개로 `[용어](../../../glossary.md#앵커)` 링크를 첫 등장 자리에 겁니다.
+- 그와 별개로 용어집 링크를 첫 등장 자리에 겁니다. 이때 **반드시 절대 URL을 씁니다.**
+  > `[용어](https://github.com/karzit/temp/blob/master/glossary.md#앵커)`
+
+  상대 경로(`../../../glossary.md`)를 쓰면 안 됩니다. 학습자 대부분은 Colab 배지로
+  노트북 하나만 열고, 그 런타임에는 저장소가 없어서 상대 링크가 전부 깨집니다.
+  같은 이유로 다른 노트북을 가리킬 때는 Colab URL을 씁니다.
+  > `[다음 노트북](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/...)`
 
 ## 5. 마지막 셀
 
