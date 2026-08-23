@@ -10,8 +10,11 @@ torchvision
 tensorflow
 requests
 beautifulsoup4
+httpx
 python-dotenv
+psycopg2-binary
 langchain-text-splitters
+kiwipiepy
 langchain-core
 pypdf
 pymupdf
@@ -24,3 +27,7 @@ langchain-openai
 langchain-community
 opensearch-py
 rank_bm25
+fastapi
+# 04_rag_regulation 동행 노트북의 리랭커 실습(TRY_RERANKER = True)에서만 씁니다.
+# PyTorch를 함께 끌어와 용량이 큽니다.
+sentence-transformers
