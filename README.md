@@ -30,10 +30,10 @@ Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소�
 | ③ 실전 예제 | `example-projects/` | ②에서 익힌 라이브러리로 실제 동작하는 미니 프로젝트 4개를 이어붙인 파이프라인 |
 | ③′ 프로젝트 동행 노트북 | `notebooks/project-walkthrough/` | ③의 프로젝트를 **하나씩 옆에 펼쳐놓고 같이 읽는** 노트북 (프로젝트당 1개) |
 | ④ 정형 데이터 워크플로우 | `notebooks/tabular-ml-practice/` | 결측치·이상치·문자열이 섞인 **실제 표 데이터**로 EDA → 전처리 → 모델링 → 평가까지 하는 전 과정 |
-| ⑤ 텍스트 분류 실습 | `notebooks/text-classification-practice/` | 상품명 같은 **짧은 한국어 텍스트**로 카테고리를 분류하는 전 과정 (TF-IDF → Keras, AICE Professional 샘플문항 형태) |
+| ⑤ 텍스트 분류 실습 | `notebooks/text-classification-practice/` | 뉴스 제목 같은 **짧은 한국어 텍스트**로 주제를 분류하는 전 과정 (TF-IDF → Keras, 공개 데이터셋 KLUE-YNAT) |
 
 ①·④·⑤는 ②/③과 주제가 겹치지 않는 별도 커리큘럼입니다. ⑤는 ④의 **텍스트 판**으로,
-같은 흐름(데이터 관찰 → 전처리 → 모델 → 평가 → 제출)을 숫자가 아닌 글자에서 반복합니다. ②와 ③은 같은 파이프라인(사내 규정 검색 챗봇)을
+같은 흐름(데이터 관찰 → 전처리 → 모델 → 평가)을 숫자가 아닌 글자에서 반복합니다. ②와 ③은 같은 파이프라인(사내 규정 검색 챗봇)을
 다루며, ②는 "라이브러리 하나씩 실습", ③은 "그 라이브러리들로 만든 실제 프로젝트"라는 관계입니다.
 
 ③′는 ②와 **같은 프로젝트를 다른 각도**로 봅니다. ②가 "기법별"(BeautifulSoup은 어떻게 쓰나)이라면,
@@ -68,7 +68,7 @@ flowchart LR
         direction TB
         A["① ml-curriculum<br/>ML·DL이 어떻게 작동하는가<br/>회귀 → 분류 → 신경망 → CNN/RNN"]
         D["④ tabular-ml-practice<br/>현실 데이터로 실제로 어떻게 하는가<br/>EDA → 전처리 → 모델 → 평가"]
-        T["⑤ text-classification-practice<br/>같은 흐름을 텍스트에서<br/>TF-IDF → 임베딩 → 제출 파일"]
+        T["⑤ text-classification-practice<br/>같은 흐름을 텍스트에서<br/>TF-IDF → 임베딩 → 성능 검증"]
         A -. 서로 보완 .-> D
         D -. 표에서 텍스트로 .-> T
     end
@@ -110,9 +110,9 @@ Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에�
   → `notebooks/tabular-ml-practice/` 01 → 02 → 03 → 04 순서대로.
   결측치·이상치 처리부터 모델 평가·데이터 누출 진단까지 다룹니다.
   자세한 내용은 **[시리즈 README](notebooks/tabular-ml-practice/README.md)** 참고.
-- **글자로 된 데이터를 분류하고 싶다(상품명, 문의 내용, 로그), 자격 시험의 Text 문항을 준비한다**
+- **글자로 된 데이터를 분류하고 싶다(뉴스 제목, 문의 내용, 로그 메시지)**
   → `notebooks/text-classification-practice/` 01 → 02 순서대로.
-  텍스트를 숫자로 바꾸는 방법부터 제출 파일 형식까지 다룹니다.
+  텍스트를 숫자로 바꾸는 방법부터, 성능이 올랐다고 말해도 되는지 판단하는 법까지 다룹니다.
   자세한 내용은 **[시리즈 README](notebooks/text-classification-practice/README.md)** 참고.
 - **LLM/RAG 앱을 만들 때 쓰는 라이브러리(크롤링, 청킹, 구조화 출력, 임베딩/벡터 검색, 프롬프트 인젝션 방어)를
   익히고 싶다, ML 기초는 필요 없다** → `notebooks/rag-pipeline-practice/` 01 → 02 → 03 → 04 → 05 순서대로.
@@ -198,7 +198,7 @@ text-classification-practice 01~02에 각각 해설 노트북이 있고,
 
 | 노트북 | 열기 |
 |---|---|
-| 01. 텍스트 분류 기준선 (TF-IDF) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/01_text_baseline/01_text_baseline.ipynb) |
+| 01. 텍스트 분류 기준선 (TF-IDF·문자 n-gram) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/01_text_baseline/01_text_baseline.ipynb) |
 | 02. Keras 텍스트 분류 (임베딩) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/02_keras_text/02_keras_text.ipynb) |
 
 ## 폴더 구조 (각 폴더에는 무엇이 있나요)
@@ -233,9 +233,8 @@ notebooks/
     03_tree_models/             결정 트리·랜덤 포레스트, 평가 지표, 교차검증, GridSearchCV, 변수중요도
     04_dnn_keras/               Keras 신경망, 학습 곡선 진단, EarlyStopping/Dropout, 트리 모델과 비교
   text-classification-practice/ 텍스트 분류 실습 (⑤) — 자세한 내용은 notebooks/text-classification-practice/README.md
-    data/                       연습용 가공식품 상품명 데이터셋과 생성 스크립트 (이 시리즈만 커밋된 data/)
-    01_text_baseline/           BoW·TF-IDF, 문자 n-gram, macro f1·혼동 행렬, 오분류 분석, 제출 파일
-    02_keras_text/              TextVectorization·임베딩, Conv1D/LSTM 비교, 모델 저장의 함정, 제출 체크리스트
+    01_text_baseline/           BoW·TF-IDF, 문자 n-gram, macro f1·혼동 행렬, 오분류 분석, 분포 이동
+    02_keras_text/              TextVectorization·임베딩, Conv1D/LSTM 비교, OOV 규명, 모델 저장의 함정
 
 example-projects/               실전 예제 (③) — 자세한 내용은 example-projects/README.md
   crawl-storage-example/        [A-1] 웹 크롤링 -> PostgreSQL 원본 저장
@@ -271,9 +270,9 @@ Colab에서 노트북 하나만 열든 저장소를 통째로 받아 쓰든 똑�
 `tabular-ml-practice`는 데이터를 파일로 두지 않고 seaborn 내장 데이터셋(`taxis`, `titanic`)을
 그때그때 내려받으므로 `data/`에 아무것도 준비할 필요가 없습니다.
 
-`text-classification-practice`만 예외로 **자기 폴더의 `data/`를 저장소에 함께 커밋**합니다.
-공개 데이터셋이 아니라 [생성 스크립트](notebooks/text-classification-practice/data/make_dataset.py)로
-만든 연습용 데이터라, Colab에서 그 파일을 그대로 내려받아 써야 하기 때문입니다.
+`text-classification-practice`도 마찬가지로 준비할 파일이 없습니다. 공개 데이터셋
+[KLUE-YNAT](https://github.com/KLUE-benchmark/KLUE)(CC BY-SA 4.0)를 노트북 첫 셀에서
+GitHub raw로 내려받습니다.
 
 ## Colab에서 열기
 

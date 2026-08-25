@@ -111,17 +111,18 @@ if IN_COLAB:
 | `ml-curriculum/04`, `05` | MNIST | `torchvision`이 자동 다운로드 (처음 1~2분) |
 | `tabular-ml-practice/00`~`04` | `taxis`, `titanic` | `seaborn.load_dataset()`이 인터넷에서 다운로드 |
 | `ml-curriculum/02` | `data/scores.csv` | **노트북이 직접 만듭니다.** 미리 준비할 파일 없음 |
-| `text-classification-practice/01`, `02` | `02_train.csv` 등 3개 | Colab에서는 `wget`으로 GitHub raw에서 내려받고, 로컬에서는 `../data`에서 읽습니다 |
+| `text-classification-practice/01`, `02` | KLUE-YNAT | `pd.read_json()`이 GitHub raw에서 직접 내려받습니다 (train 46MB, 10~30초) |
 
 - **셋 다 인터넷 연결이 필요합니다.** 사내망·오프라인 환경이라면 이 셀에서 멈춥니다.
 - `ml-curriculum`은 데이터를 `../../../data`(저장소 루트의 `data/`)에 둡니다.
   Colab에서 이 상대 경로가 이상한 위치를 가리켜 권한 오류가 난다면, 해당 셀의
   `root="../../../data"`를 `root="./data"`로 바꾸면 됩니다.
 - `tabular-ml-practice`는 파일을 쓰지 않으므로 `data/`에 아무것도 준비할 필요가 없습니다.
-- `text-classification-practice`에서 `FileNotFoundError: 02_train.csv`가 나면 **첫 코드 셀을 건너뛴 것**입니다.
-  그 셀이 데이터를 내려받고 `DATA_DIR`을 정합니다. 저장소를 클론해 로컬에서 열었다면
-  노트북을 원래 위치(`notebooks/text-classification-practice/01_text_baseline/`)에서 열어야
-  `../data`가 맞습니다.
+- `text-classification-practice`에서 `NameError: name 'YNAT' is not defined`가 나면 **첫 코드 셀을
+  건너뛴 것**입니다. 그 셀이 데이터 주소를 정합니다.
+- 같은 시리즈에서 다운로드가 오래 걸린다면 정상입니다. 학습 데이터가 46MB라 10~30초쯤 걸립니다.
+  `URLError`나 타임아웃이 난다면 사내망에서 GitHub raw가 막힌 것이므로,
+  `ynat-v1.1_train.json`을 미리 받아두고 `pd.read_json("ynat-v1.1_train.json")`으로 바꿔 읽으세요.
 
 ---
 
@@ -248,11 +249,13 @@ AssertionError: 프로젝트 경로를 찾지 못했습니다. 저장소 루트�
 `text-classification-practice/02`에서 나오는 문제입니다.
 
 ```
-model.save("my_model.h5")        # 저장은 됩니다
-keras.models.load_model(...)     # FailedPreconditionError
+model.save("my_model.h5")             # 저장 성공
+m = keras.models.load_model("my_model.h5")   # 불러오기도 성공
+m.predict(["아무 문장"])               # FailedPreconditionError
 ```
 
 `TextVectorization`을 **모델 안에 넣은 채** `.h5`로 저장하면 이렇게 됩니다.
+**저장과 불러오기는 조용히 성공하고, 예측하는 순간 터집니다.**
 `.h5`는 숫자 배열만 담는 옛 포맷이라 이 레이어가 들고 있는 **단어 사전(문자열 표)** 을 복원하지 못합니다.
 
 - **가장 간단한 해결**: `model.save("my_model.keras")` — 최신 Keras 포맷은 전처리 레이어를 그대로 담습니다
