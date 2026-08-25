@@ -69,6 +69,22 @@ AICE Professional 샘플문항의 Text 문제(**가공식품 카테고리 분류
 시간이 남으면 신경망을 시도해 더 나은 쪽을 제출합니다. 처음부터 큰 모델을 붙잡고 있다가
 시간이 부족해지는 것이 가장 나쁜 경우입니다.
 
+## 무엇을 알고 있어야 하고, 무엇을 여기서 배우나
+
+**이 시리즈는 아래 왼쪽 칸만 알면 끝까지 갈 수 있게 썼습니다.** 오른쪽 칸은 필요한 자리에서
+그때그때 설명하므로 미리 공부하고 올 필요가 없습니다.
+
+| 알고 있다고 전제하는 것 | 여기서 처음 나오면 설명하는 것 |
+|---|---|
+| pandas: `read_csv`, `head`, `info`, `value_counts`, `dropna` | 학습/검증 분리, 기준선, 희소 행렬 |
+| scikit-learn의 `fit` / `predict` 흐름 | `Pipeline`·`make_union`, BoW·TF-IDF, 문자 n-gram |
+| 정확도가 무엇인지 | 정밀도·재현율·macro f1, 혼동 행렬, 예측 확률(`predict_proba`) |
+| Keras의 `Sequential`·`compile`·`fit`·`EarlyStopping` (02번) | 함수형 API, `TextVectorization`, 임베딩, `Conv1D`, 풀링, 모델 저장 포맷 |
+
+02번의 Keras 기초만 예외입니다. `Sequential`로 모델을 만들어본 적이 없다면
+[`tabular-ml-practice/04_dnn_keras`](../tabular-ml-practice/04_dnn_keras/04_dnn_keras.ipynb)를 먼저 보세요.
+**함수형 API(`keras.Input` / `keras.Model`)는 04번에 나오지 않으므로 02번 3절에서 따로 설명합니다.**
+
 ## 시작하기 전에
 
 - **선수 지식**: pandas 기본기와 scikit-learn의 `fit`/`predict` 흐름.
