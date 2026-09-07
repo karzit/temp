@@ -780,3 +780,84 @@ body.dragging-tab .tab { cursor: grabbing; }
   pointer-events: none;
   box-shadow: 0 0 8px 1px rgba(110, 168, 254, 0.6);
 }
+
+/* ── 편집창: 줄 번호와 중단점 ───────────────────────── */
+.editor-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+.gutter {
+  width: 46px;
+  flex: none;
+  overflow: hidden;
+  background: #0d1015;
+  border-right: 1px solid var(--line);
+  padding: 12px 0;
+  user-select: none;
+}
+.gline {
+  display: block;
+  width: 100%;
+  height: 21px;
+  line-height: 21px;
+  text-align: right;
+  padding: 0 8px 0 2px;
+  background: none;
+  border: none;
+  color: #464d59;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  cursor: pointer;
+  position: relative;
+}
+.gline:hover { color: var(--fg); background: #171b22; }
+.gline::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 5px;
+  background: transparent;
+}
+.gline:hover::before { background: #3a4150; }
+.gline.bp { color: var(--bad); }
+.gline.bp::before { background: var(--bad); }
+.gline.here { color: var(--accent); font-weight: 700; }
+
+.line-stripe {
+  position: absolute;
+  left: 46px;
+  right: 0;
+  height: 21px;
+  background: rgba(110, 168, 254, 0.1);
+  border-left: 2px solid var(--accent);
+  pointer-events: none;
+}
+.editor-wrap textarea.code {
+  background: transparent;
+  line-height: 21px;
+  padding: 12px 14px;
+}
+
+/* 실행 줄의 단계 버튼 */
+.step, .reset-run {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--dim);
+  font: inherit;
+  font-size: 12px;
+  border-radius: 6px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.step:hover:not(:disabled), .reset-run:hover { color: var(--fg); border-color: var(--dim); }
+.step:disabled { opacity: 0.45; cursor: default; }
+.reset-run { padding: 4px 9px; }
+.run-state { margin-left: auto; font-size: 11.5px; color: #5c636f; }

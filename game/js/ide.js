@@ -31,7 +31,11 @@ var IDE = {
       "<div class='panes'></div>" +
       "<div class='ide-resizer' title='끌어서 결과 창 크기 조절'></div>" +
       "<div class='ide-bottom'>" +
-      "<div class='run-row'><button class='run'>▶ 실행</button><span class='run-target'></span></div>" +
+      "<div class='run-row'>" +
+      "<button class='run' title='중단점까지, 없으면 끝까지'>▶ 실행</button>" +
+      "<button class='step' title='문장 하나만 실행'>↓ 한 줄</button>" +
+      "<button class='reset-run' title='처음부터 다시'>↺</button>" +
+      "<span class='run-target'></span><span class='run-state'></span></div>" +
       "<pre class='out'></pre>" +
       "<div class='pybar' hidden><span class='pybar-label'></span><span class='pybar-track'><i class='pybar-fill'></i></span></div>" +
       "</div>";
@@ -46,6 +50,8 @@ var IDE = {
       };
     });
     main.querySelector(".run").onclick = IDE.run;
+    main.querySelector(".step").onclick = IDE.step;
+    main.querySelector(".reset-run").onclick = IDE.resetRun;
     IDE.setupResizer(main);
 
     IDE.draw();
@@ -419,15 +425,7 @@ var IDE = {
           });
           area.appendChild(doc);
         } else {
-          var ta = document.createElement("textarea");
-          ta.className = "code";
-          ta.spellcheck = false;
-          ta.value = node.content;
-          ta.oninput = function () {
-            node.content = ta.value;
-            if (IDE.onChange) IDE.onChange();
-          };
-          area.appendChild(ta);
+          area.appendChild(IDE.buildEditor(pane.active, node));
         }
       }
 
@@ -558,55 +556,279 @@ var IDE = {
     if (IDE.onChange) IDE.onChange();
   },
 
+  // ── 편집창 (줄 번호 · 중단점 · 현재 줄) ───────────────
+  buildEditor: function (path, node) {
+    var wrap = document.createElement("div");
+    wrap.className = "editor-wrap";
+
+    var gutter = document.createElement("div");
+    gutter.className = "gutter";
+
+    var stripe = document.createElement("div");
+    stripe.className = "line-stripe";
+    stripe.hidden = true;
+
+    var ta = document.createElement("textarea");
+    ta.className = "code";
+    ta.spellcheck = false;
+    ta.value = node.content;
+
+    ta.oninput = function () {
+      node.content = ta.value;
+      // 내용이 바뀌면 문장 경계가 달라진다. 하던 실행은 버린다.
+      if (IDE.stepper && IDE.stepper.path === path) IDE.resetRun();
+      IDE.drawGutter(wrap, path);
+      if (IDE.onChange) IDE.onChange();
+    };
+    ta.onscroll = function () {
+      gutter.scrollTop = ta.scrollTop;
+      stripe.style.marginTop = -ta.scrollTop + "px";
+    };
+
+    wrap.append(gutter, stripe, ta);
+    wrap.setAttribute("data-path", path);
+    setTimeout(function () {
+      IDE.drawGutter(wrap, path);
+    }, 0);
+    return wrap;
+  },
+
+  // 중단점은 파일마다 줄 번호 목록으로 갖고 있는다.
+  breakpoints: {},
+
+  toggleBreakpoint: function (path, line) {
+    var set = IDE.breakpoints[path] || (IDE.breakpoints[path] = []);
+    var at = set.indexOf(line);
+    if (at >= 0) set.splice(at, 1);
+    else set.push(line);
+    IDE.draw();
+  },
+
+  hasBreakpoint: function (path, line) {
+    var set = IDE.breakpoints[path];
+    return !!set && set.indexOf(line) >= 0;
+  },
+
+  // 문장이 걸친 줄 가운데 중단점이 있으면 그 줄 번호를 돌려준다.
+  breakpointIn: function (path, span) {
+    for (var line = span[0]; line <= span[1]; line++) {
+      if (IDE.hasBreakpoint(path, line)) return line;
+    }
+    return 0;
+  },
+
+  drawGutter: function (wrap, path) {
+    var node = FS.node(path);
+    if (!node) return;
+    var gutter = wrap.querySelector(".gutter");
+    var stripe = wrap.querySelector(".line-stripe");
+    var count = node.content.split("\n").length;
+    var nextLine = IDE.nextLineOf(path);
+
+    gutter.innerHTML = "";
+    for (var n = 1; n <= count; n++) {
+      (function (line) {
+        var row = document.createElement("button");
+        row.className = "gline";
+        if (IDE.hasBreakpoint(path, line)) row.classList.add("bp");
+        if (line === nextLine) row.classList.add("here");
+        row.textContent = line;
+        row.title = "누르면 중단점";
+        row.onclick = function () {
+          IDE.toggleBreakpoint(path, line);
+        };
+        gutter.appendChild(row);
+      })(n);
+    }
+
+    // 다음에 실행될 줄에 띠를 둔다.
+    if (nextLine) {
+      stripe.hidden = false;
+      stripe.style.top = (nextLine - 1) * IDE.LINE_H + IDE.PAD_TOP + "px";
+    } else {
+      stripe.hidden = true;
+    }
+  },
+
+  LINE_H: 21,
+  PAD_TOP: 12,
+
+  // 이 파일에서 다음에 실행될 줄(없으면 null).
+  nextLineOf: function (path) {
+    var st = IDE.stepper;
+    if (!st || st.path !== path || st.at >= st.steps.length) return null;
+    return st.steps[st.at][0];
+  },
+
+  // 이 파일에서 지금까지 실행한 문장 수. 대본이 진행을 판단할 때 쓴다.
+  stepAt: function (path) {
+    var st = IDE.stepper;
+    return st && st.path === path ? st.at : 0;
+  },
+
+  stepDone: function (path) {
+    var st = IDE.stepper;
+    return !!st && st.path === path && st.at >= st.steps.length;
+  },
+
   drawRunTarget: function () {
     var path = IDE.activePath();
-    var label = IDE.q(".run-target");
     var runnable = path && FS.isFile(path) && !FS.node(path).readOnly;
-    label.textContent = runnable ? path : "실행할 파일을 열어주세요";
-    IDE.q(".run").disabled = !runnable;
+    IDE.q(".run-target").textContent = runnable ? path : "실행할 파일을 열어주세요";
+    IDE.q(".run").disabled = !runnable || IDE.busy;
+    IDE.q(".step").disabled = !runnable || IDE.busy;
+
+    var st = IDE.stepper;
+    var state = IDE.q(".run-state");
+    if (st && st.path === path) {
+      state.textContent = st.at >= st.steps.length
+        ? "끝까지 실행됨"
+        : st.at + " / " + st.steps.length + " 문장";
+      IDE.q(".reset-run").hidden = false;
+    } else {
+      state.textContent = "";
+      IDE.q(".reset-run").hidden = true;
+    }
   },
 
   // ── 실행 ──────────────────────────────────────────────
-  run: function () {
-    var path = IDE.activePath();
-    if (!path || !FS.isFile(path)) return;
-    var node = FS.node(path);
+  busy: false,
+  stepper: null, // { path, steps, at, ns, lines }
+
+  resetRun: function () {
+    if (IDE.stepper) endSession(IDE.stepper.ns);
+    IDE.stepper = null;
     var out = IDE.q(".out");
-    var btn = IDE.q(".run");
-    btn.disabled = true;
     out.className = "out";
-    out.textContent = "";
+    out.textContent = "아직 실행하지 않았습니다.";
+    IDE.draw();
+  },
 
-    // 미리 받아두고 있었으니 대개는 바로 돌아간다. 아직 안 끝났을 때만 막대를 보여준다.
-    if (!isPythonReady()) {
-      IDE.showProgress("파이썬을 준비하는 중입니다. 끝나는 대로 실행됩니다.");
-      onPythonReady(function () {
-        IDE.hideProgress();
+  // 실행할 준비를 한다. 이미 하던 것이 있으면 이어서 한다.
+  prepare: function (path) {
+    if (IDE.stepper && IDE.stepper.path === path) return Promise.resolve(IDE.stepper);
+
+    var node = FS.node(path);
+    IDE.waitForPython();
+    return planSteps(node.content).then(function (steps) {
+      return newSession().then(function (ns) {
+        if (IDE.stepper) endSession(IDE.stepper.ns);
+        IDE.stepper = {
+          path: path,
+          steps: steps || [[1, node.content.split("\n").length]],
+          at: 0,
+          ns: ns,
+          lines: node.content.split("\n"),
+          output: "",
+        };
+        IDE.q(".out").textContent = "";
+        IDE.q(".out").className = "out";
+        return IDE.stepper;
       });
-    }
+    });
+  },
 
-    runCheck(node.content, null, {
-      onStatus: function (s) {
-        if (s) IDE.showProgress(s);
-        else if (isPythonReady()) IDE.hideProgress();
-      },
-    })
-      .then(function (r) {
-        var printed = (r.output || "").trim();
-        out.className = "out " + (r.ok ? "ok" : "bad");
-        out.textContent = (r.ok ? printed : (printed ? printed + "\n" : "") + r.error) || "(출력이 없습니다)";
-        IDE.lastRun = { path: path, ok: r.ok, output: printed };
-        if (IDE.onRun) IDE.onRun(path, IDE.lastRun);
+  waitForPython: function () {
+    if (isPythonReady()) return;
+    IDE.showProgress("파이썬을 준비하는 중입니다. 끝나는 대로 실행됩니다.");
+    onPythonReady(function () {
+      IDE.hideProgress();
+    });
+  },
+
+  // 문장 하나만 실행.
+  step: function () {
+    IDE.advance(1);
+  },
+
+  // 중단점을 만날 때까지, 없으면 끝까지.
+  run: function () {
+    IDE.advance(Infinity);
+  },
+
+  advance: function (maxSteps) {
+    var path = IDE.activePath();
+    if (!path || !FS.isFile(path) || IDE.busy) return;
+    IDE.busy = true;
+    IDE.drawRunTarget();
+
+    IDE.prepare(path)
+      .then(function (st) {
+        return IDE.runSteps(st, maxSteps);
       })
       .catch(function (err) {
+        var out = IDE.q(".out");
         out.className = "out bad";
         out.textContent = String(err.message || err);
       })
       .then(function () {
+        IDE.busy = false;
         if (isPythonReady()) IDE.hideProgress();
-        btn.disabled = false;
-        IDE.drawRunTarget();
+        IDE.draw();
       });
+  },
+
+  runSteps: function (st, maxSteps) {
+    var out = IDE.q(".out");
+    var done = 0;
+
+    function one() {
+      if (st.at >= st.steps.length || done >= maxSteps) return Promise.resolve();
+      // 중단점이 걸린 문장 앞에서 멈춘다(그 문장은 아직 실행하지 않는다).
+      // 여러 줄짜리 문장이면 그 안 어느 줄에 찍었든 잡는다.
+      var bp = IDE.breakpointIn(st.path, st.steps[st.at]);
+      if (done > 0 && bp) {
+        out.textContent = st.output + "\n\n— " + bp + "번 줄에서 멈췄습니다. ▶ 실행을 다시 누르면 이어서 갑니다. —";
+        return Promise.resolve();
+      }
+
+      var span = st.steps[st.at];
+      var chunk = st.lines.slice(span[0] - 1, span[1]).join("\n");
+      return runInSession(st.ns, chunk, span[0], function (s) {
+        if (s) IDE.showProgress(s);
+        else if (isPythonReady()) IDE.hideProgress();
+      }).then(function (r) {
+        var printed = (r.output || "").trim();
+        if (printed) st.output += (st.output ? "\n" : "") + printed;
+        out.textContent = st.output;
+
+        if (!r.ok) {
+          out.className = "out bad";
+          out.textContent = (st.output ? st.output + "\n" : "") + r.error;
+          st.at = st.steps.length; // 멈춘 자리에서 더 가지 않는다
+          IDE.lastRun = { path: st.path, ok: false, output: st.output };
+          if (IDE.onRun) IDE.onRun(st.path, IDE.lastRun);
+          return;
+        }
+
+        out.className = "out ok";
+        st.at += 1;
+        done += 1;
+        IDE.drawStripeOnly();
+
+        if (st.at >= st.steps.length) {
+          IDE.lastRun = { path: st.path, ok: true, output: st.output };
+          if (IDE.onRun) IDE.onRun(st.path, IDE.lastRun);
+          return;
+        }
+        if (IDE.onChange) IDE.onChange(); // 진행 상황을 대본이 볼 수 있게
+        return one();
+      });
+    }
+
+    return one();
+  },
+
+  // 실행 중에도 현재 줄 표시만 가볍게 갱신한다.
+  drawStripeOnly: function () {
+    var st = IDE.stepper;
+    if (!st) return;
+    var wrap = IDE.root.querySelector('.editor-wrap[data-path="' + st.path + '"]');
+    if (wrap) IDE.drawGutter(wrap, st.path);
+    var state = IDE.q(".run-state");
+    if (state) {
+      state.textContent = st.at >= st.steps.length ? "끝까지 실행됨" : st.at + " / " + st.steps.length + " 문장";
+    }
   },
 
   // 실제 내려받는 양을 알 수 없어 시간 기준으로 채우고, 끝나면 한 번에 100%로 맞춘다.

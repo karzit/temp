@@ -1,8 +1,7 @@
-// 1장 — 라이브러리 사용법. 업무 보조 3건을 처리하며 NumPy와 Pandas를 손에 익힌다.
+// 1장 — NumPy. 업무 보조 3건으로 배열의 전체 그림을 잡는다.
 //
-// 순서는 항상 같다: 사용법을 먼저 배우고(연습 파일을 실행해 결과를 눈으로 본다),
-// 그 다음에 그것으로 실제 의뢰를 처리한다.
-// 배운 함수는 work/참고/ 아래 문서로 남아서 언제든 다시 열어볼 수 있다.
+// 연습 파일은 한꺼번에 돌리지 않는다. ↓ 한 줄 로 문장 하나씩 실행하고,
+// 그때마다 Aistb가 방금 나온 출력을 짚어준다. 설명이 결과보다 앞서지 않게 하기 위해서다.
 
 // 제출한 파일을 실제로 돌려서 채점한다. 통과면 null, 아니면 그 이유를 돌려준다.
 function checkFile(path, checkCode) {
@@ -18,17 +17,16 @@ function checkFile(path, checkCode) {
     });
 }
 
-// 연습 파일을 고치지 않고 그대로 실행했는지 본다.
-function ranFile(path) {
+// 그 파일에서 n번째 문장까지 실행했는가.
+function steppedTo(path, n) {
   return function () {
-    var r = IDE.lastRun;
-    return !!r && r.ok && r.path === path;
+    return IDE.stepAt(path) >= n;
   };
 }
 
 var CH01 = {
   id: "ch01",
-  title: "1 · 라이브러리 사용법",
+  title: "1 · 배열 다루기",
   scenes: ["desk", "diary"],
 
   desk: {
@@ -50,25 +48,26 @@ var CH01 = {
       {
         lines: [
           { who: "Aistb", text: "좋은 아침입니다, 깁스텁님. 출근 확인되었습니다." },
-          { who: "Aistb", text: "어제 배우신 조작은 손에 익으셨을 겁니다. 오늘부터는 도구를 배우십니다." },
           { who: "Aistb", text: "오늘 배정된 업무는 업무 보조 3건입니다." },
-          { who: "Aistb", text: "한 건씩 드리겠습니다. 다만 의뢰를 드리기 전에, 그 일에 필요한 도구 사용법을 먼저 익히시게 됩니다." },
+          {
+            who: "Aistb",
+            text: "세 건 모두 NumPy 라는 도구 하나로 처리합니다. 한 건씩 드리되, 필요한 사용법을 먼저 익히신 뒤에 드리겠습니다.",
+          },
         ],
       },
       {
         lines: [
-          { who: "Aistb", text: "첫 번째 업무에 필요한 것은 NumPy 입니다." },
-          { who: "Aistb", text: "숫자 다섯 개를 담는 것은 파이썬 리스트로도 됩니다. 다만 리스트에 2를 곱하면 값이 두 배가 되는 것이 아니라 목록이 두 번 이어 붙습니다." },
-          { who: "Aistb", text: "NumPy 가 주는 배열은 담는 방식은 비슷한데 계산이 다릅니다. 그 차이를 먼저 보시겠습니다." },
+          { who: "Aistb", text: "NumPy 는 숫자 계산을 위한 도구입니다." },
+          {
+            who: "Aistb",
+            text: "숫자 다섯 개를 담는 것은 파이썬 리스트로도 됩니다. 다만 리스트에 2를 곱하면 값이 두 배가 되는 것이 아니라 목록이 두 번 이어 붙습니다.",
+          },
+          { who: "Aistb", text: "말로 듣는 것보다 보시는 편이 빠릅니다. 연습 파일을 넣어 두겠습니다." },
         ],
       },
 
-      // ── NumPy 사용법 (1차원) ────────────────────────
+      // ── 연습 1: 배열이란 ────────────────────────────
       {
-        lines: [
-          { who: "Aistb", text: "왼쪽 탐색기에 참고 문서와 연습 파일을 넣어 두었습니다. 참고 문서는 오른쪽 화면에 펼쳐 두었습니다." },
-          { who: "Aistb", text: "참고 문서에는 오늘 쓰실 함수가 정리되어 있습니다. 외우실 필요 없습니다. 필요할 때 열어보시면 됩니다." },
-        ],
         addFiles: [
           {
             path: "work/참고/numpy_요약.md",
@@ -77,13 +76,13 @@ var CH01 = {
             content:
               "# NumPy 요약\n" +
               "\n" +
-              "import numpy as np 로 가져옵니다. 아래에서 arr 는 배열, m 은 표 모양 배열입니다.\n" +
+              "import numpy as np 로 가져옵니다. arr 는 한 줄짜리 배열, m 은 표 모양 배열입니다.\n" +
               "\n" +
               "## 만들기\n" +
               "np.array(리스트) — 리스트를 배열로 바꿉니다.\n" +
               "np.array([[1, 2], [3, 4]]) — 리스트 안에 리스트를 넣으면 표 모양이 됩니다.\n" +
               "\n" +
-              "## 계산 (전부 값 하나하나에 적용됩니다)\n" +
+              "## 계산 (값 하나하나에 적용됩니다)\n" +
               "arr * 2 — 모든 값에 2를 곱합니다.\n" +
               "arr + 10 — 모든 값에 10을 더합니다.\n" +
               "arr1 + arr2 — 같은 자리끼리 더합니다.\n" +
@@ -92,9 +91,11 @@ var CH01 = {
               "len(arr) — 값이 몇 개인지.\n" +
               "arr.shape — 생김새. 한 줄이면 (5,), 표 모양이면 (줄, 칸).\n" +
               "\n" +
-              "## 꺼내기\n" +
-              "arr[0] — 0번째 값 하나. 번호는 0부터 셉니다.\n" +
+              "## 꺼내기 (번호는 0부터)\n" +
+              "arr[0] — 0번째 값 하나.\n" +
+              "arr[-1] — 맨 끝 값. 음수는 뒤에서부터 셉니다.\n" +
               "arr[1:3] — 1번부터 2번까지. 끝 번호는 포함하지 않습니다.\n" +
+              "arr[-3:] — 뒤에서 세 개.\n" +
               "m[0] — 0번 줄 전체.\n" +
               "m[:, 1] — 1번 칸 전체(세로). 쉼표 앞이 줄, 뒤가 칸이고 : 는 전부라는 뜻입니다.\n" +
               "m[1, 2] — 1번 줄 2번 칸의 값 하나.\n" +
@@ -103,98 +104,91 @@ var CH01 = {
               "arr.sum() — 합계\n" +
               "arr.mean() — 평균\n" +
               "arr.max() / arr.min() — 가장 큰 값 / 작은 값\n" +
-              "m.mean(axis=0) — 칸별 평균(세로로 계산). axis=1 이면 줄별 평균.\n",
+              "arr.argmax() — 가장 큰 값이 몇 번째 자리인지\n" +
+              "m.mean(axis=0) — 칸별 평균(세로). axis=1 이면 줄별 평균(가로).\n",
           },
           {
-            path: "work/연습/numpy_1차원.py",
-            open: true,
+            path: "work/연습/01_배열이란.py",
+            open: 0,
             content:
               "import numpy as np\n" +
               "\n" +
               "nums = [3, 1, 4, 1, 5]\n" +
-              "arr = np.array(nums)          # 리스트 -> 배열\n" +
+              'print("리스트에 2를 곱하면:", nums * 2)\n' +
               "\n" +
-              'print("리스트 :", nums)\n' +
-              'print("배열   :", arr)\n' +
+              "arr = np.array(nums)\n" +
+              'print("배열로 바꾸면    :", arr)\n' +
+              'print("배열에 2를 곱하면:", arr * 2)\n' +
               "\n" +
-              'print("곱하기 :", arr * 2)\n' +
-              'print("더하기 :", arr + 10)\n' +
-              'print("배열끼리:", arr + np.array([10, 20, 30, 40, 50]))\n' +
-              "\n" +
-              'print("개수   :", len(arr))\n' +
-              'print("생김새 :", arr.shape)\n' +
-              "\n" +
-              'print("첫 번째:", arr[0])\n' +
-              'print("1~2번  :", arr[1:3])\n' +
-              "\n" +
-              'print("합계   :", arr.sum())\n' +
-              'print("평균   :", arr.mean())\n' +
-              'print("최대   :", arr.max(), " 최소:", arr.min())\n',
+              'print("10을 더하면      :", arr + 10)\n' +
+              'print("배열끼리 더하면  :", arr + np.array([10, 20, 30, 40, 50]))\n',
           },
         ],
-        spot: '.tree-row[data-path="work/참고/numpy_요약.md"]',
-      },
-      {
         lines: [
-          { who: "Aistb", text: "연습 파일에는 배울 것이 전부 적혀 있습니다. 고치지 마시고 그대로 한 번 실행해 주세요." },
-          { who: "Aistb", text: "결과를 보면서 하나씩 설명드리겠습니다." },
+          { who: "Aistb", text: "이 파일은 한꺼번에 돌리지 마십시오. 문장 하나씩 실행하면서 보시겠습니다." },
+          {
+            who: "Aistb",
+            text: "아래의 ↓ 한 줄 버튼입니다. 한 번 누를 때마다 문장 하나가 실행되고, 다음에 실행될 줄이 왼쪽에 파랗게 표시됩니다.",
+            spot: ".step",
+          },
+          { who: "Aistb", text: "세 번 눌러 주세요. 리스트에 2를 곱한 결과가 나올 때까지입니다." },
         ],
-        spot: ".run",
-        nudge: "왼쪽에 열린 numpy_1차원.py 를 고르고 아래의 ▶ 실행을 누르세요.",
-        wait: ranFile("work/연습/numpy_1차원.py"),
+        nudge: "아래의 ↓ 한 줄 버튼을 눌러 보세요.",
+        wait: steppedTo("work/연습/01_배열이란.py", 3),
       },
       {
-        show: [{ path: "work/참고/numpy_요약.md", pane: 1 }],
         lines: [
           {
             who: "Aistb",
-            text: "np.array 는 리스트를 배열로 바꿉니다. 출력을 보시면 리스트는 값 사이에 쉼표가 있고 배열은 없습니다. 이것이 눈으로 구별하는 방법입니다.",
+            text: "보신 그대로입니다. 리스트에 곱하기는 계산이 아니라 목록을 두 번 이어 붙이는 것입니다. 값은 하나도 변하지 않았습니다.",
+          },
+          { who: "Aistb", text: "이제 같은 숫자를 배열로 바꿔 보겠습니다. 두 번 더 눌러 주세요." },
+        ],
+        spot: ".step",
+        nudge: "↓ 한 줄 을 두 번 더 누르시면 배열이 출력됩니다.",
+        wait: steppedTo("work/연습/01_배열이란.py", 5),
+      },
+      {
+        lines: [
+          {
+            who: "Aistb",
+            text: "출력을 비교해 보십시오. 리스트는 값 사이에 쉼표가 있고 배열은 없습니다. 눈으로 구별하는 방법입니다.",
             spot: { text: "np.array(리스트)", in: ".doc" },
           },
-          {
-            who: "Aistb",
-            text: "배열에 2를 곱하면 다섯 개 전부에 곱해집니다. 10을 더해도 마찬가지입니다. 하나씩 세지 않습니다.",
-            spot: { text: "arr * 2", in: ".doc" },
-          },
-          {
-            who: "Aistb",
-            text: "배열끼리 더하면 같은 자리끼리 더해집니다. 3+10, 1+20, 이런 식입니다.",
-            spot: { text: "arr1 + arr2", in: ".doc" },
-          },
+          { who: "Aistb", text: "한 번 더 누르시면 이 배열에 2를 곱합니다." },
         ],
+        wait: steppedTo("work/연습/01_배열이란.py", 6),
       },
       {
-        show: [{ path: "work/참고/numpy_요약.md", pane: 1 }],
         lines: [
           {
             who: "Aistb",
-            text: "len 은 값이 몇 개인지, shape 는 생김새입니다. 한 줄짜리라 (5,) 로 나왔습니다. 뒤에 표 모양을 다룰 때 다시 보시게 됩니다.",
-            spot: { text: "arr.shape", in: ".doc" },
+            text: "여섯, 둘, 여덟, 둘, 열. 다섯 개 전부에 곱해졌습니다. 이것이 리스트와 다른 점이고, 오늘 세 건을 처리하는 근거입니다.",
+            spot: { text: "arr * 2", in: ".doc" },
+          },
+          { who: "Aistb", text: "남은 두 줄은 ▶ 실행으로 한 번에 보시죠. 중단점이 없으면 끝까지 갑니다." },
+        ],
+        spot: ".run",
+        nudge: "▶ 실행을 누르면 남은 문장이 끝까지 실행됩니다.",
+        wait: steppedTo("work/연습/01_배열이란.py", 8),
+      },
+      {
+        lines: [
+          {
+            who: "Aistb",
+            text: "더하기도 같습니다. 그리고 배열끼리 더하면 같은 자리끼리 더해집니다. 3+10, 1+20, 이런 식입니다.",
+            spot: { text: "arr1 + arr2", in: ".doc" },
           },
           {
             who: "Aistb",
-            text: "값 하나를 꺼낼 때는 arr[0]. 번호는 0부터 셉니다. 첫 번째가 0번입니다.",
-            spot: { text: "arr[0]", in: ".doc" },
-          },
-          {
-            who: "Aistb",
-            text: "여러 개를 꺼낼 때는 arr[1:3]. 1번부터 2번까지입니다. 끝 번호 3은 포함하지 않습니다. 이 규칙은 파이썬 전체에서 같습니다.",
-            spot: { text: "arr[1:3]", in: ".doc" },
-          },
-          {
-            who: "Aistb",
-            text: "sum, mean, max, min 은 배열 전체를 숫자 하나로 줄입니다. 뒤에 괄호를 붙이는 것을 잊지 마세요.",
-            spot: { text: "arr.mean()", in: ".doc" },
+            text: "숫자 하나가 배열 전체로 퍼지는 것을 브로드캐스팅이라고 부릅니다. 이름은 그런가 보다 하고 넘기셔도 됩니다.",
           },
         ],
       },
 
       // ── 의뢰 1 ──────────────────────────────────────
       {
-        lines: [
-          { who: "Aistb", text: "여기까지가 첫 번째 도구입니다. 이제 실제 업무로 해보시겠습니다." },
-          { who: "Aistb", text: "첫 번째 의뢰가 도착했습니다. 의뢰서와 작업 파일을 함께 넣어 두었습니다." },
-        ],
+        lines: [{ who: "Aistb", text: "첫 번째 의뢰가 도착했습니다. 의뢰서와 작업 파일을 함께 넣어 두었습니다." }],
         addFiles: [
           {
             path: "work/의뢰_0002.md",
@@ -216,12 +210,11 @@ var CH01 = {
               "work/task_02/fee.py 의 fee 를 채우고 실행한 뒤 완료 보고.\n" +
               "\n" +
               "## 참고\n" +
-              "다섯 건을 하나씩 계산하지 마세요. 배열에 곱하기와 더하기를 한 번씩 하면 끝납니다.\n" +
-              "함수가 기억나지 않으면 work/참고/numpy_요약.md 를 여세요.\n",
+              "다섯 건을 하나씩 계산하지 마세요. 곱하기 한 번과 더하기 한 번이면 끝납니다.\n",
           },
           {
             path: "work/task_02/fee.py",
-            open: true,
+            open: 0,
             content:
               "import numpy as np\n" +
               "\n" +
@@ -246,13 +239,12 @@ var CH01 = {
         lines: [
           {
             who: "Aistb",
-            text: "거리 1km당 1500원, 기본요금 2000원. 방금 배우신 곱하기와 더하기 그대로입니다.",
+            text: "방금 배우신 곱하기와 더하기 그대로입니다. fee 를 채우고 실행한 뒤 완료 보고해 주세요.",
             spot: { text: "거리 1km당 1500원", in: ".doc" },
           },
-          { who: "Aistb", text: "fee 를 채우고 실행한 뒤 완료 보고해 주세요." },
         ],
         menu: ["brief", "report"],
-        nudge: "distance 에 1500을 곱하고 2000을 더하시면 됩니다. 끝나면 완료 보고입니다.",
+        nudge: "distance 에 1500을 곱하고 2000을 더하시면 됩니다.",
         report: function () {
           return checkFile(
             "work/task_02/fee.py",
@@ -261,77 +253,110 @@ var CH01 = {
               "assert not isinstance(fee, type(Ellipsis)), 'fee 가 아직 ... 그대로입니다.'\n" +
               "want = distance * 1500 + 2000\n" +
               "assert np.shape(fee) == np.shape(want), f'fee 가 다섯 건이 아닙니다. 지금은 {np.shape(fee)} 입니다. 배열 전체에 한 번에 계산하면 다섯 개가 그대로 나옵니다.'\n" +
-              "assert np.allclose(fee, want), f'값이 다릅니다. 지금 {np.asarray(fee)} 인데 {want} 가 나와야 합니다. 1500을 곱하고 2000을 더했는지 보세요.'\n"
+              "assert np.allclose(fee, want), f'값이 다릅니다. 지금 {np.asarray(fee)} 인데 {want} 가 나와야 합니다.'\n"
           );
         },
         wait: function (ctx) {
           return ctx.reported;
         },
       },
-      {
-        lines: [
-          { who: "Aistb", text: "접수했습니다. 곱하기 한 번, 더하기 한 번으로 다섯 건이 전부 계산되었습니다." },
-        ],
-      },
+      { lines: [{ who: "Aistb", text: "접수했습니다. 곱하기 한 번, 더하기 한 번으로 다섯 건이 끝났습니다." }] },
 
-      // ── NumPy 사용법 (표 모양) ──────────────────────
+      // ── 연습 2: 꺼내기와 줄이기 ─────────────────────
       {
         lines: [
-          { who: "Aistb", text: "다음 의뢰에는 숫자가 한 줄이 아니라 표 모양으로 들어옵니다." },
-          { who: "Aistb", text: "표를 다루는 법을 먼저 익히시겠습니다. 연습 파일을 하나 더 넣었습니다. 그대로 실행해 주세요." },
+          { who: "Aistb", text: "두 번째 의뢰는 배열에서 필요한 부분만 꺼내는 일입니다. 그것부터 익히시겠습니다." },
+          { who: "Aistb", text: "이번에는 다른 방법을 알려드리겠습니다. 중단점입니다." },
+          {
+            who: "Aistb",
+            text: "왼쪽 줄 번호를 누르면 빨간 점이 생깁니다. ▶ 실행을 누르면 그 줄 앞에서 멈춥니다. 한 줄씩 누르지 않아도 원하는 곳까지 한 번에 갈 수 있습니다.",
+          },
+          { who: "Aistb", text: "연습 파일의 8번 줄에 중단점을 찍어 주세요." },
         ],
         addFiles: [
           {
-            path: "work/연습/numpy_표.py",
-            open: true,
+            path: "work/연습/02_꺼내기.py",
+            open: 0,
             content:
               "import numpy as np\n" +
               "\n" +
-              "# 리스트 안에 리스트를 넣으면 표 모양이 된다\n" +
-              "m = np.array([[12, 30, 41,  9],\n" +
-              "              [15, 28, 44, 11],\n" +
-              "              [10, 33, 39,  7]])\n" +
+              "counts = np.array([12, 30, 41, 9, 22, 35])   # 엿새치 배달 건수\n" +
               "\n" +
-              'print("생김새      :", m.shape)\n' +
-              'print("0번 줄      :", m[0])\n' +
-              'print("1번 칸      :", m[:, 1])\n' +
-              'print("1번 줄 2번 칸:", m[1, 2])\n' +
+              'print("개수   :", len(counts))\n' +
+              'print("생김새 :", counts.shape)\n' +
               "\n" +
-              'print("전체 평균   :", m.mean())\n' +
-              'print("칸별 평균   :", m.mean(axis=0))\n',
+              'print("첫 번째     :", counts[0])\n' +
+              'print("맨 끝       :", counts[-1])\n' +
+              'print("1~2번       :", counts[1:3])\n' +
+              'print("뒤에서 세 개:", counts[-3:])\n' +
+              "\n" +
+              'print("합계        :", counts.sum())\n' +
+              'print("평균        :", counts.mean())\n' +
+              'print("가장 큰 값  :", counts.max())\n' +
+              'print("그 값의 자리:", counts.argmax())\n',
           },
         ],
-        spot: ".run",
-        nudge: "numpy_표.py 를 열고 ▶ 실행을 누르세요.",
-        wait: ranFile("work/연습/numpy_표.py"),
+        nudge: "왼쪽 줄 번호 8을 눌러 보세요. 빨간 점이 생깁니다.",
+        wait: function () {
+          return IDE.hasBreakpoint("work/연습/02_꺼내기.py", 8);
+        },
       },
       {
-        show: [{ path: "work/참고/numpy_요약.md", pane: 1 }],
+        lines: [{ who: "Aistb", text: "좋습니다. 이제 ▶ 실행을 누르시면 그 앞까지만 실행됩니다." }],
+        spot: ".run",
+        nudge: "▶ 실행을 누르면 중단점 앞에서 멈춥니다.",
+        wait: steppedTo("work/연습/02_꺼내기.py", 4),
+      },
+      {
         lines: [
           {
             who: "Aistb",
-            text: "shape 가 (3, 4) 로 나왔습니다. 3줄 4칸이라는 뜻입니다. 줄 수가 먼저 옵니다.",
+            text: "len 은 값이 몇 개인지, shape 는 생김새입니다. 한 줄짜리라 쉼표 뒤가 비어 있습니다. 줄이 하나뿐이라는 뜻입니다.",
             spot: { text: "arr.shape", in: ".doc" },
           },
+          { who: "Aistb", text: "여기서부터가 꺼내는 방법입니다. ▶ 실행을 다시 누르시면 중단점 다음부터 이어서 갑니다." },
+        ],
+        nudge: "▶ 실행을 다시 누르면 이어서 갑니다.",
+        wait: steppedTo("work/연습/02_꺼내기.py", 8),
+      },
+      {
+        lines: [
           {
             who: "Aistb",
-            text: "m[0] 은 0번 줄 전체입니다. 가로 한 줄이 통째로 나옵니다.",
-            spot: { text: "m[0]", in: ".doc" },
+            text: "counts[0] 은 첫 번째 값입니다. 번호는 0부터 셉니다.",
+            spot: { text: "arr[0]", in: ".doc" },
           },
           {
             who: "Aistb",
-            text: "m[:, 1] 은 1번 칸 전체입니다. 쉼표 앞이 줄, 뒤가 칸입니다. 앞의 : 는 모든 줄이라는 뜻이라 세로로 뽑힙니다.",
-            spot: { text: "m[:, 1]", in: ".doc" },
+            text: "counts[-1] 은 맨 끝입니다. 음수는 뒤에서부터 세는 표시라, 개수를 몰라도 마지막을 집을 수 있습니다.",
+            spot: { text: "arr[-1]", in: ".doc" },
           },
           {
             who: "Aistb",
-            text: "쉼표 양쪽에 번호를 다 쓰면 값 하나입니다. m[1, 2] 는 1번 줄 2번 칸입니다.",
-            spot: { text: "m[1, 2]", in: ".doc" },
+            text: "counts[1:3] 은 1번부터 2번까지입니다. 끝 번호 3은 포함하지 않습니다. 이 규칙은 파이썬 전체에서 같습니다.",
+            spot: { text: "arr[1:3]", in: ".doc" },
           },
           {
             who: "Aistb",
-            text: "mean() 은 표 전체의 평균입니다. axis=0 을 넣으면 칸별로, axis=1 을 넣으면 줄별로 평균을 냅니다.",
-            spot: { text: "m.mean(axis=0)", in: ".doc" },
+            text: "counts[-3:] 은 뒤에서 세 개입니다. 앞을 비우면 처음부터, 뒤를 비우면 끝까지라는 뜻입니다.",
+            spot: { text: "arr[-3:]", in: ".doc" },
+          },
+          { who: "Aistb", text: "남은 네 줄도 마저 실행해 주세요." },
+        ],
+        spot: ".run",
+        wait: steppedTo("work/연습/02_꺼내기.py", 12),
+      },
+      {
+        lines: [
+          {
+            who: "Aistb",
+            text: "sum, mean, max 는 배열 전체를 숫자 하나로 줄입니다. 뒤에 괄호를 붙이는 것을 잊지 마십시오.",
+            spot: { text: "arr.mean()", in: ".doc" },
+          },
+          {
+            who: "Aistb",
+            text: "argmax 는 조금 다릅니다. 가장 큰 값이 아니라 그 값이 몇 번째 자리인지를 알려줍니다. 41이 가장 큰데 2가 나온 것은 그래서입니다.",
+            spot: { text: "arr.argmax()", in: ".doc" },
           },
         ],
       },
@@ -345,38 +370,37 @@ var CH01 = {
             readOnly: true,
             kind: "brief",
             content:
-              "# 의뢰 0003 — 점심 시간대 배달량 확인\n" +
+              "# 의뢰 0003 — 최근 사흘 배달량 보고\n" +
               "\n" +
               "발신: 배차 2팀\n" +
               "수신: 아이비 W 깁스텁\n" +
               "\n" +
               "## 상황\n" +
-              "사흘치 배달 건수 기록입니다.\n" +
-              "줄 하나가 하루이고, 칸은 왼쪽부터 오전 / 점심 / 저녁 / 야간입니다.\n" +
+              "최근 이레치 배달 건수입니다. 앞에서부터 하루씩 늘어놓은 순서입니다.\n" +
               "\n" +
               "## 할 일\n" +
-              "점심 칸만 사흘치로 뽑고(lunch), 그 평균(avg)을 구해 주세요.\n" +
-              "work/task_03/log.py 를 채우고 실행한 뒤 완료 보고.\n" +
+              "- recent : 최근 사흘치 건수\n" +
+              "- avg    : 그 사흘의 평균\n" +
+              "- best   : 이레 가운데 가장 바쁜 날이 몇 번째 날인지 (0부터 셉니다)\n" +
+              "\n" +
+              "work/task_03/report.py 를 채우고 실행한 뒤 완료 보고.\n" +
               "\n" +
               "## 참고\n" +
-              "번호는 0부터 세므로 점심은 1번 칸입니다.\n" +
-              "칸을 세로로 뽑는 법과 평균 내는 법은 work/참고/numpy_요약.md 에 있습니다.\n",
+              "뒤에서 세는 방법과 자리를 알려주는 함수가 work/참고/numpy_요약.md 에 있습니다.\n",
           },
           {
-            path: "work/task_03/log.py",
-            open: true,
+            path: "work/task_03/report.py",
+            open: 0,
             content:
               "import numpy as np\n" +
               "\n" +
-              "# 줄 = 하루, 칸 = 오전 / 점심 / 저녁 / 야간\n" +
-              "log = np.array([[12, 30, 41,  9],\n" +
-              "                [15, 28, 44, 11],\n" +
-              "                [10, 33, 39,  7]])\n" +
+              "counts = np.array([31, 45, 28, 52, 39, 47, 33])   # 최근 이레치 배달 건수\n" +
               "\n" +
-              "lunch = ...   # 점심 칸만 세로로\n" +
-              "avg = ...     # 그 평균\n" +
+              "recent = ...   # 최근 사흘치\n" +
+              "avg = ...      # 그 평균\n" +
+              "best = ...     # 가장 바쁜 날이 몇 번째 날인지\n" +
               "\n" +
-              "print(lunch, avg)\n",
+              "print(recent, avg, best)\n",
           },
         ],
         spot: '.tree-row[data-path="work/의뢰_0003.md"]',
@@ -389,151 +413,103 @@ var CH01 = {
         },
       },
       {
-        lines: [
-          {
-            who: "Aistb",
-            text: "점심은 왼쪽에서 두 번째이니 1번 칸입니다. 방금 연습하신 그대로 하시면 됩니다.",
-            spot: { text: "번호는 0부터 세므로", in: ".doc" },
-          },
-        ],
+        lines: [{ who: "Aistb", text: "세 가지 모두 방금 연습한 것 안에 있습니다. 채우고 실행한 뒤 완료 보고해 주세요." }],
         menu: ["brief", "report"],
-        nudge: "lunch 는 log[:, 1], avg 는 그 뒤에 .mean() 을 붙이면 됩니다.",
+        nudge: "뒤에서 세 개는 counts[-3:], 자리는 argmax 입니다.",
         report: function () {
           return checkFile(
-            "work/task_03/log.py",
+            "work/task_03/report.py",
             "import numpy as np\n" +
-              "assert not isinstance(lunch, type(Ellipsis)), 'lunch 가 아직 ... 그대로입니다.'\n" +
-              "assert not isinstance(avg, type(Ellipsis)), 'avg 가 아직 ... 그대로입니다.'\n" +
-              "want = log[:, 1]\n" +
-              "assert np.shape(lunch) == np.shape(want), f'lunch 가 사흘치 세 개가 아닙니다. 지금은 {np.shape(lunch)} 입니다. 쉼표 앞이 줄, 뒤가 칸입니다.'\n" +
-              "assert np.array_equal(lunch, want), f'lunch 가 {np.asarray(lunch)} 입니다. 점심은 1번 칸이므로 {want} 가 나와야 합니다.'\n" +
-              "assert abs(float(avg) - float(want.mean())) < 1e-9, f'avg 가 {avg} 입니다. lunch 의 평균인 {want.mean():.4f} 가 나와야 합니다.'\n"
+              "for _n in ['recent', 'avg', 'best']:\n" +
+              "    assert _n in dir(), f'{_n} 가 없습니다. 변수 이름을 그대로 두셔야 합니다.'\n" +
+              "    assert not isinstance(eval(_n), type(Ellipsis)), f'{_n} 가 아직 ... 그대로입니다.'\n" +
+              "want = counts[-3:]\n" +
+              "assert np.shape(recent) == (3,), f'recent 가 사흘치 세 개가 아닙니다. 지금은 {np.shape(recent)} 입니다.'\n" +
+              "assert np.array_equal(recent, want), f'recent 가 {np.asarray(recent)} 입니다. 최근 사흘은 {want} 입니다. 뒤에서 세는 방법을 보세요.'\n" +
+              "assert abs(float(avg) - float(want.mean())) < 1e-9, f'avg 가 {avg} 입니다. recent 의 평균인 {want.mean():.4f} 가 나와야 합니다.'\n" +
+              "assert int(best) == int(counts.argmax()), f'best 가 {best} 입니다. 가장 바쁜 날은 {int(counts.argmax())}번째 날입니다. 값이 아니라 자리를 구하셔야 합니다.'\n"
           );
         },
         wait: function (ctx) {
           return ctx.reported;
         },
       },
-      { lines: [{ who: "Aistb", text: "접수했습니다. 표에서 필요한 부분만 꺼내는 것, 이것이 두 번째입니다." }] },
+      { lines: [{ who: "Aistb", text: "접수했습니다. 필요한 부분만 꺼내는 것, 이것이 두 번째입니다." }] },
 
-      // ── Pandas 사용법 ───────────────────────────────
+      // ── 연습 3: 표 모양 ─────────────────────────────
       {
         lines: [
-          { who: "Aistb", text: "마지막 자료에는 숫자만 있는 것이 아니라 사람 이름이 섞여 있습니다." },
-          { who: "Aistb", text: "NumPy 배열은 숫자를 담는 그릇입니다. 글자가 섞이면 Pandas 를 씁니다." },
-          { who: "Aistb", text: "Pandas 요약과 연습 파일을 넣었습니다. 연습 파일을 그대로 실행해 주세요. 처음이라 가져오는 데 잠깐 걸립니다." },
+          { who: "Aistb", text: "마지막 의뢰에는 숫자가 한 줄이 아니라 표 모양으로 들어옵니다." },
+          { who: "Aistb", text: "연습 파일을 넣었습니다. 세 번 눌러 표의 생김새까지 확인해 주세요." },
         ],
         addFiles: [
           {
-            path: "work/참고/pandas_요약.md",
-            readOnly: true,
-            open: 1,
+            path: "work/연습/03_표모양.py",
+            open: 0,
             content:
-              "# Pandas 요약\n" +
+              "import numpy as np\n" +
               "\n" +
-              "import pandas as pd 로 가져옵니다. 아래에서 df 는 표입니다.\n" +
-              "표의 세로 한 칸을 열이라고 부르고, 열마다 이름이 붙어 있습니다.\n" +
+              "# 리스트 안에 리스트를 넣으면 표 모양이 된다\n" +
+              "log = np.array([[12, 30, 41,  9],\n" +
+              "                [15, 28, 44, 11],\n" +
+              "                [10, 33, 39,  7]])\n" +
               "\n" +
-              "## 만들기와 훑어보기\n" +
-              "pd.DataFrame(딕셔너리) — 열 이름과 값 목록으로 표를 만듭니다.\n" +
-              "df.head(3) — 앞에서 세 줄만 봅니다. 표가 길 때 씁니다.\n" +
+              'print("생김새        :", log.shape)\n' +
+              'print("0번 줄        :", log[0])\n' +
+              'print("1번 칸        :", log[:, 1])\n' +
+              'print("1번 줄 2번 칸 :", log[1, 2])\n' +
               "\n" +
-              "## 열 고르기\n" +
-              'df["count"] — count 열 하나. 한 줄로 세워진 값 목록이 나옵니다(Series).\n' +
-              'df[["name", "count"]] — 두 열. 대괄호가 두 겹이면 결과도 표입니다.\n' +
-              "\n" +
-              "## 조건으로 줄 고르기\n" +
-              'df["count"] >= 30 — 줄마다 참/거짓이 나옵니다.\n' +
-              'df[df["count"] >= 30] — 그 참/거짓을 다시 대괄호에 넣으면 참인 줄만 남습니다.\n' +
-              "\n" +
-              "## 계산\n" +
-              'df["count"].mean() — 그 열의 평균. sum() max() min() 도 같습니다.\n' +
-              'df.groupby("team") — team 이 같은 것끼리 묶습니다.\n' +
-              'df.groupby("team")["count"].mean() — 묶은 뒤 count 열의 평균. 팀마다 한 줄씩 나옵니다.\n',
+              'print("전체 평균     :", log.mean())\n' +
+              'print("칸별 평균     :", log.mean(axis=0))\n' +
+              'print("줄별 평균     :", log.mean(axis=1))\n',
+          },
+        ],
+        spot: ".step",
+        nudge: "↓ 한 줄 을 세 번 누르시면 생김새가 나옵니다.",
+        wait: steppedTo("work/연습/03_표모양.py", 3),
+      },
+      {
+        lines: [
+          {
+            who: "Aistb",
+            text: "3줄 4칸이라는 뜻이고, 줄 수가 먼저 옵니다. 표를 받으면 가장 먼저 확인하실 것입니다.",
+            spot: { text: "np.array([[1, 2], [3, 4]])", in: ".doc" },
+          },
+          { who: "Aistb", text: "이제 꺼내는 세 가지입니다. 세 번 더 눌러 주세요." },
+        ],
+        spot: ".step",
+        wait: steppedTo("work/연습/03_표모양.py", 6),
+      },
+      {
+        lines: [
+          {
+            who: "Aistb",
+            text: "log[0] 은 0번 줄 전체입니다. 가로 한 줄이 통째로 나옵니다.",
+            spot: { text: "m[0]", in: ".doc" },
           },
           {
-            path: "work/연습/pandas_기초.py",
-            open: true,
-            content:
-              "import pandas as pd\n" +
-              "\n" +
-              "df = pd.DataFrame({\n" +
-              '    "name":  ["가온", "노을", "다움", "라온", "마루"],\n' +
-              '    "count": [41, 22, 35, 30, 18],\n' +
-              '    "team":  ["A", "B", "A", "B", "A"],\n' +
-              "})\n" +
-              "\n" +
-              'print("[표 전체]")\n' +
-              "print(df)\n" +
-              "\n" +
-              'print("\\n[앞에서 세 줄]")\n' +
-              "print(df.head(3))\n" +
-              "\n" +
-              'print("\\n[count 열 하나]")\n' +
-              'print(df["count"])\n' +
-              "\n" +
-              'print("\\n[두 열만]")\n' +
-              'print(df[["name", "count"]])\n' +
-              "\n" +
-              'print("\\n[조건: count가 30 이상인가]")\n' +
-              'print(df["count"] >= 30)\n' +
-              "\n" +
-              'print("\\n[조건에 맞는 줄만]")\n' +
-              'print(df[df["count"] >= 30])\n' +
-              "\n" +
-              'print("\\n[count 평균]", df["count"].mean())\n' +
-              "\n" +
-              'print("\\n[팀별 평균]")\n' +
-              'print(df.groupby("team")["count"].mean())\n',
+            who: "Aistb",
+            text: "log[:, 1] 은 1번 칸 전체입니다. 쉼표 앞이 줄, 뒤가 칸이고, 앞의 : 는 모든 줄이라는 뜻이라 세로로 뽑힙니다.",
+            spot: { text: "m[:, 1]", in: ".doc" },
           },
+          {
+            who: "Aistb",
+            text: "쉼표 양쪽에 번호를 다 쓰면 값 하나입니다. log[1, 2] 는 1번 줄 2번 칸입니다.",
+            spot: { text: "m[1, 2]", in: ".doc" },
+          },
+          { who: "Aistb", text: "남은 세 줄은 ▶ 실행으로 한 번에 보시죠." },
         ],
         spot: ".run",
-        nudge: "pandas_기초.py 를 열고 ▶ 실행을 누르세요.",
-        wait: ranFile("work/연습/pandas_기초.py"),
+        wait: steppedTo("work/연습/03_표모양.py", 9),
       },
       {
-        show: [{ path: "work/참고/pandas_요약.md", pane: 1 }],
         lines: [
           {
             who: "Aistb",
-            text: "pd.DataFrame 에 딕셔너리를 넣으면 표가 됩니다. 열 이름이 위에, 줄 번호가 왼쪽에 붙습니다.",
-            spot: { text: "pd.DataFrame(딕셔너리)", in: ".doc" },
+            text: "mean() 만 쓰면 표 전체의 평균입니다. axis=0 을 넣으면 칸별로 세로로, axis=1 을 넣으면 줄별로 가로로 평균을 냅니다.",
+            spot: { text: "m.mean(axis=0)", in: ".doc" },
           },
-          {
-            who: "Aistb",
-            text: "표가 길면 head(3) 으로 앞부분만 봅니다. 오늘은 다섯 줄뿐이라 차이가 작습니다.",
-            spot: { text: "df.head(3)", in: ".doc" },
-          },
-          {
-            who: "Aistb",
-            text: "열 하나를 부를 때는 이름을 대괄호에 넣습니다. 번호가 아니라 이름으로 부르는 것이 NumPy와 다른 점입니다.",
-            spot: { text: 'df["count"]', in: ".doc" },
-          },
-          {
-            who: "Aistb",
-            text: "대괄호를 두 겹으로 쓰면 여러 열을 고를 수 있고, 결과도 표로 나옵니다.",
-            spot: { text: 'df[["name", "count"]]', in: ".doc" },
-          },
-        ],
-      },
-      {
-        show: [{ path: "work/참고/pandas_요약.md", pane: 1 }],
-        lines: [
-          {
-            who: "Aistb",
-            text: "여기가 오늘의 고비입니다. df[\"count\"] >= 30 은 값을 고르는 것이 아니라 줄마다 참/거짓을 만듭니다. 출력에 True와 False가 늘어선 것을 보셨을 겁니다.",
-            spot: { text: 'df["count"] >= 30', in: ".doc" },
-          },
-          {
-            who: "Aistb",
-            text: "그 참/거짓을 다시 대괄호에 넣으면 참인 줄만 남습니다. 두 단계가 하나로 붙어 있는 것뿐입니다.",
-            spot: { text: 'df[df["count"] >= 30]', in: ".doc" },
-          },
-          {
-            who: "Aistb",
-            text: "groupby 는 같은 값끼리 묶습니다. team 으로 묶고 count 열의 평균을 내면 팀마다 한 줄씩 나옵니다.",
-            spot: { text: 'df.groupby("team")["count"].mean()', in: ".doc" },
-          },
+          { who: "Aistb", text: "출력의 개수를 보시면 됩니다. 칸별은 네 개, 줄별은 세 개입니다." },
         ],
       },
 
@@ -546,38 +522,41 @@ var CH01 = {
             readOnly: true,
             kind: "brief",
             content:
-              "# 의뢰 0004 — 팀별 실적 정리\n" +
+              "# 의뢰 0004 — 점심 시간대 배달량 확인\n" +
               "\n" +
               "발신: 배차 2팀\n" +
               "수신: 아이비 W 깁스텁\n" +
               "\n" +
               "## 상황\n" +
-              "배달원 다섯 명의 이름, 배달 건수, 소속 팀이 있습니다.\n" +
+              "사흘치 배달 건수 기록입니다.\n" +
+              "줄 하나가 하루이고, 칸은 왼쪽부터 오전 / 점심 / 저녁 / 야간입니다.\n" +
               "\n" +
               "## 할 일\n" +
-              "건수가 30 이상인 사람만 남기고, 팀별 평균 건수를 구해 주세요.\n" +
-              "work/task_04/team.py 의 result 를 채우고 실행한 뒤 완료 보고.\n" +
+              "- lunch     : 점심 칸만 사흘치로\n" +
+              "- lunch_avg : 그 평균\n" +
+              "- by_slot   : 시간대별 평균 (칸마다 하나씩, 네 개)\n" +
+              "\n" +
+              "work/task_04/lunch.py 를 채우고 실행한 뒤 완료 보고.\n" +
               "\n" +
               "## 참고\n" +
-              "조건으로 줄을 고른 다음, 그 뒤에 묶어서 평균 내는 것을 이어 붙이면 됩니다.\n" +
-              "쓰는 법은 work/참고/pandas_요약.md 에 있습니다.\n",
+              "번호는 0부터 세므로 점심은 1번 칸입니다.\n",
           },
           {
-            path: "work/task_04/team.py",
-            open: true,
+            path: "work/task_04/lunch.py",
+            open: 0,
             content:
-              "import pandas as pd\n" +
+              "import numpy as np\n" +
               "\n" +
-              "df = pd.DataFrame({\n" +
-              '    "name":  ["가온", "노을", "다움", "라온", "마루"],\n' +
-              '    "count": [41, 22, 35, 30, 18],\n' +
-              '    "team":  ["A", "B", "A", "B", "A"],\n' +
-              "})\n" +
+              "# 줄 = 하루, 칸 = 오전 / 점심 / 저녁 / 야간\n" +
+              "log = np.array([[12, 30, 41,  9],\n" +
+              "                [15, 28, 44, 11],\n" +
+              "                [10, 33, 39,  7]])\n" +
               "\n" +
-              "# 건수 30 이상만 남기고, 팀별 평균 건수\n" +
-              "result = ...\n" +
+              "lunch = ...       # 점심 칸만 세로로\n" +
+              "lunch_avg = ...   # 그 평균\n" +
+              "by_slot = ...     # 시간대별 평균 (네 개)\n" +
               "\n" +
-              "print(result)\n",
+              "print(lunch, lunch_avg, by_slot)\n",
           },
         ],
         spot: '.tree-row[data-path="work/의뢰_0004.md"]',
@@ -590,20 +569,22 @@ var CH01 = {
         },
       },
       {
-        lines: [
-          { who: "Aistb", text: "조건으로 줄을 고르는 것과 묶어서 평균 내는 것, 방금 하신 두 가지를 이어 붙이면 됩니다." },
-        ],
+        lines: [{ who: "Aistb", text: "셋 다 방금 연습한 것 안에 있습니다. 채우고 실행한 뒤 완료 보고해 주세요." }],
         menu: ["brief", "report"],
-        nudge: "df[조건] 뒤에 .groupby(\"team\")[\"count\"].mean() 을 그대로 이어 붙이세요.",
+        nudge: "점심 칸은 log[:, 1], 시간대별 평균은 axis 를 쓰시면 됩니다.",
         report: function () {
           return checkFile(
-            "work/task_04/team.py",
-            "import pandas as pd\n" +
-              "assert not isinstance(result, type(Ellipsis)), 'result 가 아직 ... 그대로입니다.'\n" +
-              "assert isinstance(result, pd.Series), '결과가 표 전체로 나왔습니다. groupby 뒤에 [\\\"count\\\"] 를 붙여 건수 열 하나만 골라 주세요.'\n" +
-              "assert set(result.index) == {'A', 'B'}, f'팀 이름이 왼쪽에 와야 합니다. 지금 인덱스는 {list(result.index)} 입니다.'\n" +
-              "assert abs(result['A'] - 38.0) < 0.01, f\"A팀 평균이 {result['A']:.2f} 입니다. 38이 나와야 합니다.\"\n" +
-              "assert abs(result['B'] - 30.0) < 0.01, f\"B팀 평균이 {result['B']:.2f} 입니다. 30 미만인 사람이 걸러졌다면 30이 됩니다.\"\n"
+            "work/task_04/lunch.py",
+            "import numpy as np\n" +
+              "for _n in ['lunch', 'lunch_avg', 'by_slot']:\n" +
+              "    assert _n in dir(), f'{_n} 가 없습니다. 변수 이름을 그대로 두셔야 합니다.'\n" +
+              "    assert not isinstance(eval(_n), type(Ellipsis)), f'{_n} 가 아직 ... 그대로입니다.'\n" +
+              "want = log[:, 1]\n" +
+              "assert np.shape(lunch) == (3,), f'lunch 가 사흘치 세 개가 아닙니다. 지금은 {np.shape(lunch)} 입니다. 쉼표 앞이 줄, 뒤가 칸입니다.'\n" +
+              "assert np.array_equal(lunch, want), f'lunch 가 {np.asarray(lunch)} 입니다. 점심은 1번 칸이므로 {want} 가 나와야 합니다.'\n" +
+              "assert abs(float(lunch_avg) - float(want.mean())) < 1e-9, f'lunch_avg 가 {lunch_avg} 입니다. {want.mean():.4f} 가 나와야 합니다.'\n" +
+              "assert np.shape(by_slot) == (4,), f'by_slot 이 네 개가 아닙니다. 지금은 {np.shape(by_slot)} 입니다. 칸별 평균은 axis=0 입니다.'\n" +
+              "assert np.allclose(by_slot, log.mean(axis=0)), f'by_slot 이 {np.asarray(by_slot)} 입니다. 칸별 평균은 {log.mean(axis=0)} 입니다.'\n"
           );
         },
         wait: function (ctx) {
@@ -615,8 +596,8 @@ var CH01 = {
       {
         lines: [
           { who: "Aistb", text: "접수했습니다. 오늘 배정된 세 건 모두 처리되었습니다." },
-          { who: "Aistb", text: "하나씩 세지 않는다. 필요한 부분만 꺼낸다. 이름으로 부른다. 오늘은 이 셋입니다." },
-          { who: "Aistb", text: "참고 문서 두 개는 work/참고/ 에 그대로 남겨 두겠습니다. 내일도 쓰시게 됩니다." },
+          { who: "Aistb", text: "한꺼번에 계산한다. 필요한 부분만 꺼낸다. 하나로 줄인다. 오늘 하신 것은 이 셋입니다." },
+          { who: "Aistb", text: "참고 문서는 work/참고/ 에 남겨 두겠습니다. 내일도 쓰시게 됩니다." },
         ],
       },
       {
@@ -633,15 +614,14 @@ var CH01 = {
   diary: [
     "421950년 10월 2일.",
     "",
-    "오늘은 도구 이름을 두 개 배웠다. NumPy, Pandas.",
-    "이름은 어려운데 하는 일은 단순했다. 하나씩 세지 말고 한꺼번에 하라는 것.",
+    "NumPy. 숫자를 한꺼번에 계산하는 도구.",
+    "리스트에 2를 곱하면 목록이 두 번 이어 붙는다는 걸 오늘 처음 알았다.",
+    "그동안 그럴 일이 없었을 뿐이지, 몰랐던 건 몰랐던 거다.",
     "",
-    "업무 보조 세 건. 배달료 계산, 점심 시간대 배달량, 팀별 평균.",
-    "세 건 다 통과했다. 두 번째는 세 번 틀렸지만 그건 일기에 안 쓰기로 한다.",
+    "한 줄씩 실행해서 결과를 보고 나서 설명을 들으니 이상하게 잘 들어왔다.",
+    "중단점이라는 것도 배웠다. 원하는 데까지만 가서 멈춘다.",
     "",
-    "참/거짓이 줄줄이 나오는 걸 처음 봤을 땐 뭐가 잘못된 줄 알았다.",
-    "그걸 다시 대괄호에 넣는다는 건 아직도 좀 이상하다.",
-    "",
-    "Aistb는 오늘도 정정을 하지 않았다. 조금 아쉬웠다.",
+    "업무 보조 세 건. 배달료, 최근 사흘 보고, 점심 시간대.",
+    "argmax 가 값이 아니라 자리를 준다는 걸 한 번 틀리고 나서 알았다.",
   ],
 };

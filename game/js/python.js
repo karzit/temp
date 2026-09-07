@@ -1,12 +1,11 @@
-// 브라우저 안에서 진짜 파이썬을 돌린다(Pyodide). 처음 한 번은 10MB 넘게 받으므로,
-// 코드 스테이지에 실제로 도달했을 때만 불러온다.
+// 브라우저 안에서 진짜 파이썬을 돌린다(Pyodide).
+// 페이지에 들어오는 순간부터 미리 받아두므로, 실제로 실행할 때는 기다릴 일이 거의 없다.
 const PYODIDE_VERSION = "0.26.4";
 const CDN = `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/`;
 
 let pyodidePromise = null;
 const loadedPackages = new Set();
 
-// 페이지에 들어오는 순간부터 미리 받아둔다. 실행할 때 기다릴 이유가 없다.
 let pythonReady = false;
 let pythonLoadStart = 0;
 const readyWaiters = [];
@@ -65,6 +64,17 @@ async function ensurePackages(pyodide, packages, onStatus) {
   onStatus("");
 }
 
+// 코드 안의 import를 보고 필요한 것(numpy 등)을 알아서 가져온다.
+async function loadImports(pyodide, code, onStatus) {
+  try {
+    onStatus("필요한 도구를 가져오는 중…");
+    await pyodide.loadPackagesFromImports(code);
+  } catch (err) {
+    // 없는 라이브러리를 부른 경우. 실행할 때 파이썬이 직접 알려주게 둔다.
+  }
+  onStatus("");
+}
+
 /**
  * 학습자 코드를 돌리고, 이어서 채점 코드를 돌린다.
  * 채점 코드는 assert로 조건을 확인한다 — 통과하면 아무 일도 일어나지 않고,
@@ -73,15 +83,7 @@ async function ensurePackages(pyodide, packages, onStatus) {
 async function runCheck(userCode, checkCode, { packages = [], onStatus = () => {} } = {}) {
   const pyodide = await ensurePython(onStatus);
   await ensurePackages(pyodide, packages, onStatus);
-
-  // 코드 안의 import를 보고 필요한 것을 알아서 가져온다(numpy, pandas 등).
-  try {
-    onStatus("필요한 도구를 가져오는 중…");
-    await pyodide.loadPackagesFromImports(userCode);
-  } catch (e) {
-    // 없는 라이브러리를 부른 경우. 실행할 때 파이썬이 직접 알려주게 둔다.
-  }
-  onStatus("");
+  await loadImports(pyodide, userCode, onStatus);
 
   let out = "";
   pyodide.setStdout({ batched: (s) => (out += s + "\n") });
@@ -114,7 +116,7 @@ async function runCheck(userCode, checkCode, { packages = [], onStatus = () => {
   }
 }
 
-// Pyodide의 트레이스백은 내부 프레임까지 길게 나온다. 학습자에게 의미 있는 마지막 줄만 남긴다.
+// Pyodide의 트레이스백은 내부 프레임까지 길게 나온다. 학습자에게 의미 있는 부분만 남긴다.
 function shortenTraceback(err) {
   const text = String(err.message || err);
   const lines = text.trimEnd().split("\n");
@@ -122,8 +124,60 @@ function shortenTraceback(err) {
   const assertion = last.startsWith("AssertionError: ") ? last.slice("AssertionError: ".length) : null;
   if (assertion) return assertion;
 
-  // 학습자 코드에서 난 예외는 "File \"<exec>\"" 프레임부터가 본인 코드다.
+  // 학습자 코드에서 난 예외는 'File "<exec>"' 프레임부터가 본인 코드다.
   const start = lines.findIndex((l) => l.includes('File "<exec>"'));
   const body = start >= 0 ? lines.slice(start) : [last];
   return body.join("\n");
+}
+
+// ── 한 문장씩 실행하기 ────────────────────────────────
+// 문장 경계는 파이썬 자신에게 물어본다. 여러 줄에 걸친 문장도 한 덩어리로 잡힌다.
+// 돌려주는 것은 [[시작줄, 끝줄], ...] 이고 줄 번호는 1부터 센다.
+async function planSteps(src) {
+  const pyodide = await ensurePython();
+  const ns = pyodide.globals.get("dict")();
+  ns.set("_src", src);
+  let out = null;
+  try {
+    out = await pyodide.runPythonAsync(
+      ["import ast, json", "json.dumps([[n.lineno, n.end_lineno] for n in ast.parse(_src).body])"].join("\n"),
+      { globals: ns }
+    );
+  } catch (err) {
+    out = null; // 문법이 깨져 있으면 나눌 수 없다. 통째로 돌리며 파이썬이 알려주게 둔다.
+  }
+  ns.destroy();
+  return out ? JSON.parse(out) : null;
+}
+
+// 한 파일을 여러 번에 나눠 실행하는 동안 변수를 이어서 갖고 있을 자리.
+async function newSession(onStatus = () => {}) {
+  const pyodide = await ensurePython(onStatus);
+  return pyodide.globals.get("dict")();
+}
+
+function endSession(ns) {
+  try {
+    ns.destroy();
+  } catch (err) {}
+}
+
+// startLine만큼 빈 줄을 앞에 붙여, 에러에 찍히는 줄 번호가 원본 파일과 맞게 한다.
+async function runInSession(ns, code, startLine = 1, onStatus = () => {}) {
+  const pyodide = await ensurePython(onStatus);
+  await loadImports(pyodide, code, onStatus);
+
+  const padded = "\n".repeat(Math.max(0, startLine - 1)) + code;
+  let out = "";
+  pyodide.setStdout({ batched: (s) => (out += s + "\n") });
+  pyodide.setStderr({ batched: (s) => (out += s + "\n") });
+  try {
+    await pyodide.runPythonAsync(padded, { globals: ns });
+    return { ok: true, output: out };
+  } catch (err) {
+    return { ok: false, output: out, error: shortenTraceback(err) };
+  } finally {
+    pyodide.setStdout({});
+    pyodide.setStderr({});
+  }
 }
