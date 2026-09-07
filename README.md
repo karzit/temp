@@ -30,7 +30,7 @@ Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소�
 | ③ 실전 예제 | `example-projects/` | ②에서 익힌 라이브러리로 실제 동작하는 미니 프로젝트 4개를 이어붙인 파이프라인 |
 | ③′ 프로젝트 동행 노트북 | `notebooks/project-walkthrough/` | ③의 프로젝트를 **하나씩 옆에 펼쳐놓고 같이 읽는** 노트북 (프로젝트당 1개) |
 | ④ 정형 데이터 워크플로우 | `notebooks/tabular-ml-practice/` | 결측치·이상치·문자열이 섞인 **실제 표 데이터**로 EDA → 전처리 → 모델링 → 평가까지 하는 전 과정 |
-| ⑤ 텍스트 분류 실습 | `notebooks/text-classification-practice/` | 뉴스 제목 같은 **짧은 한국어 텍스트**로 주제를 분류하는 전 과정 (TF-IDF → Keras, 공개 데이터셋 KLUE-YNAT) |
+| ⑤ 텍스트 분류 실습 | `notebooks/text-classification-practice/` | 뉴스 제목 같은 **짧은 한국어 텍스트**로 주제를 분류하는 전 과정 (TF-IDF → Keras → 사전 학습 모델, 공개 데이터셋 KLUE-YNAT) |
 
 ①·④·⑤는 ②/③과 주제가 겹치지 않는 별도 커리큘럼입니다. ⑤는 ④의 **텍스트 판**으로,
 같은 흐름(데이터 관찰 → 전처리 → 모델 → 평가)을 숫자가 아닌 글자에서 반복합니다. ②와 ③은 같은 파이프라인(사내 규정 검색 챗봇)을
@@ -68,7 +68,7 @@ flowchart LR
         direction TB
         A["① ml-curriculum<br/>ML·DL이 어떻게 작동하는가<br/>회귀 → 분류 → 신경망 → CNN/RNN"]
         D["④ tabular-ml-practice<br/>현실 데이터로 실제로 어떻게 하는가<br/>EDA → 전처리 → 모델 → 평가"]
-        T["⑤ text-classification-practice<br/>같은 흐름을 텍스트에서<br/>TF-IDF → 임베딩 → 성능 검증"]
+        T["⑤ text-classification-practice<br/>같은 흐름을 텍스트에서<br/>TF-IDF → 임베딩 → 사전 학습 모델"]
         A -. 서로 보완 .-> D
         D -. 표에서 텍스트로 .-> T
     end
@@ -90,14 +90,15 @@ flowchart LR
 
 ```
 머신러닝 → 딥러닝 → Transformer → LLM(GPT 등) → RAG
-   ①          ①         (범위 밖)      ②③          ②③
+   ①          ①         ⑤(가져다 씀)   ②③          ②③
 ```
 
 ①에서 배우는 경사 하강법·역전파는 딥러닝의 기본기이고, 그 딥러닝을 아주 크게 키운 것이
 Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에게 회사 문서처럼 학습되지 않은 내용을
 찾아서 물어보게 만드는 기법이 **RAG**(②③)입니다. 다만 "LLM을 직접 만드는 것"은 개인이 하기 어렵고
-실무에서도 거의 하지 않기 때문에, 이 저장소는 **LLM 내부 구조(Transformer) 대신 이미 만들어진 LLM을
-가져다 쓰는 법**(②③)을 다룹니다. 그래서 ①을 몰라도 ②③을 시작할 수 있고, 반대로 ①만 해도 됩니다.
+실무에서도 거의 하지 않기 때문에, 이 저장소는 **LLM 내부 구조(Transformer)를 처음부터 만드는 대신
+이미 만들어진 것을 가져다 쓰는 법**을 다룹니다 — 분류 쪽은 ⑤ 03번(모델을 가져와 파인튜닝),
+생성·검색 쪽은 ②③(LLM API를 호출)입니다. 그래서 ①을 몰라도 ②③을 시작할 수 있고, 반대로 ①만 해도 됩니다.
 
 ## 학습 가이드 — 어떻게 진행하면 되나요?
 
@@ -111,12 +112,14 @@ Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에�
   결측치·이상치 처리부터 모델 평가·데이터 누출 진단까지 다룹니다.
   자세한 내용은 **[시리즈 README](notebooks/tabular-ml-practice/README.md)** 참고.
 - **글자로 된 데이터를 분류하고 싶다(뉴스 제목, 문의 내용, 로그 메시지)**
-  → `notebooks/text-classification-practice/` 01 → 02 순서대로.
-  텍스트를 숫자로 바꾸는 방법부터, 성능이 올랐다고 말해도 되는지 판단하는 법까지 다룹니다.
+  → `notebooks/text-classification-practice/` 01 → 02 → 03 순서대로.
+  텍스트를 숫자로 바꾸는 방법부터, 성능이 올랐다고 말해도 되는지 판단하는 법,
+  그리고 사전 학습 한국어 모델을 가져와 파인튜닝하는 데까지 다룹니다.
   자세한 내용은 **[시리즈 README](notebooks/text-classification-practice/README.md)** 참고.
 - **LLM/RAG 앱을 만들 때 쓰는 라이브러리(크롤링, 청킹, 구조화 출력, 임베딩/벡터 검색, 프롬프트 인젝션 방어)를
   익히고 싶다, ML 기초는 필요 없다** → `notebooks/rag-pipeline-practice/` 01 → 02 → 03 → 04 → 05 순서대로.
   Colab에서 API 키나 Docker 없이도 끝까지 실행되도록 만들어져 있어 설치 걱정 없이 바로 시작할 수 있습니다.
+  자세한 내용은 **[시리즈 README](notebooks/rag-pipeline-practice/README.md)** 참고.
 - **동작하는 실전 코드/프로젝트 구조를 보고 싶다** → `example-projects/` 참고. 각 프로젝트는
   로컬 실행 시 PostgreSQL/OpenSearch(Docker)와 OpenAI API 키가 필요합니다.
 - **그 프로젝트 코드를 누가 옆에서 같이 읽어줬으면 좋겠다** → `notebooks/project-walkthrough/` 01~04.
@@ -137,12 +140,14 @@ Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에�
    끝낸 뒤 여유가 있을 때 봐도 됩니다.
 5. (선택) `notebooks/tabular-ml-practice/00~04` — 실제 표 데이터를 다루는 전 과정.
    ①과 독립적이라 먼저 봐도 되고, ①을 끝낸 뒤 "그래서 실무에서는 어떻게 하나"로 이어봐도 됩니다.
-6. (선택) `notebooks/text-classification-practice/01~02` — 같은 과정을 텍스트 데이터로.
+6. (선택) `notebooks/text-classification-practice/01~03` — 같은 과정을 텍스트 데이터로.
+   03번에서 Transformer 계열 사전 학습 모델을 실제로 파인튜닝합니다(머신러닝 트랙에서 LLM에
+   가장 가까이 가는 지점입니다).
    ④를 먼저 보면 흐름이 익숙해서 편하지만, 순서를 지킬 필요는 없습니다.
 
 각 단계 안에서도 `_solutions.ipynb`는 정답 코드이므로 먼저 혼자 풀어본 뒤에 열어보는 걸 권장합니다.
 ml-curriculum 00~07, rag-pipeline-practice 01~05, project-walkthrough 01~04, tabular-ml-practice 01~04,
-text-classification-practice 01~02에 각각 해설 노트북이 있고,
+text-classification-practice 01~03에 각각 해설 노트북이 있고,
 `tabular-ml-practice/00_pandas_for_tabular`만 연습문제 없이 "필요할 때 찾아보는 pandas 문법 사전" 역할이라
 해설 노트북이 없습니다.
 
@@ -200,6 +205,11 @@ text-classification-practice 01~02에 각각 해설 노트북이 있고,
 |---|---|
 | 01. 텍스트 분류 기준선 (TF-IDF·문자 n-gram) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/01_text_baseline/01_text_baseline.ipynb) |
 | 02. Keras 텍스트 분류 (임베딩) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/02_keras_text/02_keras_text.ipynb) |
+| 03. 사전 학습 한국어 모델 (KLUE-RoBERTa 파인튜닝) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/03_pretrained_korean/03_pretrained_korean.ipynb) |
+| 03. 사전 학습 한국어 모델 (KLUE-RoBERTa 파인튜닝) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/03_pretrained_korean/03_pretrained_korean.ipynb) |
+| 03. 사전 학습 한국어 모델 (KLUE-RoBERTa 파인튜닝) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/03_pretrained_korean/03_pretrained_korean.ipynb) |
+| 03. 사전 학습 한국어 모델 (KLUE-RoBERTa 파인튜닝) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/03_pretrained_korean/03_pretrained_korean.ipynb) |
+| 03. 사전 학습 한국어 모델 (KLUE-RoBERTa 파인튜닝) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/03_pretrained_korean/03_pretrained_korean.ipynb) |
 
 ## 폴더 구조 (각 폴더에는 무엇이 있나요)
 
@@ -215,7 +225,7 @@ notebooks/
     05_cnn/                     Lec 11: CNN
     06_rnn/                     Lec 12: RNN
     07_tensorflow_practice/     (선택) TensorFlow/Keras 라이브러리 실습 — 02/04의 PyTorch 예제를 TF로 재구현
-  rag-pipeline-practice/        라이브러리 실습 (②) — example-projects와 1:1 대응
+  rag-pipeline-practice/        라이브러리 실습 (②) — 자세한 내용은 notebooks/rag-pipeline-practice/README.md
     01_web_crawling/            requests + BeautifulSoup 크롤링, sqlite3/dotenv 실습 (crawl-storage-example)
     02_text_chunking/           langchain-text-splitters, PyMuPDF/pypdf, tiktoken 실습 (preprocess/rag-regulation-example)
     03_document_structuring/    Pydantic + OpenAI 정형 출력, Streamlit 실습 (document-input-example)
@@ -235,8 +245,14 @@ notebooks/
   text-classification-practice/ 텍스트 분류 실습 (⑤) — 자세한 내용은 notebooks/text-classification-practice/README.md
     01_text_baseline/           BoW·TF-IDF, 문자 n-gram, macro f1·혼동 행렬, 오분류 분석, 분포 이동
     02_keras_text/              TextVectorization·임베딩, Conv1D/LSTM 비교, OOV 규명, 모델 저장의 함정
+    03_pretrained_korean/        전이 학습, 서브워드 토큰화, KLUE-RoBERTa 파인튜닝, 정확도 말고 치르는 대가
+    03_pretrained_korean/        전이 학습, 서브워드 토큰화, KLUE-RoBERTa 파인튜닝, 정확도 말고 치르는 대가
+    03_pretrained_korean/        전이 학습, 서브워드 토큰화, KLUE-RoBERTa 파인튜닝, 정확도 말고 치르는 대가
+    03_pretrained_korean/        전이 학습, 서브워드 토큰화, KLUE-RoBERTa 파인튜닝, 정확도 말고 치르는 대가
+    03_pretrained_korean/        전이 학습, 서브워드 토큰화, KLUE-RoBERTa 파인튜닝, 정확도 말고 치르는 대가
 
 example-projects/               실전 예제 (③) — 자세한 내용은 example-projects/README.md
+  run_all.py                    4개를 순서대로 이어서 돌리고, 막히면 어디서 막혔는지 알려주는 스크립트
   crawl-storage-example/        [A-1] 웹 크롤링 -> PostgreSQL 원본 저장
   preprocess-example/           [A-2] PostgreSQL 원본 -> 청킹 -> OpenSearch 인덱싱
   document-input-example/       [B]   서류 사진 -> OCR -> LLM 정형 출력(JSON), Streamlit UI
@@ -247,6 +263,10 @@ extras/            커리큘럼 본편에 속하지 않는 보조 자료
   frozen-lake-viz/ Q-Learning(RL)을 브라우저에서 바로 보는 시각화 데모. RL은 ml-curriculum 범위
                    밖이라 정식 노트북은 없고, 그 자리를 미리 맛보는 자료입니다. 설치 없이
                    index.html만 열면 됩니다 (자세한 내용은 extras/frozen-lake-viz/README.md).
+tools/         저장소 점검 스크립트 (학습자는 안 봐도 됨)
+  check_repo.py          해설 노트북 짝·Colab 배지 경로·상대 링크·커밋된 실행 결과 검사
+  check_data_sources.py  노트북이 실행 중에 내려받는 외부 주소가 아직 살아 있는지 확인
+               둘 다 .github/workflows/checks.yml에서 자동으로 돕니다 (주소 확인은 주 1회)
 data/          MNIST처럼 여러 노트북이 나눠 쓰는 데이터셋 캐시 (git에는 커밋 안 됨)
                노트북이 자기 실습 결과로 만드는 파일은 여기가 아니라 노트북 옆에 생깁니다
 CURRICULUM.md  ①의 이론+실습 목차 (원본 강의 매핑 포함)
@@ -301,6 +321,6 @@ Docker로 띄워야 합니다. 실행 방법은 각 프로젝트 폴더의 `READ
 
 ## 다음 튜토리얼 아이디어
 - PyTorch로 이미지 분류 (CNN, MNIST/CIFAR-10)
-- Hugging Face Transformers로 텍스트 분류
 - 자신의 CSV 데이터셋으로 파이프라인 재사용
-- `example-projects/` 4개를 실제로 이어서 실행하는 통합 데모 스크립트/가이드
+- Transformer 내부 구조(어텐션)를 직접 뜯어보는 노트북 — 지금은 ⑤ 03번이 사전 학습 모델을
+  **가져다 쓰는 법**만 다루고, 그 안이 어떻게 생겼는지는 다루지 않습니다

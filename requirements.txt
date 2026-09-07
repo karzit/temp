@@ -1,33 +1,62 @@
-numpy
-pandas
-scikit-learn
-matplotlib
-seaborn
-koreanize-matplotlib
-joblib
-torch
-torchvision
-tensorflow
-requests
-beautifulsoup4
-httpx
-python-dotenv
-psycopg2-binary
-langchain-text-splitters
-kiwipiepy
-langchain-core
-pypdf
-pymupdf
-tiktoken
-fpdf2
-pydantic
-openai
-streamlit
-langchain-openai
-langchain-community
-opensearch-py
-rank_bm25
-fastapi
-# 04_rag_regulation 동행 노트북의 리랭커 실습(TRY_RERANKER = True)에서만 씁니다.
-# PyTorch를 함께 끌어와 용량이 큽니다.
-sentence-transformers
+# 로컬에서 노트북을 실행할 때 쓰는 목록입니다.
+# Colab에서는 각 노트북의 첫 셀이 필요한 것만 따로 설치하므로 이 파일이 필요 없습니다.
+#
+# 버전을 왜 이렇게 적었나
+#   아래 위쪽 경계(`<3` 등)는 **메이저 버전이 올라가면 설치되지 않게** 막아둔 것입니다.
+#   노트북 본문이 라이브러리의 실제 동작을 근거로 설명하는 곳이 있어서,
+#   메이저 업그레이드가 조용히 섞이면 설명과 결과가 어긋납니다.
+#   예: text-classification-practice 02번은 `.h5`로 저장한 모델이 `predict()`에서
+#   실패하는 것을 교재 소재로 씁니다. 이 동작은 Keras 3(TensorFlow 2.16+) 기준입니다.
+#   아래쪽 경계는 "이 버전 이상이면 노트북이 돈다"는 뜻이고,
+#   위쪽 경계는 "여기까지는 확인하지 않았다"는 뜻입니다.
+
+# --- 공통 (거의 모든 노트북) ---
+numpy>=1.26,<3
+pandas>=2.0,<3
+matplotlib>=3.7,<4
+koreanize-matplotlib>=0.1,<1        # 그래프의 한글 깨짐 방지 (import만 해도 적용됨)
+
+# --- ml-curriculum (①) · tabular-ml-practice (④) ---
+scikit-learn>=1.3,<2
+seaborn>=0.13,<0.15                 # taxis/titanic 내장 데이터셋을 내려받는 데도 씁니다
+joblib>=1.3,<2
+torch>=2.1,<3
+torchvision>=0.16,<1                # MNIST 자동 다운로드
+
+# --- tabular-ml-practice 04 (④) · text-classification-practice 02 (⑤) ---
+tensorflow>=2.16,<3                 # 2.16부터 Keras 3. `.keras` 포맷 설명이 여기에 걸려 있습니다
+
+# --- text-classification-practice 03 (⑤) — 사전 학습 한국어 모델 ---
+transformers>=4.40,<6               # klue/roberta-small 파인튜닝 (torch가 함께 필요합니다)
+
+# --- rag-pipeline-practice 01 (②) — 크롤링/저장 ---
+requests>=2.31,<3
+beautifulsoup4>=4.12,<5
+httpx>=0.28,<1
+python-dotenv>=1.0,<2
+psycopg2-binary>=2.9,<3
+
+# --- rag-pipeline-practice 02 (②) — 청킹/PDF ---
+langchain-text-splitters>=0.2,<2
+langchain-core>=0.2,<2
+pypdf>=4.0,<7
+pymupdf>=1.24,<2
+tiktoken>=0.7,<1
+fpdf2>=2.7,<3                       # 연습용 PDF를 노트북 안에서 만들 때
+kiwipiepy>=0.17,<1                  # 한국어 형태소 분석
+
+# --- rag-pipeline-practice 03 (②) — 정형 출력 ---
+pydantic>=2.7,<3
+openai>=1.30,<3
+streamlit>=1.35,<2
+
+# --- rag-pipeline-practice 04 (②) — 검색/RAG ---
+langchain-openai>=0.1,<2
+langchain-community>=0.2,<2
+opensearch-py>=2.4,<4
+rank_bm25>=0.2,<1
+fastapi>=0.110,<1
+
+# --- project-walkthrough 04 (③′) — 선택 실습 ---
+# 리랭커 실습(TRY_RERANKER = True)에서만 씁니다. PyTorch를 함께 끌어와 용량이 큽니다.
+sentence-transformers>=3.0,<6

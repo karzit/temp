@@ -111,7 +111,8 @@ if IN_COLAB:
 | `ml-curriculum/04`, `05` | MNIST | `torchvision`이 자동 다운로드 (처음 1~2분) |
 | `tabular-ml-practice/00`~`04` | `taxis`, `titanic` | `seaborn.load_dataset()`이 인터넷에서 다운로드 |
 | `ml-curriculum/02` | `data/scores.csv` | **노트북이 직접 만듭니다.** 미리 준비할 파일 없음 |
-| `text-classification-practice/01`, `02` | KLUE-YNAT | `pd.read_json()`이 GitHub raw에서 직접 내려받습니다 (train 46MB, 10~30초) |
+| `text-classification-practice/01`~`03` | KLUE-YNAT | `pd.read_json()`이 GitHub raw에서 직접 내려받습니다 (train 46MB, 10~30초) |
+| `text-classification-practice/03` | `klue/roberta-small` | `transformers`가 Hugging Face에서 내려받습니다 (약 170MB, 처음 한 번) |
 
 - **셋 다 인터넷 연결이 필요합니다.** 사내망·오프라인 환경이라면 이 셀에서 멈춥니다.
 - `ml-curriculum`은 데이터를 `../../../data`(저장소 루트의 `data/`)에 둡니다.

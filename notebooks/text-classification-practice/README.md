@@ -1,6 +1,6 @@
 # 텍스트 분류 실습 (text-classification-practice)
 
-**짧은 한국어 문장 하나로 주제를 분류하는 전 과정**을 다루는 2개 노트북입니다.
+**짧은 한국어 문장 하나로 주제를 분류하는 전 과정**을 다루는 3개 노트북입니다.
 뉴스 기사 제목을 보고 그 기사가 `경제`인지 `스포츠`인지 맞히는 문제를,
 기준선 계산부터 최종 성능 보고까지 그대로 따라갑니다.
 
@@ -17,12 +17,17 @@
 |---|---|---|---|
 | [01. 텍스트 분류 기준선](01_text_baseline/01_text_baseline.ipynb) | 데이터·라벨 점검, 기준선, BoW·TF-IDF, 로지스틱 회귀, **짝지은 비교로 전처리 판단**, 문자 n-gram, macro f1과 혼동 행렬, 오분류 분석, 3분할과 **분포 이동** | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/01_text_baseline/01_text_baseline.ipynb) | [해설](01_text_baseline/01_text_baseline_solutions.ipynb) |
 | [02. Keras 텍스트 분류](02_keras_text/02_keras_text.ipynb) | `TextVectorization`(정수 인코딩·패딩), 임베딩, `Conv1D`/`LSTM` 비교, TF-IDF와 정면 비교, **왜 졌는지 OOV로 규명**, 글자 단위로 되찾기, 모델 저장의 함정 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/02_keras_text/02_keras_text.ipynb) | [해설](02_keras_text/02_keras_text_solutions.ipynb) |
+| [03. 사전 학습 한국어 모델](03_pretrained_korean/03_pretrained_korean.ipynb) | 전이 학습, 서브워드 토큰화로 **OOV가 사라지는 것**, KLUE-RoBERTa 파인튜닝, 01·02번과 **같은 분할에서 정면 비교**, 분포 이동에서도 이기는지, **정확도 말고 치르는 대가** | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/03_pretrained_korean/03_pretrained_korean.ipynb) | [해설](03_pretrained_korean/03_pretrained_korean_solutions.ipynb) |
 
-두 노트북 끝에는 연습 문제가 6개씩 있고, `_solutions.ipynb`에 정답 코드와 해설이 있습니다.
+세 노트북 끝에는 연습 문제가 6개씩 있고, `_solutions.ipynb`에 정답 코드와 해설이 있습니다.
 **먼저 직접 풀어본 뒤** 열어보는 걸 권장합니다.
 
-**순서대로 보세요.** 02번은 01번에서 만든 기준선과 비교하는 것이 핵심이라, 01번을 건너뛰면
-"딥러닝이 이기지 못했다"는 이 시리즈의 결론이 와닿지 않습니다.
+**순서대로 보세요.** 02번은 01번에서 만든 기준선과 비교하는 것이 핵심이고, 03번은 그 02번이
+왜 졌는지를 알고 있어야 합니다. **세 노트북이 같은 분할·같은 seed에서 같은 문제를 푸는 것**이
+이 시리즈의 뼈대라, 순서를 건너뛰면 숫자를 비교할 자리가 없어집니다.
+
+03번은 GPU를 쓰는 편이 좋습니다(Colab에서 `런타임 → 런타임 유형 변경 → T4 GPU`).
+01·02번은 CPU로 충분합니다.
 
 ## 쓰는 데이터 — KLUE-YNAT
 
@@ -49,7 +54,7 @@
 
 ## 이 시리즈를 관통하는 주제 — 숫자를 함부로 믿지 않기
 
-두 노트북에 걸쳐 **직관과 결과가 어긋나는 장면**이 반복됩니다. 이것이 이 시리즈의 핵심입니다.
+세 노트북에 걸쳐 **직관과 결과가 어긋나는 장면**이 반복됩니다. 이것이 이 시리즈의 핵심입니다.
 
 | 어디서 | 당연해 보이는 것 | 실제 결과 |
 |---|---|---|
@@ -61,6 +66,10 @@
 | 02번 5절 | 딥러닝이 고전 모델보다 낫다 | **TF-IDF + 로지스틱 회귀가 9%p 앞선다** |
 | 02번 6절 | 신경망이 졌으니 모델을 키워야 한다 | 문제는 모델이 아니라 **토큰 단위**였다 |
 | 02번 7절 | 저장하고 불러와졌으면 끝이다 | `.h5`로 저장한 모델이 **예측하는 순간 터진다** |
+| 03번 5절 | loss가 줄면 모델이 나아지고 있는 것이다 | loss 0.52 → 0.22인데 **정확도는 1 epoch 때가 최고**였다 |
+| 03번 6절 | 데이터를 늘려야 딥러닝이 이긴다 | 16,000건 그대로 두고 **남이 배운 것을 가져와서** 이겼다(0.8705) |
+| 03번 7절 | 좋은 모델을 쓰면 분포 이동도 해결된다 | 낙폭이 절반으로 줄었지만(−0.0816 → **−0.0360**) **사라지지는 않았다** |
+| 03번 8절 | 낙폭이 줄었으니 강건한 모델이다 | 주제별로 쪼개보니 **`사회`만 오르고 나머지는 다 내렸다** |
 
 ## 무엇을 알고 있어야 하고, 무엇을 여기서 배우나
 
@@ -93,13 +102,12 @@
 |---|---|
 | [`tabular-ml-practice`](../tabular-ml-practice/README.md) | **같은 흐름의 텍스트 판**. EDA → 전처리 → 모델 → 평가를 텍스트에서 반복합니다 |
 | [`ml-curriculum`](../../CURRICULUM.md) 04·06번 | 신경망과 RNN의 **원리**. 이 시리즈는 그것을 텍스트에 적용합니다 |
-| [`rag-pipeline-practice`](../rag-pipeline-practice/) | 같은 "텍스트"지만 목적이 다릅니다. 이쪽은 **분류**, 저쪽은 **검색과 생성**(RAG)입니다. 다만 임베딩이라는 개념은 양쪽에 모두 나옵니다 |
+| [`rag-pipeline-practice`](../rag-pipeline-practice/README.md) | 같은 "텍스트"지만 목적이 다릅니다. 이쪽은 **분류**, 저쪽은 **검색과 생성**(RAG)입니다. 다만 임베딩이라는 개념은 양쪽에 모두 나옵니다 |
 
 ## 다음으로 해볼 만한 것
 
-- **사전 학습 한국어 모델**: KLUE-RoBERTa, KoBERT를 파인튜닝하면 같은 데이터에서 정확도가 크게 오릅니다.
-  KLUE-YNAT는 원래 그 모델들을 평가하려고 만든 데이터셋이라, 논문에 적힌 점수와 직접 비교해볼 수 있습니다
-  (Hugging Face `transformers`)
+- **`klue/roberta-base`·`roberta-large`로 키워보기** — 03번은 CPU에서도 끝나도록 `small`을 씁니다.
+  KLUE-YNAT는 원래 이 모델들을 평가하려고 만든 데이터셋이라, 논문에 적힌 점수와 직접 비교해볼 수 있습니다
 - **형태소 분석기**(`kiwipiepy`)로 토큰화한 뒤 문자 n-gram과 비교 — 01번 8절에서 미뤄둔 실험입니다
 - **제목 대신 본문으로**: 01번 11절에서 "제목만으로는 알 수 없는 기사"가 오답의 한 축이었습니다.
   입력을 늘리면 그 축이 사라지는지 확인해보세요

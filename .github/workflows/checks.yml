@@ -1,0 +1,38 @@
+name: checks
+
+# 노트북이 47개라 손으로는 확인이 안 됩니다. 두 가지를 자동으로 봅니다.
+#   1) 구조 — 해설 노트북 짝, Colab 배지 경로, 상대 링크, 커밋된 실행 결과
+#   2) 외부 데이터 — 노트북이 실행 중에 내려받는 주소가 아직 살아 있는지
+# 2번은 매주 한 번만 돌립니다. 남의 서버를 매 push마다 두드릴 이유가 없습니다.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    - cron: "0 0 * * 1"   # 매주 월요일 00:00 UTC
+  workflow_dispatch:
+
+jobs:
+  structure:
+    name: 저장소 구조
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # 표준 라이브러리만 씁니다. 설치할 것이 없습니다.
+      - run: python tools/check_repo.py
+
+  data-sources:
+    name: 외부 데이터 주소
+    # push/PR에서는 건너뛰고, 주간 실행과 수동 실행에서만 확인합니다.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python tools/check_data_sources.py
