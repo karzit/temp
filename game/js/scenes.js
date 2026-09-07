@@ -252,7 +252,11 @@ Scenes.desk = function (stage, chapter, done) {
     // 이 beat에서 도착하는 파일이 있으면 먼저 깔아둔다.
     if (b.addFiles) {
       b.addFiles.forEach(function (f) {
-        FS.write(f.path, f.content, { readOnly: f.readOnly, kind: f.kind });
+        // 이미 있는 파일은 건드리지 않는다. 같은 beat을 다시 듣더라도
+        // 플레이어가 써둔 코드가 처음 상태로 되돌아가면 안 된다.
+        if (!FS.exists(f.path)) {
+          FS.write(f.path, f.content, { readOnly: f.readOnly, kind: f.kind });
+        }
         if (f.kind === "brief") currentBrief = f.path;
         if (f.open !== undefined && f.open !== false) {
           openIn(f.path, f.open === true ? 0 : f.open);

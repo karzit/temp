@@ -576,7 +576,9 @@ var IDE = {
     ta.oninput = function () {
       node.content = ta.value;
       // 내용이 바뀌면 문장 경계가 달라진다. 하던 실행은 버린다.
-      if (IDE.stepper && IDE.stepper.path === path) IDE.resetRun();
+      // 다만 여기서 화면을 다시 그리면 안 된다 — 치는 도중에 편집창이 새로 만들어져
+      // 포커스가 날아가고, 그 뒤에 친 글자가 통째로 사라진다.
+      if (IDE.stepper && IDE.stepper.path === path) IDE.invalidateRun();
       IDE.drawGutter(wrap, path);
       if (IDE.onChange) IDE.onChange();
     };
@@ -694,6 +696,19 @@ var IDE = {
   // ── 실행 ──────────────────────────────────────────────
   busy: false,
   stepper: null, // { path, steps, at, ns, lines }
+
+  // 하던 실행만 버린다. 화면은 건드리지 않는다(타이핑 중에 불린다).
+  invalidateRun: function () {
+    if (!IDE.stepper) return;
+    endSession(IDE.stepper.ns);
+    IDE.stepper = null;
+    var state = IDE.q(".run-state");
+    if (state) state.textContent = "";
+    var reset = IDE.q(".reset-run");
+    if (reset) reset.hidden = true;
+    var wrap = IDE.root.querySelector(".editor-wrap .line-stripe");
+    if (wrap) wrap.hidden = true;
+  },
 
   resetRun: function () {
     if (IDE.stepper) endSession(IDE.stepper.ns);
