@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>바로벤토</title>
+
+  <!-- 개발 중에는 브라우저가 고친 파일 대신 캐시를 읽어버리는 일이 잦다.
+       매번 다른 주소로 요청해서 항상 최신 파일이 오게 한다. 파일이 작아 부담은 없다.
+       (배포할 때는 아래 두 블록을 평범한 link/script 태그로 되돌리면 된다.) -->
+  <script>
+    document.write('<link rel="stylesheet" href="css/style.css?t=' + Date.now() + '">');
+  </script>
+</head>
+<body>
+  <div id="stage" class="stage"></div>
+  <button id="btn-restart">처음부터</button>
+
+  <!-- ES 모듈을 쓰지 않는다: 윈도우의 python -m http.server가 .js를 text/plain으로
+       내보내면 모듈 스크립트가 차단되기 때문. 순서대로 읽히기만 하면 된다. -->
+  <script>
+    (function () {
+      var stamp = "?t=" + Date.now();
+      [
+        "js/save.js",
+        "js/python.js",
+        "js/fs.js",
+        "js/aistb.js",
+        "js/ide.js",
+        "js/scenes.js",
+        "content/ch00.js",
+        "content/ch01.js",
+        "js/app.js",
+      ].forEach(function (src) {
+        document.write('<script src="' + src + stamp + '"><\/script>');
+      });
+    })();
+  </script>
+</body>
+</html>
