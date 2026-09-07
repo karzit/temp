@@ -148,6 +148,7 @@ var CH01 = {
           {
             who: "Aistb",
             text: "보시는 대로입니다. 리스트에 곱하기는 계산이 아니라 목록을 두 번 이어 붙입니다. 값은 하나도 변하지 않았습니다.",
+            spot: { text: "[3, 1, 4, 1, 5, 3, 1, 4, 1, 5]", in: ".out" },
           },
           {
             who: "Aistb",
@@ -163,7 +164,7 @@ var CH01 = {
           {
             who: "Aistb",
             text: "출력을 비교해 보십시오. 리스트는 값 사이에 쉼표가 있고 배열은 없습니다. 눈으로 구별하는 방법입니다.",
-            spot: { text: "np.array(리스트)", in: ".doc" },
+            spot: { text: "[3 1 4 1 5]", in: ".out" },
           },
           { who: "Aistb", text: "한 번 더 누르시면 이 배열에 2를 곱합니다." },
         ],
@@ -174,7 +175,7 @@ var CH01 = {
           {
             who: "Aistb",
             text: "여섯, 둘, 여덟, 둘, 열. 다섯 개 전부에 곱해졌습니다. 이것이 리스트와 다른 점이고, 오늘 세 건을 처리하는 근거입니다.",
-            spot: { text: "arr * 2", in: ".doc" },
+            spot: { text: "[ 6  2  8  2 10]", in: ".out" },
           },
           { who: "Aistb", text: "남은 두 줄은 ▶ 실행으로 한 번에 보시죠. 중단점이 없으면 끝까지 갑니다." },
         ],
@@ -187,7 +188,7 @@ var CH01 = {
           {
             who: "Aistb",
             text: "더하기도 같습니다. 그리고 배열끼리 더하면 같은 자리끼리 더해집니다. 3+10, 1+20, 이런 식입니다.",
-            spot: { text: "arr1 + arr2", in: ".doc" },
+            spot: { text: "[13 21 34 41 55]", in: ".out" },
           },
           {
             who: "Aistb",
@@ -322,7 +323,7 @@ var CH01 = {
           {
             who: "Aistb",
             text: "len 은 값이 몇 개인지, shape 는 생김새입니다. 한 줄짜리라 쉼표 뒤가 비어 있습니다. 줄이 하나뿐이라는 뜻입니다.",
-            spot: { text: "arr.shape", in: ".doc" },
+            spot: { text: "(6,)", in: ".out" },
           },
           {
             who: "Aistb",
@@ -333,6 +334,7 @@ var CH01 = {
         wait: steppedTo("work/연습/02_꺼내기.py", 12),
       },
       {
+        show: [{ path: "work/참고/numpy_요약.md", pane: 1 }],
         lines: [
           {
             who: "Aistb",
@@ -357,6 +359,7 @@ var CH01 = {
         ],
       },
       {
+        show: [{ path: "work/참고/numpy_요약.md", pane: 1 }],
         lines: [
           {
             who: "Aistb",
@@ -366,7 +369,7 @@ var CH01 = {
           {
             who: "Aistb",
             text: "argmax 는 조금 다릅니다. 가장 큰 값이 아니라 그 값이 몇 번째 자리인지를 알려줍니다. 41이 가장 큰데 2가 나온 것은 그래서입니다.",
-            spot: { text: "arr.argmax()", in: ".doc" },
+            spot: { text: "그 값의 자리: 2", in: ".out" },
           },
         ],
       },
@@ -483,7 +486,7 @@ var CH01 = {
           {
             who: "Aistb",
             text: "3줄 4칸이라는 뜻이고, 줄 수가 먼저 옵니다. 표를 받으면 가장 먼저 확인하실 것입니다.",
-            spot: { text: "np.array([[1, 2], [3, 4]])", in: ".doc" },
+            spot: { text: "(3, 4)", in: ".out" },
           },
           { who: "Aistb", text: "이제 꺼내는 세 가지입니다. 세 번 더 눌러 주세요." },
         ],
@@ -491,6 +494,7 @@ var CH01 = {
         wait: steppedTo("work/연습/03_표모양.py", 6),
       },
       {
+        show: [{ path: "work/참고/numpy_요약.md", pane: 1 }],
         lines: [
           {
             who: "Aistb",
@@ -513,13 +517,18 @@ var CH01 = {
         wait: steppedTo("work/연습/03_표모양.py", 9),
       },
       {
+        show: [{ path: "work/참고/numpy_요약.md", pane: 1 }],
         lines: [
           {
             who: "Aistb",
             text: "mean() 만 쓰면 표 전체의 평균입니다. axis=0 을 넣으면 칸별로 세로로, axis=1 을 넣으면 줄별로 가로로 평균을 냅니다.",
             spot: { text: "m.mean(axis=0)", in: ".doc" },
           },
-          { who: "Aistb", text: "출력의 개수를 보시면 됩니다. 칸별은 네 개, 줄별은 세 개입니다." },
+          {
+            who: "Aistb",
+            text: "출력의 개수를 보시면 됩니다. 칸별은 네 개, 줄별은 세 개입니다.",
+            spot: { text: "칸별 평균", in: ".out" },
+          },
         ],
       },
 

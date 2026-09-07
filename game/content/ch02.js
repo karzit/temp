@@ -125,7 +125,7 @@ var CH02 = {
           {
             who: "Aistb",
             text: "값이 나올 줄 아셨을 텐데 참과 거짓이 줄줄이 나왔습니다. 이 식은 고르는 것이 아니라 줄마다 조건에 맞는지를 답한 것입니다.",
-            spot: { text: 'df["count"] >= 30', in: ".doc" },
+            spot: { text: "dtype: bool", in: ".out" },
           },
           { who: "Aistb", text: "그 답을 다시 대괄호에 넣으면 그때 골라집니다. 한 번 더 눌러 확인해 보세요." },
         ],
