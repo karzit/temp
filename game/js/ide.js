@@ -171,6 +171,7 @@ var IDE = {
           IDE.selectedDir = path;
           IDE.expanded[path] = true;
           IDE.draw();
+          if (IDE.onChange) IDE.onChange(); // 대본이 기다리고 있을 수 있다
         } else {
           IDE.open(path);
         }
@@ -604,6 +605,7 @@ var IDE = {
     if (at >= 0) set.splice(at, 1);
     else set.push(line);
     IDE.draw();
+    if (IDE.onChange) IDE.onChange(); // 대본이 기다리고 있을 수 있다
   },
 
   hasBreakpoint: function (path, line) {
