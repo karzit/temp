@@ -132,7 +132,8 @@ var CH05 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "고르는 것과 묶는 것, 두 가지를 이어 붙이면 됩니다. 표는 다시 만드셔야 합니다." }],
+        lines: [{ who: "Aistb", text: "고르는 것과 묶는 것, 두 가지를 이어 붙이면 됩니다." },
+          { who: "Aistb", text: "표는 또 필요합니다. 앞서 만드신 파일을 열어 표 만드는 부분을 복사해 쓰셔도 됩니다. 실제 업무에서도 그렇게 합니다." }],
         menu: ["brief", "report"],
         nudge: 'df[조건] 뒤에 .groupby("team")["count"].mean() 을 그대로 이어 붙이세요.',
         report: function () {
