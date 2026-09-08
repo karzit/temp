@@ -1,260 +1,271 @@
-// 3장 — Pandas를 배우는 날. 이름이 섞인 표를 다룬다. 의뢰는 오지 않는다.
-// 진행 방식은 1장과 같다. 연습 파일을 한 문장씩 실행하며 결과를 본 뒤, 익힘 문제로 굳힌다.
-
-// 배우는 날과 푸는 날 양쪽에서 같은 것을 내려준다.
-var PANDAS_DOC = {
-  path: "work/참고/pandas_요약.md",
-  readOnly: true,
-  content:
-    "# Pandas 요약\n" +
-    "\n" +
-    "import pandas as pd 로 가져옵니다. df 는 표입니다.\n" +
-    "표의 세로 한 칸을 열이라고 부르고, 열마다 이름이 붙어 있습니다.\n" +
-    "\n" +
-    "## 만들기와 훑어보기\n" +
-    "pd.DataFrame(딕셔너리) — 열 이름과 값 목록으로 표를 만듭니다.\n" +
-    "df.head(3) — 앞에서 세 줄만 봅니다. 표가 길 때 씁니다.\n" +
-    "len(df) — 줄이 몇 개인지.\n" +
-    "\n" +
-    "## 열 고르기\n" +
-    'df["count"] — count 열 하나. 값이 세로로 늘어선 목록이 나옵니다(Series).\n' +
-    'df[["name", "count"]] — 두 열. 대괄호가 두 겹이면 결과도 표입니다.\n' +
-    "\n" +
-    "## 조건으로 줄 고르기\n" +
-    'df["count"] >= 30 — 줄마다 참/거짓이 나옵니다.\n' +
-    'df[df["count"] >= 30] — 그 참/거짓을 다시 대괄호에 넣으면 참인 줄만 남습니다.\n' +
-    "\n" +
-    "## 계산\n" +
-    'df["count"].mean() — 그 열의 평균. sum() max() min() 도 같습니다.\n' +
-    'df.groupby("team") — team 이 같은 것끼리 묶습니다.\n' +
-    'df.groupby("team")["count"].mean() — 묶은 뒤 count 열의 평균. 무리마다 한 줄씩 나옵니다.\n',
-};
-
+// 3장 — NumPy를 쓰는 둘째 날. 어제 오후에 배운 셋(조건 · 줄 세우기 · 모양 바꾸기)을 쓴다.
+// 마지막 한 건은 종합이다 — 한 줄에 두세 가지를 겹쳐 써야 풀린다. 오늘의 고비는 거기다.
+// 2장과 마찬가지로 코드는 깔아주지 않는다. 의뢰서에 자료와 이름이 다 적혀 있다.
 var CH03 = {
   id: "ch03",
-  title: "3 · 이름이 붙은 표를 배우는 날",
+  title: "3 · 겹쳐 쓰는 날",
   scenes: ["desk", "diary"],
 
   desk: {
-    files: [],
+    files: [{ path: NUMPY_DOC.path, content: NUMPY_DOC.content, readOnly: true }],
 
     idleLines: [
-      "참고 문서는 work/참고/ 안에 있습니다.",
+      "참고 문서는 work/참고/numpy_요약.md 에 있습니다.",
       "막히셨으면 저를 눌러 주세요.",
-      "어제 쓰신 중단점을 여기서도 그대로 쓰실 수 있습니다.",
+      "한 줄에 다 쓰려 하지 마시고, 중간 결과를 변수에 담아 두고 보셔도 됩니다.",
     ],
     errorLines: [
       "코드가 도중에 멈췄습니다. 아래 빨간 글씨의 마지막 줄부터 읽어보세요.",
-      "실행이 끝까지 가지 못했습니다. 따옴표나 대괄호가 짝이 맞는지 보시죠.",
-      "에러입니다. 열 이름의 철자를 먼저 확인해 보시는 편이 빠릅니다.",
+      "실행이 끝까지 가지 못했습니다. 대괄호가 짝이 맞는지 보시죠.",
+      "에러입니다. 겹쳐 쓰신 것을 두 줄로 나눠서 하나씩 확인해 보세요.",
     ],
 
     beats: [
       // ── 아침 ────────────────────────────────────────
       {
         lines: [
-          { who: "Aistb", text: "좋은 아침입니다, 토이비님. 어제 하신 여섯 건은 각 팀에서 잘 받았다고 합니다." },
-          { who: "Aistb", text: "오늘은 다시 배우는 날입니다. 의뢰는 내일 들어옵니다." },
-          { who: "Aistb", text: "내일 오는 자료에는 숫자만 있는 것이 아닙니다. 사람 이름이 섞여 있습니다." },
-          { who: "Aistb", text: "NumPy 배열은 숫자를 담는 그릇입니다. 글자가 섞이면 Pandas 를 씁니다. 오늘 배우실 것입니다." },
+          { who: "Aistb", text: "좋은 아침입니다, 토이비님. 어제 배차 2팀 세 건은 그대로 넘어갔습니다." },
+          { who: "Aistb", text: "오늘은 어제 못 쓰신 것들을 씁니다. 조건으로 고르기, 줄 세우기, 모양 바꾸기입니다." },
+          { who: "Aistb", text: "세 건이고, 뒤로 갈수록 겹쳐 쓰실 것이 늘어납니다. 마지막 한 건은 조금 걸리실 겁니다." },
         ],
+        show: [{ path: NUMPY_DOC.path, pane: 1 }],
       },
 
-      // ── 연습 ────────────────────────────────────────
+      // ── 의뢰 1: 과열 부품 ───────────────────────────
       {
+        lines: [{ who: "Aistb", text: "첫 번째 의뢰입니다. 정비 1팀입니다." }],
         addFiles: [
           {
-            path: PANDAS_DOC.path,
+            path: "work/의뢰_0005.md",
             readOnly: true,
-            open: 1,
-            content: PANDAS_DOC.content,
-          },
-          {
-            path: "work/연습/07_이름붙은표.py",
-            open: 0,
+            kind: "brief",
             content:
-              "import pandas as pd\n" +
+              "# 의뢰 0005 — 과열 부품 추리기\n" +
               "\n" +
-              "df = pd.DataFrame({\n" +
-              '    "name":  ["가온", "노을", "다움", "라온", "마루"],\n' +
-              '    "count": [41, 22, 35, 30, 18],\n' +
-              '    "team":  ["A", "B", "A", "B", "A"],\n' +
-              "})\n" +
+              "발신: 정비 1팀\n" +
+              "수신: 깁스 W 토이비\n" +
               "\n" +
-              "print(df)\n" +
+              "## 상황\n" +
+              "배달 로봇 여덟 대의 관절 온도입니다. 80도부터는 과열로 봅니다.\n" +
               "\n" +
-              'print(df["count"])\n' +
-              'print(df[["name", "count"]])\n' +
+              "  온도 : 61, 84, 73, 92, 58, 80, 77, 88\n" +
               "\n" +
-              'print(df["count"] >= 30)\n' +
-              'print(df[df["count"] >= 30])\n' +
+              "## 할 일\n" +
+              "work/task_05/heat.py 를 만들고 아래 세 가지를 채워 주세요.\n" +
               "\n" +
-              'print(df["count"].mean())\n' +
-              'print(df.groupby("team")["count"].mean())\n',
+              "- hot       : 80도 이상인 온도만\n" +
+              "- hot_count : 그런 부품이 몇 개\n" +
+              "- cooled    : 80도 이상은 80으로 낮추고 나머지는 그대로 둔 기록\n" +
+              "\n" +
+              "## 참고\n" +
+              "cooled 는 개수가 줄지 않습니다. 여덟 개 그대로 나와야 합니다.\n",
           },
         ],
-        lines: [
-          { who: "Aistb", text: "연습 파일입니다. 어제처럼 한 문장씩 보시겠습니다. 세 번 눌러 표가 나올 때까지 가 주세요." },
-          { who: "Aistb", text: "처음 한 번은 Pandas 를 가져오느라 몇 초 걸립니다." },
-        ],
-        spot: ".step",
-        nudge: "아래의 ↓ 한 줄 버튼입니다.",
-        wait: steppedTo("work/연습/07_이름붙은표.py", 3),
+        spot: '.tree-row[data-path="work/의뢰_0005.md"]',
+        menu: ["brief"],
+        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 오른쪽에 열립니다.",
+        wait: function () {
+          return IDE.panes.some(function (p) {
+            return p.tabs.indexOf("work/의뢰_0005.md") >= 0;
+          });
+        },
       },
       {
-        lines: [
-          {
-            who: "Aistb",
-            text: "pd.DataFrame 에 딕셔너리를 넣으면 표가 됩니다. 열 이름이 위에, 줄 번호가 왼쪽에 붙습니다.",
-            spot: { text: "pd.DataFrame(딕셔너리)", in: ".doc" },
-          },
-          { who: "Aistb", text: "열을 고르는 두 가지를 보시겠습니다. 두 번 더 눌러 주세요." },
-        ],
-        spot: ".step",
-        wait: steppedTo("work/연습/07_이름붙은표.py", 5),
+        lines: [{ who: "Aistb", text: "어제 익힘 문제로 푸신 세 가지와 같습니다. 파일을 만들고 채운 뒤 완료 보고해 주세요." }],
+        menu: ["brief", "report"],
+        nudge: "고르기는 대괄호, 개수는 sum, 값을 바꾸는 것은 where 입니다.",
+        report: function () {
+          return checkFile(
+            "work/task_05/heat.py",
+            "import numpy as np\n" +
+              "for _n in ['hot', 'hot_count', 'cooled']:\n" +
+              "    assert _n in dir(), f'{_n} 가 없습니다. 의뢰서에 적힌 이름 그대로 써 주세요.'\n" +
+              "    assert not isinstance(eval(_n), type(Ellipsis)), f'{_n} 가 아직 ... 그대로입니다.'\n" +
+              "temps = np.array([61, 84, 73, 92, 58, 80, 77, 88])\n" +
+              "want = temps[temps >= 80]\n" +
+              "assert np.asarray(hot).dtype != bool, 'hot 에 참/거짓 목록이 들어 있습니다. 그것을 다시 대괄호에 넣으셔야 값이 골라집니다.'\n" +
+              "assert np.array_equal(np.asarray(hot), want), f'hot 이 {np.asarray(hot)} 입니다. 80 이상인 온도는 {want} 입니다.'\n" +
+              "assert int(hot_count) == len(want), f'hot_count 가 {hot_count} 입니다. {len(want)} 개가 나와야 합니다.'\n" +
+              "_c = np.asarray(cooled)\n" +
+              "assert _c.shape == temps.shape, f'cooled 가 {_c.shape} 입니다. 값을 골라내지 마시고 바꾸기만 하셔야 여덟 개가 그대로 남습니다.'\n" +
+              "assert np.array_equal(_c, np.where(temps >= 80, 80, temps)), f'cooled 가 {_c} 입니다. 80 이상만 80이 되고 나머지는 그대로여야 합니다.'\n"
+          );
+        },
+        wait: function (ctx) {
+          return ctx.reported;
+        },
       },
-      {
-        lines: [
-          {
-            who: "Aistb",
-            text: "열 하나를 부를 때는 이름을 대괄호에 넣습니다. 번호가 아니라 이름으로 부르는 것이 NumPy와 다른 점입니다.",
-            spot: { text: 'df["count"]', in: ".doc" },
-          },
-          {
-            who: "Aistb",
-            text: "대괄호를 두 겹으로 쓰면 여러 열을 고를 수 있고, 결과도 표로 나옵니다. 위의 출력과 생김새를 비교해 보십시오.",
-            spot: { text: 'df[["name", "count"]]', in: ".doc" },
-          },
-          { who: "Aistb", text: "다음 한 줄이 오늘의 고비입니다. 한 번만 눌러 주세요." },
-        ],
-        spot: ".step",
-        wait: steppedTo("work/연습/07_이름붙은표.py", 6),
-      },
-      {
-        lines: [
-          {
-            who: "Aistb",
-            text: "값이 나올 줄 아셨을 텐데 참과 거짓이 줄줄이 나왔습니다. 이 식은 고르는 것이 아니라 줄마다 조건에 맞는지를 답한 것입니다.",
-            spot: { text: "dtype: bool", in: ".out" },
-          },
-          { who: "Aistb", text: "어제 배열에서 하신 것과 같은 방법입니다. 한 번 더 눌러 확인해 보세요." },
-        ],
-        spot: ".step",
-        wait: steppedTo("work/연습/07_이름붙은표.py", 7),
-      },
-      {
-        lines: [
-          {
-            who: "Aistb",
-            text: "참인 줄만 남았습니다. 두 단계가 하나로 붙어 있는 것뿐입니다. 안쪽이 참/거짓을 만들고, 바깥쪽이 그것으로 고릅니다.",
-            spot: { text: 'df[df["count"] >= 30]', in: ".doc" },
-          },
-          { who: "Aistb", text: "남은 두 줄은 ▶ 실행으로 보시죠." },
-        ],
-        spot: ".run",
-        wait: steppedTo("work/연습/07_이름붙은표.py", 9),
-      },
-      {
-        lines: [
-          {
-            who: "Aistb",
-            text: "열 하나의 평균은 그 열 뒤에 mean() 을 붙이면 됩니다. 어제 배열에 하신 것과 같습니다.",
-            spot: { text: 'df["count"].mean()', in: ".doc" },
-          },
-          {
-            who: "Aistb",
-            text: "groupby 는 같은 값끼리 묶습니다. team 으로 묶고 count 열의 평균을 내면 팀마다 한 줄씩 나옵니다.",
-            spot: { text: 'df.groupby("team")["count"].mean()', in: ".doc" },
-          },
-        ],
-      },
+      { lines: [{ who: "Aistb", text: "접수했습니다. 정비 1팀으로 넘기겠습니다." }] },
 
-      // ── 익힘 1 ──────────────────────────────────────
+      // ── 의뢰 2: 하루 기록 ───────────────────────────
       {
+        lines: [{ who: "Aistb", text: "두 번째 의뢰입니다. 이번에는 두 가지를 이어 붙이셔야 합니다." }],
         addFiles: [
           {
-            path: "work/익힘/05_고르기.py",
-            open: 0,
+            path: "work/의뢰_0006.md",
+            readOnly: true,
+            kind: "brief",
             content:
-              "import numpy as np\n" +
-              "import pandas as pd\n" +
+              "# 의뢰 0006 — 반나절 기록을 세 시간씩\n" +
               "\n" +
-              "df = pd.DataFrame({\n" +
-              '    "name":  ["가온", "노을", "다움", "라온"],\n' +
-              '    "count": [12, 20, 30, 40],\n' +
-              '    "team":  ["A", "B", "A", "B"],\n' +
-              "})\n" +
+              "발신: 배차 2팀\n" +
+              "수신: 깁스 W 토이비\n" +
               "\n" +
-              "# 1) count 열 하나만 골라 counts 에 넣으세요\n" +
-              "counts = ...\n" +
+              "## 상황\n" +
+              "어제 낮 열두 시간의 배달 건수입니다. 한 시간에 하나씩, 순서대로 열두 개입니다.\n" +
               "\n" +
-              "# 2) 건수가 20 이상인 사람의 이름만 골라 busy_names 에 넣으세요\n" +
-              "busy_names = ...\n" +
+              "  건수 : 0, 1, 2, 5, 9, 14, 11, 21, 18, 15, 4, 1\n" +
               "\n" +
-              "# 3) 그런 사람이 몇 명인지 how_many 에 넣으세요\n" +
-              "how_many = ...\n" +
-              DRILL_CHECKER +
-              "확인('1번', counts, [12, 20, 30, 40])\n" +
-              "확인('2번', busy_names, ['노을', '다움', '라온'])\n" +
-              "확인('3번', how_many, 3)\n" +
-              DRILL_TAIL,
+              "세 시간을 한 덩어리로 봅니다. 덩어리는 모두 네 개가 됩니다.\n" +
+              "\n" +
+              "## 할 일\n" +
+              "work/task_06/half.py 를 만들고 아래 네 가지를 채워 주세요.\n" +
+              "\n" +
+              "- blocks   : 열두 개를 4줄 3칸으로 바꾼 것\n" +
+              "- by_block : 덩어리별 합계 (네 개)\n" +
+              "- busiest  : 가장 바쁜 덩어리가 몇 번째인지 (0부터)\n" +
+              "- quiet    : 건수가 3 이하인 시간이 몇 시간인지\n" +
+              "\n" +
+              "## 참고\n" +
+              "quiet 은 덩어리가 아니라 원래 열두 개에서 세십니다.\n",
           },
         ],
-        lines: [
-          { who: "Aistb", text: "익힘 문제입니다. 어제와 같은 방식이니 설명은 줄이겠습니다." },
-          { who: "Aistb", text: "2번은 조건으로 줄을 고른 다음, 거기서 이름 열 하나를 다시 고르시면 됩니다." },
-        ],
-        spot: ".run",
-        nudge: "조건을 대괄호에 넣어 고르고, 줄 수는 len 으로 셉니다.",
-        wait: solvedDrill("work/익힘/05_고르기.py"),
+        spot: '.tree-row[data-path="work/의뢰_0006.md"]',
+        menu: ["brief"],
+        nudge: "의뢰 확인을 눌러 새 의뢰서를 열어 보세요.",
+        wait: function () {
+          return IDE.panes.some(function (p) {
+            return p.tabs.indexOf("work/의뢰_0006.md") >= 0;
+          });
+        },
       },
-
-      // ── 익힘 2 ──────────────────────────────────────
       {
+        lines: [
+          { who: "Aistb", text: "모양을 바꾸고, 줄별로 더하고, 자리를 찾고, 조건으로 셉니다. 어제 하신 것 그대로입니다." },
+        ],
+        menu: ["brief", "report"],
+        nudge: "덩어리별 합계는 줄별이니 axis=1 입니다.",
+        report: function () {
+          return checkFile(
+            "work/task_06/half.py",
+            "import numpy as np\n" +
+              "for _n in ['blocks', 'by_block', 'busiest', 'quiet']:\n" +
+              "    assert _n in dir(), f'{_n} 가 없습니다. 의뢰서에 적힌 이름 그대로 써 주세요.'\n" +
+              "    assert not isinstance(eval(_n), type(Ellipsis)), f'{_n} 가 아직 ... 그대로입니다.'\n" +
+              "log = np.array([0, 1, 2, 5, 9, 14, 11, 21, 18, 15, 4, 1])\n" +
+              "_b = np.asarray(blocks)\n" +
+              "assert _b.shape == (4, 3), f'blocks 가 {_b.shape} 입니다. 4줄 3칸이어야 합니다.'\n" +
+              "assert np.array_equal(_b, log.reshape(4, 3)), 'blocks 안의 숫자 순서가 의뢰서와 다릅니다. reshape 는 순서를 바꾸지 않습니다.'\n" +
+              "_w = log.reshape(4, 3).sum(axis=1)\n" +
+              "assert np.shape(by_block) == (4,), f'by_block 이 {np.shape(by_block)} 입니다. 덩어리마다 하나씩 네 개여야 합니다. 줄별 합계는 axis=1 입니다.'\n" +
+              "assert np.array_equal(np.asarray(by_block), _w), f'by_block 이 {np.asarray(by_block)} 입니다. {_w} 가 나와야 합니다.'\n" +
+              "assert int(busiest) == int(_w.argmax()), f'busiest 가 {busiest} 입니다. 값이 아니라 몇 번째 덩어리인지를 넣으셔야 합니다. arg 가 붙은 것을 쓰시면 됩니다.'\n" +
+              "assert int(quiet) == int((log <= 3).sum()), f'quiet 이 {quiet} 입니다. 3 이하인 시간은 {int((log <= 3).sum())} 시간입니다.'\n"
+          );
+        },
+        wait: function (ctx) {
+          return ctx.reported;
+        },
+      },
+      { lines: [{ who: "Aistb", text: "접수했습니다. 한 건 남았습니다." }] },
+
+      // ── 의뢰 3: 종합 ────────────────────────────────
+      {
+        lines: [
+          { who: "Aistb", text: "마지막 의뢰입니다. 지금까지와 다릅니다." },
+          { who: "Aistb", text: "새로 배우실 것은 없습니다. 다만 한 줄에 두세 가지를 겹쳐 쓰셔야 합니다." },
+        ],
         addFiles: [
           {
-            path: "work/익힘/06_묶기.py",
-            open: 0,
+            path: "work/의뢰_0007.md",
+            readOnly: true,
+            kind: "brief",
             content:
-              "import numpy as np\n" +
-              "import pandas as pd\n" +
+              "# 의뢰 0007 — 로봇 네 대 종합 점검표\n" +
               "\n" +
-              "df = pd.DataFrame({\n" +
-              '    "name":  ["가온", "노을", "다움", "라온"],\n' +
-              '    "count": [12, 20, 30, 40],\n' +
-              '    "team":  ["A", "B", "A", "B"],\n' +
-              "})\n" +
+              "발신: 정비 1팀\n" +
+              "수신: 깁스 W 토이비\n" +
               "\n" +
-              "# 1) count 열의 평균을 avg 에 넣으세요\n" +
-              "avg = ...\n" +
+              "## 상황\n" +
+              "로봇 네 대의 하루 기록입니다. 줄 하나가 로봇 한 대, 칸은 시간대 0~3번의 배달 건수입니다.\n" +
+              "이름은 줄과 같은 순서입니다.\n" +
               "\n" +
-              "# 2) 팀별 평균 건수를 by_team 에 넣으세요 (A팀 먼저, B팀 나중)\n" +
-              "by_team = ...\n" +
+              "  이름 : 1호, 2호, 3호, 4호\n" +
               "\n" +
-              "# 3) 팀별 합계 건수를 team_sum 에 넣으세요\n" +
-              "team_sum = ...\n" +
-              DRILL_CHECKER +
-              "확인('1번', avg, 25.5)\n" +
-              "확인('2번', by_team, [21.0, 30.0])\n" +
-              "확인('3번', team_sum, [42, 60])\n" +
-              DRILL_TAIL,
+              "  1호 :  8, 15,  9,  4\n" +
+              "  2호 : 11, 20, 12,  7\n" +
+              "  3호 :  5, 11,  6,  3\n" +
+              "  4호 : 13, 22, 15,  8\n" +
+              "\n" +
+              "## 할 일\n" +
+              "work/task_07/robots.py 를 만들고 아래 네 가지를 채워 주세요.\n" +
+              "\n" +
+              "- totals      : 로봇마다 하루 합계 (네 개)\n" +
+              "- busy_names  : 하루 합계가 50 이상인 로봇의 이름\n" +
+              "- top2        : 합계가 많은 순서로 로봇 이름 두 대\n" +
+              "- peak_slot   : 네 대를 합쳐 가장 바쁜 시간대가 몇 번 칸인지\n" +
+              "\n" +
+              "## 참고\n" +
+              "네 가지 모두 배우신 것들의 조합입니다. 새 함수는 없습니다.\n" +
+              "이름은 글자이므로 np.array([\"1호\", ...]) 처럼 따옴표를 붙여 담습니다.\n",
           },
         ],
+        spot: '.tree-row[data-path="work/의뢰_0007.md"]',
+        menu: ["brief"],
+        nudge: "의뢰 확인을 눌러 마지막 의뢰서를 열어 보세요.",
+        wait: function () {
+          return IDE.panes.some(function (p) {
+            return p.tabs.indexOf("work/의뢰_0007.md") >= 0;
+          });
+        },
+      },
+      {
         lines: [
-          { who: "Aistb", text: "오늘의 마지막 익힘 문제입니다. 묶는 쪽입니다." },
-          { who: "Aistb", text: "평균 대신 합계가 필요하면 mean 자리에 sum 을 넣으시면 됩니다. 참고 문서에 적어 두었습니다." },
+          { who: "Aistb", text: "먼저 totals 부터 만드십시오. 나머지 셋은 전부 totals 를 놓고 시작합니다." },
+          {
+            who: "Aistb",
+            text: "그리고 하나만 알려드리겠습니다. 참/거짓 목록은 다른 배열의 대괄호에도 넣을 수 있습니다. 길이만 같으면 됩니다.",
+            spot: { text: "arr[arr >= 80]", in: ".doc" },
+          },
+          { who: "Aistb", text: "즉 합계로 만든 참/거짓을 이름 쪽 대괄호에 넣으면, 그 조건에 맞는 이름만 남습니다." },
         ],
-        spot: ".run",
-        nudge: 'df.groupby("team")["count"] 까지 쓰신 다음 .mean() 이나 .sum() 을 붙이세요.',
-        wait: solvedDrill("work/익힘/06_묶기.py"),
+        menu: ["brief", "report"],
+        nudge: "totals 를 먼저 만들어 두고, busy_names 는 names[조건], top2 는 자리 번호로 이름을 꺼내시면 됩니다.",
+        report: function () {
+          return checkFile(
+            "work/task_07/robots.py",
+            "import numpy as np\n" +
+              "for _n in ['totals', 'busy_names', 'top2', 'peak_slot']:\n" +
+              "    assert _n in dir(), f'{_n} 가 없습니다. 의뢰서에 적힌 이름 그대로 써 주세요.'\n" +
+              "    assert not isinstance(eval(_n), type(Ellipsis)), f'{_n} 가 아직 ... 그대로입니다.'\n" +
+              "_names = np.array(['1호', '2호', '3호', '4호'])\n" +
+              "_log = np.array([[8, 15, 9, 4], [11, 20, 12, 7], [5, 11, 6, 3], [13, 22, 15, 8]])\n" +
+              "_t = _log.sum(axis=1)\n" +
+              "assert np.shape(totals) == (4,), f'totals 가 {np.shape(totals)} 입니다. 로봇마다 하나씩 네 개여야 합니다. 줄별 합계는 axis=1 입니다.'\n" +
+              "assert np.array_equal(np.asarray(totals), _t), f'totals 가 {np.asarray(totals)} 입니다. {_t} 가 나와야 합니다.'\n" +
+              "_busy = _names[_t >= 50]\n" +
+              "assert np.asarray(busy_names).dtype.kind in 'US', f'busy_names 에 이름이 아니라 {np.asarray(busy_names)} 가 들어 있습니다. 조건으로 만든 참/거짓을 이름 배열의 대괄호에 넣어 보세요.'\n" +
+              "assert list(busy_names) == list(_busy), f'busy_names 가 {np.asarray(busy_names)} 입니다. 합계가 50 이상인 로봇은 {_busy} 입니다.'\n" +
+              "_order = np.argsort(_t)[::-1]\n" +
+              "assert len(list(top2)) == 2, f'top2 가 {len(list(top2))} 대입니다. 두 대만 남기셔야 합니다.'\n" +
+              "assert list(top2) != list(_names[np.argsort(_t)][:2]), '적은 순서로 뽑으셨습니다. 뒤집는 것을 빠뜨리지 않으셨는지 보세요.'\n" +
+              "assert list(top2) == list(_names[_order][:2]), f'top2 가 {np.asarray(top2)} 입니다. 많은 순서로는 {_names[_order][:2]} 입니다.'\n" +
+              "_slot = _log.sum(axis=0)\n" +
+              "assert int(peak_slot) != int(_t.argmax()), 'peak_slot 은 로봇이 아니라 시간대입니다. 세로로 더하셔야 합니다(axis=0).'\n" +
+              "assert int(peak_slot) == int(_slot.argmax()), f'peak_slot 이 {peak_slot} 입니다. 시간대별 합계는 {_slot} 이므로 {int(_slot.argmax())}번 칸이 가장 바쁩니다.'\n"
+          );
+        },
+        wait: function (ctx) {
+          return ctx.reported;
+        },
       },
 
       // ── 마무리 ──────────────────────────────────────
       {
         lines: [
-          { who: "Aistb", text: "오늘은 이 셋입니다. 이름으로 부른다. 조건으로 고른다. 무리로 묶는다." },
-          { who: "Aistb", text: "참고 문서는 내일 아침에 같은 것을 다시 올려 드립니다." },
-          { who: "Aistb", text: "내일은 인사팀 의뢰 세 건입니다. 오늘 것으로 전부 됩니다." },
+          { who: "Aistb", text: "접수했습니다. 오늘 세 건 모두 처리되었습니다." },
+          { who: "Aistb", text: "마지막 건에서 하신 것이 오늘의 요점입니다. 배운 것 하나로 풀리는 일은 많지 않습니다." },
+          { who: "Aistb", text: "내일은 다시 배우는 날입니다. 숫자만 있는 자료가 아니라, 이름이 섞인 자료를 다루게 되십니다." },
         ],
       },
       {
@@ -271,15 +282,15 @@ var CH03 = {
   diary: [
     "421950년 10월 4일.",
     "",
-    "오늘은 Pandas. 표에 이름이 붙어 있어서 번호를 안 세도 된다.",
+    "과열 부품, 반나절 기록, 그리고 로봇 종합 점검표.",
     "",
-    "조건을 쓰면 값이 나올 줄 알았는데 참, 거짓, 참, 거짓이 줄줄이 나왔다.",
-    "그걸 다시 대괄호에 넣는다는 게 아직도 좀 이상하다.",
-    "이상하지만 되긴 된다. 되는 걸 계속 쓰다 보면 이상하지 않아진다고 한다.",
+    "마지막 게 어려웠다. 어려운데 새로 나온 건 하나도 없었다.",
+    "합계를 내고, 그걸로 조건을 만들고, 그 조건을 이름 쪽에 넣는다.",
+    "따로따로는 다 아는 건데 붙이려니까 손이 멈췄다.",
     "",
-    "그런데 그제 배열에서 똑같은 걸 했었다. 그때도 참, 거짓이 나왔다.",
-    "같은 방법이 이름 붙은 표에도 그대로 있는 거였다.",
+    "Aistb가 먼저 totals 부터 만들라고 했다. 그러고 나니 나머지는 그 위에 얹기만 하면 됐다.",
+    "어려운 건 순서를 모를 때 어려운 거였다.",
     "",
-    "Aistb가 오늘도 정정을 하지 않았다. 이제는 기다리게 된다.",
+    "내일은 이름이 섞인 자료라고 한다. 숫자만 있는 게 편했는데.",
   ],
 };
