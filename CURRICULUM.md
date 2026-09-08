@@ -16,6 +16,7 @@
 | [05_cnn/05_cnn.ipynb](notebooks/ml-curriculum/05_cnn/05_cnn.ipynb) | Lec 11 | [Convolution](glossary.md#convolution), [Pooling](glossary.md#pooling), [CNN](glossary.md#cnn)으로 이미지 분류 | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/05_cnn/05_cnn.ipynb) | [해설](notebooks/ml-curriculum/05_cnn/05_cnn_solutions.ipynb) |
 | [06_rnn/06_rnn.ipynb](notebooks/ml-curriculum/06_rnn/06_rnn.ipynb) | Lec 12 | [RNN](glossary.md#rnn) 기본, Char-RNN("hihello"), 시계열 예측 | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/06_rnn/06_rnn.ipynb) | [해설](notebooks/ml-curriculum/06_rnn/06_rnn_solutions.ipynb) |
 | [07_tensorflow_practice/07_tensorflow_practice.ipynb](notebooks/ml-curriculum/07_tensorflow_practice/07_tensorflow_practice.ipynb) | (선택, 원본 강의 프레임워크) | 02/04의 Linear Regression·XOR 예제를 [TensorFlow](glossary.md#tensorflow)/[Keras](glossary.md#keras)로 재구현, PyTorch ↔ TF 대응표 | - | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/07_tensorflow_practice/07_tensorflow_practice.ipynb) | [해설](notebooks/ml-curriculum/07_tensorflow_practice/07_tensorflow_practice_solutions.ipynb) |
+| [08_transformer/08_transformer.ipynb](notebooks/ml-curriculum/08_transformer/08_transformer.ipynb) | (원본 강의 범위 밖) | [어텐션](glossary.md#attention)과 [Q/K/V](glossary.md#qkv), [인과 마스크](glossary.md#causal-mask), [멀티 헤드](glossary.md#multi-head-attention), [위치 임베딩](glossary.md#positional-encoding), [Transformer 블록](glossary.md#transformer-block)을 직접 구현하고 [다음 토큰 예측](glossary.md#next-token-prediction)으로 학습·생성 | ✅ | ✅ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/08_transformer/08_transformer.ipynb) | [해설](notebooks/ml-curriculum/08_transformer/08_transformer_solutions.ipynb) |
 
 각 `_solutions.ipynb`는 본문 노트북 끝의 "연습 문제"에 대한 정답 코드 + 해설입니다. 먼저 직접 풀어본 뒤 참고하는 걸 권장합니다.
 
@@ -28,12 +29,13 @@
 2. **04**: 신경망이 왜 필요한지(XOR 문제)부터 시작해서, 역전파·ReLU·Dropout까지 PyTorch로 직접 구현합니다.
 3. **05 → 06**: 이미지(CNN), 시퀀스(RNN) 데이터로 확장합니다.
 4. (선택) **07**: 원본 강의가 사용한 TensorFlow/Keras로 02·04 예제를 다시 풀어보며 PyTorch와의 API 차이를 익힙니다.
+5. **08**: RNN이 왜 막히는지에서 출발해 Transformer를 직접 만듭니다. `rag-pipeline-practice`에서 쓰게 될 LLM이 어떤 구조인지를 여기서 채웁니다. **원본 강의에는 없는 장입니다.**
 
 각 노트북은 Colab에서 바로 열어 실행할 수 있도록 첫 셀에 환경 감지 + 패키지 설치 코드가 포함되어 있습니다 (프로젝트 루트 [README.md](README.md)의 "Colab에서 열기" 참고).
 
 ## 범위에서 제외한 부분
 
-원본 사이트의 **시즌 RL(강화학습)**과 **시즌 NLP**는 별도 시즌으로, 이 커리큘럼(시즌 1: 딥러닝 기본)을 먼저 끝낸 뒤 확장하는 것을 권장하여 이번 구성에는 포함하지 않았습니다. 필요하면 이후에 `notebooks/ml-curriculum/08_reinforcement_learning/` 등으로 이어서 추가할 수 있습니다. 정식 노트북은 아니지만, RL 개념을 미리 눈으로 보고 싶다면 [`extras/frozen-lake-viz/`](extras/frozen-lake-viz)에 브라우저에서 바로 여는 Q-Learning 시각화 데모가 있습니다.
+원본 사이트의 **시즌 RL(강화학습)**과 **시즌 NLP**는 별도 시즌으로, 이 커리큘럼(시즌 1: 딥러닝 기본)을 먼저 끝낸 뒤 확장하는 것을 권장하여 이번 구성에는 포함하지 않았습니다. 필요하면 이후에 `notebooks/ml-curriculum/09_reinforcement_learning/` 등으로 이어서 추가할 수 있습니다. 정식 노트북은 아니지만, RL 개념을 미리 눈으로 보고 싶다면 [`extras/frozen-lake-viz/`](extras/frozen-lake-viz)에 브라우저에서 바로 여는 Q-Learning 시각화 데모가 있습니다.
 
 원본 강의 **Lec 7**의 일부 주제(학습률 조정, 데이터 표준화, Regularization, 가중치 초기화)도 04번 노트북에서는 다루지 않습니다. 04번은 "왜 층을 쌓아야 하는가"(XOR)와 "층이 깊어지면 무엇이 망가지는가"(기울기 소실 → ReLU, 과적합 → Dropout)라는 한 줄기에 집중했습니다. 스케일링·과적합 통제를 실제 데이터에서 다루는 쪽은 **[`notebooks/tabular-ml-practice/`](notebooks/tabular-ml-practice/README.md)** 02·04번입니다.
 

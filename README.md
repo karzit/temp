@@ -66,7 +66,7 @@ flowchart LR
 
     subgraph ML["머신러닝 트랙"]
         direction TB
-        A["① ml-curriculum<br/>ML·DL이 어떻게 작동하는가<br/>회귀 → 분류 → 신경망 → CNN/RNN"]
+        A["① ml-curriculum<br/>ML·DL이 어떻게 작동하는가<br/>회귀 → 분류 → 신경망 → CNN/RNN → Transformer"]
         D["④ tabular-ml-practice<br/>현실 데이터로 실제로 어떻게 하는가<br/>EDA → 전처리 → 모델 → 평가"]
         T["⑤ text-classification-practice<br/>같은 흐름을 텍스트에서<br/>TF-IDF → 임베딩 → 사전 학습 모델"]
         A -. 서로 보완 .-> D
@@ -90,15 +90,19 @@ flowchart LR
 
 ```
 머신러닝 → 딥러닝 → Transformer → LLM(GPT 등) → RAG
-   ①          ①         ⑤(가져다 씀)   ②③          ②③
+   ①          ①        ① 08번         ②③          ②③
 ```
 
 ①에서 배우는 경사 하강법·역전파는 딥러닝의 기본기이고, 그 딥러닝을 아주 크게 키운 것이
 Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에게 회사 문서처럼 학습되지 않은 내용을
-찾아서 물어보게 만드는 기법이 **RAG**(②③)입니다. 다만 "LLM을 직접 만드는 것"은 개인이 하기 어렵고
-실무에서도 거의 하지 않기 때문에, 이 저장소는 **LLM 내부 구조(Transformer)를 처음부터 만드는 대신
-이미 만들어진 것을 가져다 쓰는 법**을 다룹니다 — 분류 쪽은 ⑤ 03번(모델을 가져와 파인튜닝),
-생성·검색 쪽은 ②③(LLM API를 호출)입니다. 그래서 ①을 몰라도 ②③을 시작할 수 있고, 반대로 ①만 해도 됩니다.
+찾아서 물어보게 만드는 기법이 **RAG**(②③)입니다.
+
+**Transformer 자리는 ① 08번이 채웁니다.** 어텐션부터 시작해 작은 GPT를 직접 만들고 학습시켜
+문장을 생성해봅니다. 다만 **거기까지입니다.** 진짜 LLM을 만드는 데 필요한 것(수천억 토큰의 사전 학습,
+지시 튜닝, RLHF)은 개인이 할 수 있는 일이 아니고 실무에서도 거의 하지 않으므로 다루지 않습니다.
+**"어떻게 생겼는지는 직접 만들어보고, 실제로는 만들어진 것을 가져다 쓴다"**가 이 저장소의 방침입니다 —
+분류 쪽은 ⑤ 03번(모델을 가져와 파인튜닝), 생성·검색 쪽은 ②③(LLM API를 호출)입니다.
+그래서 ①을 몰라도 ②③을 시작할 수 있고, 반대로 ①만 해도 됩니다.
 
 ## 학습 가이드 — 어떻게 진행하면 되나요?
 
@@ -136,8 +140,9 @@ Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에�
    시작하기 전에 **[example-projects/README.md](example-projects/README.md)**의 파이프라인 다이어그램을
    먼저 읽으면 4개 프로젝트가 어떻게 이어지는지 한눈에 파악됩니다.
 4. (선택) `notebooks/ml-curriculum/00~06` — ML/딥러닝 기초 이론까지 확장하고 싶을 때.
-   `07_tensorflow_practice`는 02/04를 TensorFlow/Keras로 다시 풀어보는 보너스 실습이니 06까지
-   끝낸 뒤 여유가 있을 때 봐도 됩니다.
+   **08번은 여기서 쓰는 LLM이 어떤 구조인지를 직접 만들어보는 장이라, RAG를 먼저 한 사람에게
+   특히 잘 맞습니다.** `07_tensorflow_practice`는 02/04를 TensorFlow/Keras로 다시 풀어보는
+   보너스 실습이니 순서에 상관없이 여유가 있을 때 봐도 됩니다.
 5. (선택) `notebooks/tabular-ml-practice/00~04` — 실제 표 데이터를 다루는 전 과정.
    ①과 독립적이라 먼저 봐도 되고, ①을 끝낸 뒤 "그래서 실무에서는 어떻게 하나"로 이어봐도 됩니다.
 6. (선택) `notebooks/text-classification-practice/01~03` — 같은 과정을 텍스트 데이터로.
@@ -167,6 +172,7 @@ text-classification-practice 01~03에 각각 해설 노트북이 있고,
 | 05. CNN | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/05_cnn/05_cnn.ipynb) |
 | 06. RNN | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/06_rnn/06_rnn.ipynb) |
 | 07. TensorFlow/Keras 실습 (선택) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/07_tensorflow_practice/07_tensorflow_practice.ipynb) |
+| 08. Transformer | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/08_transformer/08_transformer.ipynb) |
 
 ### ② rag-pipeline-practice
 
@@ -225,6 +231,7 @@ notebooks/
     05_cnn/                     Lec 11: CNN
     06_rnn/                     Lec 12: RNN
     07_tensorflow_practice/     (선택) TensorFlow/Keras 라이브러리 실습 — 02/04의 PyTorch 예제를 TF로 재구현
+    08_transformer/             어텐션부터 작은 GPT까지 직접 구현 — RNN과 LLM 사이를 잇는 장
   rag-pipeline-practice/        라이브러리 실습 (②) — 자세한 내용은 notebooks/rag-pipeline-practice/README.md
     01_web_crawling/            requests + BeautifulSoup 크롤링, sqlite3/dotenv 실습 (crawl-storage-example)
     02_text_chunking/           langchain-text-splitters, PyMuPDF/pypdf, tiktoken 실습 (preprocess/rag-regulation-example)
@@ -322,5 +329,6 @@ Docker로 띄워야 합니다. 실행 방법은 각 프로젝트 폴더의 `READ
 ## 다음 튜토리얼 아이디어
 - PyTorch로 이미지 분류 (CNN, MNIST/CIFAR-10)
 - 자신의 CSV 데이터셋으로 파이프라인 재사용
-- Transformer 내부 구조(어텐션)를 직접 뜯어보는 노트북 — 지금은 ⑤ 03번이 사전 학습 모델을
-  **가져다 쓰는 법**만 다루고, 그 안이 어떻게 생겼는지는 다루지 않습니다
+- LLM이 조수가 되는 과정(지시 튜닝 / RLHF) — 지금은 ① 08번이 **사전 학습까지**만 다룹니다.
+  "다음 글자 맞히기"를 배운 모델이 어떻게 대화하게 되는지는 빠져 있습니다
+- 효율적인 파인튜닝(LoRA / QLoRA) — ⑤ 03번의 전체 파인튜닝에서 자연스럽게 이어집니다
