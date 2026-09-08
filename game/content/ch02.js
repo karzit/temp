@@ -27,9 +27,6 @@ var CH02 = {
       {
         lines: [
           { who: "Aistb", text: "좋은 아침입니다, 토이비님. 배차 2팀에서 세 건이 들어왔습니다." },
-          { who: "Aistb", text: "오늘은 새로 배우실 것이 없습니다. 어제 오전에 익히신 것만으로 세 건이 전부 처리됩니다." },
-          { who: "Aistb", text: "다만 오늘부터는 제가 코드를 깔아드리지 않습니다. 의뢰서만 드릴 테니 파일부터 직접 만드셔야 합니다." },
-          { who: "Aistb", text: "어제 쓰시던 참고 문서는 그대로 다시 올려 두었습니다. 보면서 하셔도 됩니다." },
         ],
         show: [{ path: NUMPY_DOC.path, pane: 1 }],
       },
@@ -75,8 +72,7 @@ var CH02 = {
       },
       {
         lines: [
-          { who: "Aistb", text: "먼저 파일부터 만드시죠. 왼쪽에서 work 폴더를 고르고 ＋폴더로 task_02 를 만드십시오.", spot: '.tree-row[data-path="work"]' },
-          { who: "Aistb", text: "그 안에 ＋파일로 fee.py 를 만드시면 됩니다. 입사 첫날 하신 것과 같습니다." },
+          { who: "Aistb", text: "이번에는 파일도 직접 만드셔야 합니다. work 폴더를 고르고 ＋폴더로 task_02 를, 그 안에 ＋파일로 fee.py 를 만드십시오.", spot: '.tree-row[data-path="work"]' },
         ],
         menu: ["brief"],
         nudge: "탐색기에서 work 를 고른 뒤 ＋폴더, 그다음 만든 폴더를 고르고 ＋파일입니다.",
@@ -151,7 +147,7 @@ var CH02 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "세 가지 모두 어제 연습하신 것 안에 있습니다. 파일을 만들고 채운 뒤 완료 보고해 주세요." }],
+        lines: [{ who: "Aistb", text: "세 가지 모두 어제 연습하신 것 안에 있습니다." }],
         menu: ["brief", "report"],
         nudge: "뒤에서 세 개는 [-3:], 자리는 argmax 입니다. 파일은 work/task_03/report.py 입니다.",
         report: function () {
@@ -218,7 +214,7 @@ var CH02 = {
       {
         lines: [
           { who: "Aistb", text: "표를 만드실 때는 대괄호 안에 줄마다 대괄호를 하나씩 넣으시면 됩니다." },
-          { who: "Aistb", text: "쉼표 앞이 줄, 뒤가 칸이었습니다. 다 되면 완료 보고해 주세요." },
+          { who: "Aistb", text: "쉼표 앞이 줄, 뒤가 칸이었습니다." },
         ],
         menu: ["brief", "report"],
         nudge: "점심 칸은 [:, 1], 시간대별 평균은 axis 를 쓰시면 됩니다.",
@@ -247,8 +243,7 @@ var CH02 = {
       {
         lines: [
           { who: "Aistb", text: "접수했습니다. 배차 2팀 세 건이 모두 끝났습니다." },
-          { who: "Aistb", text: "오늘은 빈 파일에서 시작하셨습니다. 앞으로도 그렇습니다." },
-          { who: "Aistb", text: "어제 오후에 배우신 것 — 조건으로 고르기, 줄 세우기, 모양 바꾸기 — 은 아직 한 번도 안 쓰셨습니다. 그쪽 의뢰는 내일 들어옵니다." },
+          { who: "Aistb", text: "어제 오후에 배우신 셋은 아직 한 번도 안 쓰셨습니다. 그쪽 의뢰는 내일 들어옵니다." },
         ],
       },
       {
