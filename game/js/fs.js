@@ -108,4 +108,17 @@ var FS = {
   join: function (base, name) {
     return base ? base + "/" + name : name;
   },
+
+  // 지금 들어 있는 파일 전부를 [{ path, content }] 로 훑어준다.
+  // 파이썬 쪽에서도 같은 파일을 열 수 있게 옮겨 심을 때 쓴다.
+  allFiles: function (base) {
+    var out = [];
+    FS.list(base || "").forEach(function (name) {
+      var path = FS.join(base || "", name);
+      var node = FS.node(path);
+      if (node.type === "dir") out = out.concat(FS.allFiles(path));
+      else out.push({ path: path, content: node.content });
+    });
+    return out;
+  },
 };

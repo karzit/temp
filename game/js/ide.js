@@ -36,7 +36,7 @@ var IDE = {
       "<button class='step' title='문장 하나만 실행'>↓ 한 줄</button>" +
       "<button class='reset-run' title='처음부터 다시'>↺</button>" +
       "<span class='run-target'></span><span class='run-state'></span></div>" +
-      "<pre class='out'></pre>" +
+      "<div class='out'><pre class='out-text'></pre><div class='out-plots'></div></div>" +
       "<div class='pybar' hidden><span class='pybar-label'></span><span class='pybar-track'><i class='pybar-fill'></i></span></div>" +
       "</div>";
 
@@ -715,11 +715,51 @@ var IDE = {
   resetRun: function () {
     if (IDE.stepper) endSession(IDE.stepper.ns);
     IDE.stepper = null;
-    var out = IDE.q(".out");
-    out.className = "out";
-    out.textContent = "아직 실행하지 않았습니다.";
+    IDE.setOut("아직 실행하지 않았습니다.", "");
+    IDE.showPlots([]);
     IDE.draw();
   },
+
+  // 결과 창은 글자와 그림을 같이 담는다. 글자는 .out-text 안에만 둔다 —
+  // 대본의 spot { in: ".out" } 이 그 글자를 찾아 가리키기 때문이다.
+  setOut: function (text, tone) {
+    var out = IDE.q(".out");
+    if (!out) return;
+    out.className = "out" + (tone ? " " + tone : "");
+    out.querySelector(".out-text").textContent = text;
+  },
+
+  // 방금 나온 그림들을 결과 창 아래에 붙인다.
+  showPlots: function (list) {
+    var box = IDE.q(".out-plots");
+    if (!box) return;
+    box.innerHTML = "";
+    (list || []).forEach(function (b64) {
+      var img = document.createElement("img");
+      img.className = "out-plot";
+      img.src = "data:image/png;base64," + b64;
+      box.appendChild(img);
+    });
+    if (list && list.length) IDE.growForPlots();
+  },
+
+  // 그림이 나오면 결과 창을 한 번 넓혀준다. 좁은 채로 두면 그림 위쪽만 보인다.
+  // 플레이어가 직접 줄여 놓았다면 그 뜻을 존중해 다시 넓히지 않는다.
+  growForPlots: function () {
+    var main = IDE.root && IDE.root.querySelector(".ide-main");
+    var bottom = main && main.querySelector(".ide-bottom");
+    if (!bottom || IDE.plotGrown) return;
+    // 모니터 안은 화면 크기에 맞춰 확대·축소되므로 실제 픽셀(offsetHeight)로 잰다.
+    // 아직 크기를 잴 수 없는 상태(화면이 안 보이는 창 등)면 기본값으로 넓힌다.
+    var space = main.offsetHeight || 0;
+    var want = space > 300 ? Math.min(390, space - 150) : 390;
+    if (want > IDE.bottomHeight) {
+      IDE.bottomHeight = want;
+      bottom.style.height = want + "px";
+    }
+    IDE.plotGrown = true;
+  },
+  plotGrown: false,
 
   // 실행할 준비를 한다. 이미 하던 것이 있으면 이어서 한다.
   prepare: function (path) {
@@ -738,8 +778,8 @@ var IDE = {
           lines: node.content.split("\n"),
           output: "",
         };
-        IDE.q(".out").textContent = "";
-        IDE.q(".out").className = "out";
+        IDE.setOut("", "");
+        IDE.showPlots([]);
         return IDE.stepper;
       });
     });
@@ -774,9 +814,7 @@ var IDE = {
         return IDE.runSteps(st, maxSteps);
       })
       .catch(function (err) {
-        var out = IDE.q(".out");
-        out.className = "out bad";
-        out.textContent = String(err.message || err);
+        IDE.setOut(String(err.message || err), "bad");
       })
       .then(function () {
         IDE.busy = false;
@@ -786,7 +824,6 @@ var IDE = {
   },
 
   runSteps: function (st, maxSteps) {
-    var out = IDE.q(".out");
     var done = 0;
 
     function one() {
@@ -795,7 +832,7 @@ var IDE = {
       // 여러 줄짜리 문장이면 그 안 어느 줄에 찍었든 잡는다.
       var bp = IDE.breakpointIn(st.path, st.steps[st.at]);
       if (done > 0 && bp) {
-        out.textContent = st.output + "\n\n— " + bp + "번 줄에서 멈췄습니다. ▶ 실행을 다시 누르면 이어서 갑니다. —";
+        IDE.setOut(st.output + "\n\n— " + bp + "번 줄에서 멈췄습니다. ▶ 실행을 다시 누르면 이어서 갑니다. —", "ok");
         return Promise.resolve();
       }
 
@@ -807,18 +844,21 @@ var IDE = {
       }).then(function (r) {
         var printed = (r.output || "").trim();
         if (printed) st.output += (st.output ? "\n" : "") + printed;
-        out.textContent = st.output;
+        IDE.setOut(st.output, "ok");
+        // 그림은 나온 것이 있을 때만 갈아 끼운다. 다음 문장이 글자만 찍어도 방금 그림은 남는다.
+        if (r.plots && r.plots.length) {
+          st.plots = r.plots;
+          IDE.showPlots(r.plots);
+        }
 
         if (!r.ok) {
-          out.className = "out bad";
-          out.textContent = (st.output ? st.output + "\n" : "") + r.error;
+          IDE.setOut((st.output ? st.output + "\n" : "") + r.error, "bad");
           st.at = st.steps.length; // 멈춘 자리에서 더 가지 않는다
           IDE.lastRun = { path: st.path, ok: false, output: st.output };
           if (IDE.onRun) IDE.onRun(st.path, IDE.lastRun);
           return;
         }
 
-        out.className = "out ok";
         st.at += 1;
         done += 1;
         IDE.drawStripeOnly();

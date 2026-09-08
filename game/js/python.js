@@ -64,6 +64,124 @@ async function ensurePackages(pyodide, packages, onStatus) {
   onStatus("");
 }
 
+// ── 그림 ──────────────────────────────────────────────
+// matplotlib은 글자를 그릴 때 자기가 가진 폰트만 쓴다. 한글 폰트를 하나 넣어주지 않으면
+// 축 이름과 제목이 전부 네모로 나온다. 그림을 쓰는 코드일 때만 받아서 등록한다.
+const KR_FONT_URL = "https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/nanumgothic/NanumGothic-Regular.ttf";
+const KR_FONT_PATH = "/nanum.ttf";
+
+const SETUP_PLOTS = [
+  "import os, matplotlib",
+  'matplotlib.use("AGG")',  // 화면이 없는 곳이므로 파일로만 그린다
+  "import matplotlib.pyplot as _plt",
+  "from matplotlib import font_manager as _fm",
+  'if os.path.exists("' + KR_FONT_PATH + '"):',
+  '    _fm.fontManager.addfont("' + KR_FONT_PATH + '")',
+  '    _plt.rcParams["font.family"] = _fm.FontProperties(fname="' + KR_FONT_PATH + '").get_name()',
+  '_plt.rcParams["axes.unicode_minus"] = False',
+  '_plt.rcParams["figure.figsize"] = (5.2, 3.0)',
+  '_plt.rcParams["figure.dpi"] = 110',
+  '_plt.rcParams["savefig.bbox"] = "tight"',
+  // 작업 단말이 어두운 화면이라 그림도 같은 색으로 맞춘다. 흰 종이가 끼면 눈이 아프다.
+  '_plt.rcParams["figure.facecolor"] = "#15181e"',
+  '_plt.rcParams["axes.facecolor"] = "#15181e"',
+  '_plt.rcParams["savefig.facecolor"] = "#15181e"',
+  '_plt.rcParams["text.color"] = "#e6e8ec"',
+  '_plt.rcParams["axes.labelcolor"] = "#e6e8ec"',
+  '_plt.rcParams["axes.edgecolor"] = "#2b313b"',
+  '_plt.rcParams["xtick.color"] = "#99a0ad"',
+  '_plt.rcParams["ytick.color"] = "#99a0ad"',
+  '_plt.rcParams["grid.color"] = "#2b313b"',
+  '_plt.rcParams["axes.prop_cycle"] = _plt.cycler(color=["#6ea8fe", "#5fd48a", "#ef6f6f", "#d9a441", "#a78bfa"])',
+  // 노트북에서 하던 대로 plt.show() 를 써도 되게 두되, "화면이 없다"는 경고는 내보내지 않는다.
+  // 그림은 문장이 끝난 뒤에 이쪽에서 알아서 거둬간다.
+  "_plt.show = lambda *a, **k: None",
+].join("\n");
+
+// 지금 열려 있는 그림들을 png로 거둬온다. 학습자 이름들과 섞이지 않게 따로 둔 자리에서 돌린다.
+// 여기서 그림을 닫지 않는 것이 중요하다 — 한 문장씩 실행하면 그리기가 여러 문장에 나뉘어 있어서,
+// 문장마다 닫아버리면 다음 문장이 빈 그림 위에 제목만 얹는 꼴이 된다.
+const HARVEST_PLOTS = [
+  "import sys, json",
+  "_imgs = []",
+  'if "matplotlib.pyplot" in sys.modules:',
+  "    import io as _io, base64 as _b64",
+  "    import matplotlib.pyplot as _p",
+  "    for _n in _p.get_fignums():",
+  "        _b = _io.BytesIO()",
+  '        _p.figure(_n).savefig(_b, format="png")',
+  "        _imgs.append(_b64.b64encode(_b.getvalue()).decode())",
+  "json.dumps(_imgs)",
+].join("\n");
+
+let plotsReady = null;
+
+function usesPlots(code) {
+  return /matplotlib|pyplot|plt\./.test(code);
+}
+
+// 그림 도구는 필요한 순간에 한 번만 준비한다. 폰트를 못 받아도 그림 자체는 나온다.
+function preparePlots(pyodide, onStatus) {
+  if (!plotsReady) {
+    plotsReady = (async () => {
+      onStatus("그림 도구를 준비하는 중…");
+      await pyodide.loadPackage(["matplotlib"]);
+      loadedPackages.add("matplotlib");
+      try {
+        const res = await fetch(KR_FONT_URL);
+        if (res.ok) pyodide.FS.writeFile(KR_FONT_PATH, new Uint8Array(await res.arrayBuffer()));
+      } catch (err) {
+        // 폰트를 못 받으면 한글만 네모로 나온다. 그것 때문에 실행을 막지는 않는다.
+      }
+      await pyodide.runPythonAsync(SETUP_PLOTS);
+      onStatus("");
+    })().catch(function () {
+      plotsReady = null; // 다음 실행에서 다시 시도한다
+    });
+  }
+  return plotsReady;
+}
+
+// 그려둔 그림을 모두 닫는다. 새 실행을 시작할 때와 채점이 끝났을 때만 부른다.
+async function closePlots(pyodide) {
+  if (!plotsReady) return;
+  try {
+    await pyodide.runPythonAsync('import matplotlib.pyplot as _p; _p.close("all")');
+  } catch (err) {}
+}
+
+async function collectPlots(pyodide) {
+  if (!plotsReady) return [];
+  const ns = pyodide.globals.get("dict")();
+  try {
+    const json = await pyodide.runPythonAsync(HARVEST_PLOTS, { globals: ns });
+    return JSON.parse(json || "[]");
+  } catch (err) {
+    return [];
+  } finally {
+    ns.destroy();
+  }
+}
+
+// ── 파일 다리 ─────────────────────────────────────────
+// 탐색기에 보이는 파일은 브라우저 메모리(js/fs.js)에만 있어서, 파이썬에서는 열 수 없다.
+// 실행하기 직전에 같은 경로로 옮겨 심어 pd.read_csv("work/자료/○○.csv") 가 그대로 되게 한다.
+const PY_HOME = "/home/pyodide/";
+
+function syncFilesToPython(pyodide) {
+  if (typeof FS === "undefined" || !FS.allFiles) return;
+  const enc = new TextEncoder();
+  FS.allFiles("").forEach(function (f) {
+    const full = PY_HOME + f.path;
+    try {
+      pyodide.FS.mkdirTree(full.slice(0, full.lastIndexOf("/")));
+      pyodide.FS.writeFile(full, enc.encode(f.content == null ? "" : String(f.content)));
+    } catch (err) {
+      // 옮기지 못한 파일 하나 때문에 실행을 막지는 않는다.
+    }
+  });
+}
+
 // 코드 안의 import를 보고 필요한 것(numpy 등)을 알아서 가져온다.
 async function loadImports(pyodide, code, onStatus) {
   try {
@@ -83,6 +201,8 @@ async function loadImports(pyodide, code, onStatus) {
 async function runCheck(userCode, checkCode, { packages = [], onStatus = () => {} } = {}) {
   const pyodide = await ensurePython(onStatus);
   await ensurePackages(pyodide, packages, onStatus);
+  if (usesPlots(userCode)) await preparePlots(pyodide, onStatus);
+  syncFilesToPython(pyodide);
   await loadImports(pyodide, userCode, onStatus);
 
   let out = "";
@@ -99,6 +219,8 @@ async function runCheck(userCode, checkCode, { packages = [], onStatus = () => {
   } finally {
     pyodide.setStdout({});
     pyodide.setStderr({});
+    // 채점하느라 그린 그림은 결과 창에 내보내지 않는다. 다음 실행에 섞이지 않게 여기서 치운다.
+    if (usesPlots(userCode)) await closePlots(pyodide);
   }
 
   if (!checkCode) {
@@ -153,6 +275,7 @@ async function planSteps(src) {
 // 한 파일을 여러 번에 나눠 실행하는 동안 변수를 이어서 갖고 있을 자리.
 async function newSession(onStatus = () => {}) {
   const pyodide = await ensurePython(onStatus);
+  await closePlots(pyodide); // 새로 실행할 때는 지난번 그림을 지우고 시작한다
   return pyodide.globals.get("dict")();
 }
 
@@ -165,6 +288,10 @@ function endSession(ns) {
 // startLine만큼 빈 줄을 앞에 붙여, 에러에 찍히는 줄 번호가 원본 파일과 맞게 한다.
 async function runInSession(ns, code, startLine = 1, onStatus = () => {}) {
   const pyodide = await ensurePython(onStatus);
+  // 그림을 쓰는 코드면 폰트까지 먼저 준비해 둔다. 그리고 나서 설정하면 이미 그려진
+  // 글자에는 반영되지 않으므로, 반드시 학습자 코드보다 앞에 와야 한다.
+  if (usesPlots(code)) await preparePlots(pyodide, onStatus);
+  syncFilesToPython(pyodide);
   await loadImports(pyodide, code, onStatus);
 
   const padded = "\n".repeat(Math.max(0, startLine - 1)) + code;
@@ -173,9 +300,9 @@ async function runInSession(ns, code, startLine = 1, onStatus = () => {}) {
   pyodide.setStderr({ batched: (s) => (out += s + "\n") });
   try {
     await pyodide.runPythonAsync(padded, { globals: ns });
-    return { ok: true, output: out };
+    return { ok: true, output: out, plots: await collectPlots(pyodide) };
   } catch (err) {
-    return { ok: false, output: out, error: shortenTraceback(err) };
+    return { ok: false, output: out, error: shortenTraceback(err), plots: await collectPlots(pyodide) };
   } finally {
     pyodide.setStdout({});
     pyodide.setStderr({});
