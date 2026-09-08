@@ -20,7 +20,7 @@ var Settings = {
   },
 };
 
-var CHAPTERS = [CH00, CH01, CH02];
+var CHAPTERS = [CH00, CH01, CH02, CH03];
 
 (function boot() {
   var stage = document.getElementById("stage");
