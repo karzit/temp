@@ -57,12 +57,12 @@ var CH05 = {
               "- how_many : 그런 사람이 몇 명인지\n" +
               "\n" +
               "## 참고\n" +
-              "표는 pd.DataFrame 에 딕셔너리를 넣어 만듭니다. 줄이 몇 개인지는 len 으로 셉니다.\n",
+              "표는 pd.DataFrame 에 딕셔너리를 넣어 만듭니다. 행이 몇 개인지는 len 으로 셉니다.\n",
           },
         ],
         spot: '.tree-row[data-path="work/의뢰_0008.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 오른쪽에 열립니다.",
+        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0008.md") >= 0;
@@ -71,7 +71,7 @@ var CH05 = {
       },
       {
         lines: [
-          { who: "Aistb", text: "표부터 만드셔야 합니다. 어제 연습 파일의 첫 문장과 같은 모양입니다." },
+          { who: "Aistb", text: "표부터 만드셔야 합니다. 어제 예제 파일의 첫 문장과 같은 모양입니다." },
         ],
         menu: ["brief", "report"],
         nudge: "조건을 대괄호에 넣어 고르고, 그 결과를 len 으로 세시면 됩니다.",
@@ -117,7 +117,7 @@ var CH05 = {
               "팀별 평균 건수를 result 에 넣어 주세요.\n" +
               "\n" +
               "## 참고\n" +
-              "조건으로 줄을 고른 다음, 그 뒤에 묶어서 평균 내는 것을 이어 붙이면 됩니다.\n",
+              "조건으로 행을 고른 다음, 그 뒤에 묶어서 평균 내는 것을 이어 붙이면 됩니다.\n",
           },
         ],
         spot: '.tree-row[data-path="work/의뢰_0009.md"]',
@@ -171,13 +171,15 @@ var CH05 = {
               "의뢰 0008 과 같은 표입니다.\n" +
               "\n" +
               "## 할 일\n" +
-              "work/task_10/summary.py 를 만들고, 다섯 명 전체를 대상으로 두 가지를 구해 주세요.\n" +
+              "work/task_10/summary.py 를 만들고, 다섯 명 전체를 대상으로 세 가지를 구해 주세요.\n" +
               "\n" +
               "- total_avg   : 전체 평균 건수\n" +
               "- by_team_sum : 팀별 합계 건수\n" +
+              "- top2        : 건수가 많은 순서로 두 명의 이름\n" +
               "\n" +
               "## 참고\n" +
-              "평균 대신 합계가 필요하면 mean 자리에 sum 을 넣습니다.\n",
+              "평균 대신 합계가 필요하면 mean 자리에 sum 을 넣습니다.\n" +
+              "줄을 세운 뒤 앞에서 몇 개만 남기려면 head 를 붙입니다.\n",
           },
         ],
         spot: '.tree-row[data-path="work/의뢰_0010.md"]',
@@ -190,14 +192,14 @@ var CH05 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "조건은 없습니다. 전체 평균 하나와 팀별 합계 하나입니다." }],
+        lines: [{ who: "Aistb", text: "조건은 없습니다. 전체 평균, 팀별 합계, 그리고 상위 두 명입니다." }],
         menu: ["brief", "report"],
-        nudge: '팀별 합계는 df.groupby("team")["count"].sum() 입니다.',
+        nudge: '팀별 합계는 df.groupby("team")["count"].sum(), 상위 두 명은 줄을 세운 뒤 이름 열에 head(2) 입니다.',
         report: function () {
           return checkFile(
             "work/task_10/summary.py",
             "import pandas as pd\n" +
-              "for _n in ['total_avg', 'by_team_sum']:\n" +
+              "for _n in ['total_avg', 'by_team_sum', 'top2']:\n" +
               "    assert _n in dir(), f'{_n} 가 없습니다. 의뢰서에 적힌 이름 그대로 써 주세요.'\n" +
               "    assert not isinstance(eval(_n), type(Ellipsis)), f'{_n} 가 아직 ... 그대로입니다.'\n" +
               "assert abs(float(total_avg) - 35.0) < 0.01, f'total_avg 가 {total_avg} 입니다. 다섯 명 전체 평균은 35.00 입니다. 거르지 않고 그대로 평균 내시면 됩니다.'\n" +
@@ -205,7 +207,10 @@ var CH05 = {
               "_want = {'A': 76, 'B': 99}\n" +
               "assert set(by_team_sum.index) == set(_want), f'팀 이름이 왼쪽에 와야 합니다. 지금 인덱스는 {list(by_team_sum.index)} 입니다.'\n" +
               "for _t in _want:\n" +
-              "    assert int(by_team_sum[_t]) == _want[_t], f'{_t}팀이 {float(by_team_sum[_t]):.1f} 입니다. 합계는 {_want[_t]} 입니다. 평균이 아니라 합계입니다.'\n"
+              "    assert int(by_team_sum[_t]) == _want[_t], f'{_t}팀이 {float(by_team_sum[_t]):.1f} 입니다. 합계는 {_want[_t]} 입니다. 평균이 아니라 합계입니다.'\n" +
+              "_t2 = list(top2)\n" +
+              "assert len(_t2) == 2, f'top2 가 {len(_t2)} 개입니다. 두 명만 남기셔야 합니다.'\n" +
+              "assert _t2 == ['마루', '가온'], f'top2 가 {_t2} 입니다. 건수가 많은 순서면 마루, 가온 입니다. 큰 것부터 세우셨는지 보세요.'\n"
           );
         },
         wait: function (ctx) {
@@ -220,7 +225,7 @@ var CH05 = {
         ],
       },
       {
-        lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일뵙겠습니다." }],
+        lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." }],
         menu: ["end"],
         nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
         wait: function () {
@@ -233,14 +238,14 @@ var CH05 = {
   diary: [
     "421950년 10월 6일.",
     "",
-    "인사팀 세 건. 우수 배달원, 팀별 평균, 마감 요약.",
+    "같은 표를 세 번 만들었다. 세 번째엔 안 보고도 썼다. 이건 좀 뿌듯했다.",
+    "근데 인사팀은 같은 표 쓸 거면 세 번 나눠 보내지 말고 그냥 한 번에 보내지.",
     "",
-    "같은 표를 세 번 만들었다. 세 번째에는 안 보고도 썼다.",
-    "처음엔 귀찮았는데, 세 번 치고 나니 손이 기억한다.",
+    "사내 게시판에 공지가 세 개 붙어 있었다.",
+    "정수기 필터 교체, 주차 등록 안내, 그리고",
+    "\"3층 접근 권한 관련 문의는 받지 않습니다.\"",
     "",
-    "mean 자리에 sum 을 넣으면 합계가 된다는 걸 오늘 처음 써봤다.",
-    "어제 참고 문서에서 본 줄인데, 읽을 때는 그냥 지나갔다.",
-    "",
-    "다음 주에는 무엇을 배우게 될까. 아직 안 알려준다.",
+    "mean 자리에 sum 넣으면 합계가 된다.",
+    "어제 참고 문서에 있던 줄인데 그냥 넘겼었다.",
   ],
 };

@@ -27,6 +27,7 @@ var CH02 = {
       {
         lines: [
           { who: "Aistb", text: "좋은 아침입니다, 토이비님. 배차 2팀에서 세 건이 들어왔습니다." },
+          { who: "Aistb", text: "오늘은 교육이 없습니다. 어제 익히신 것으로 처리하시면 됩니다." },
         ],
         show: [{ path: NUMPY_DOC.path, pane: 1 }],
       },
@@ -63,7 +64,7 @@ var CH02 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0002.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 오른쪽에 열립니다.",
+        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0002.md") >= 0;
@@ -72,7 +73,8 @@ var CH02 = {
       },
       {
         lines: [
-          { who: "Aistb", text: "이번에는 파일도 직접 만드셔야 합니다. work 폴더를 고르고 ＋폴더로 task_02 를, 그 안에 ＋파일로 fee.py 를 만드십시오.", spot: '.tree-row[data-path="work"]' },
+          { who: "Aistb", text: "오늘은 파일을 깔아드리지 않습니다. 직접 만드셔야 합니다.", spot: '.tree-row[data-path="work"]' },
+          { who: "Aistb", text: "work 폴더 안에 task_02, 그 안에 fee.py 입니다. 경로는 의뢰서에도 적혀 있습니다.", spot: '.tree-row[data-path="work"]' },
         ],
         menu: ["brief"],
         nudge: "탐색기에서 work 를 고른 뒤 ＋폴더, 그다음 만든 폴더를 고르고 ＋파일입니다.",
@@ -84,7 +86,7 @@ var CH02 = {
         lines: [
           {
             who: "Aistb",
-            text: "거리를 배열로 만드시고, 곱하기와 더하기를 한 번씩 거시면 됩니다. 다 되면 완료 보고해 주세요.",
+            text: "거리를 배열로 만드시고, 곱하기와 더하기를 한 번씩 걸면 됩니다. 다 되면 완료 보고해 주세요.",
             spot: { text: "거리(km) : 2, 5, 1, 8, 3", in: ".doc" },
           },
         ],
@@ -147,7 +149,7 @@ var CH02 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "세 가지 모두 어제 연습하신 것 안에 있습니다." }],
+        lines: [{ who: "Aistb", text: "세 가지 모두 어제 해 보신 것입니다." }],
         menu: ["brief", "report"],
         nudge: "뒤에서 세 개는 [-3:], 자리는 argmax 입니다. 파일은 work/task_03/report.py 입니다.",
         report: function () {
@@ -172,7 +174,7 @@ var CH02 = {
 
       // ── 의뢰 3: 점심 시간대 ─────────────────────────
       {
-        lines: [{ who: "Aistb", text: "마지막 의뢰입니다. 이번에는 숫자가 한 줄이 아니라 표 모양입니다." }],
+        lines: [{ who: "Aistb", text: "마지막 의뢰입니다. 이번 자료는 한 줄이 아니라 표 모양입니다." }],
         addFiles: [
           {
             path: "work/의뢰_0004.md",
@@ -185,7 +187,7 @@ var CH02 = {
               "수신: 깁스 W 토이비\n" +
               "\n" +
               "## 상황\n" +
-              "사흘치 배달 건수 기록입니다. 줄 하나가 하루, 칸은 왼쪽부터 오전 / 점심 / 저녁 / 야간입니다.\n" +
+              "사흘치 배달 건수 기록입니다. 행 하나가 하루, 열은 왼쪽부터 오전 / 점심 / 저녁 / 야간입니다.\n" +
               "\n" +
               "  첫째 날 : 12, 30, 41,  9\n" +
               "  둘째 날 : 15, 28, 44, 11\n" +
@@ -194,12 +196,12 @@ var CH02 = {
               "## 할 일\n" +
               "work/task_04/lunch.py 를 만들고 아래 세 가지를 채워 주세요.\n" +
               "\n" +
-              "- lunch     : 점심 칸만 사흘치로\n" +
+              "- lunch     : 점심 열만 사흘치로\n" +
               "- lunch_avg : 그 평균\n" +
-              "- by_slot   : 시간대별 평균 (칸마다 하나씩, 네 개)\n" +
+              "- by_slot   : 시간대별 평균 (열마다 하나씩, 네 개)\n" +
               "\n" +
               "## 참고\n" +
-              "줄 안에 줄을 넣으면 표 모양 배열이 됩니다. 번호는 0부터 세므로 점심은 1번 칸입니다.\n",
+              "대괄호 안에 대괄호를 넣으면 표 모양 배열이 됩니다. 번호는 0부터 세므로 점심은 1번 열입니다.\n",
           },
         ],
         spot: '.tree-row[data-path="work/의뢰_0004.md"]',
@@ -213,11 +215,11 @@ var CH02 = {
       },
       {
         lines: [
-          { who: "Aistb", text: "표를 만드실 때는 대괄호 안에 줄마다 대괄호를 하나씩 넣으시면 됩니다." },
-          { who: "Aistb", text: "쉼표 앞이 줄, 뒤가 칸이었습니다." },
+          { who: "Aistb", text: "표는 대괄호 안에 행마다 대괄호를 하나씩 넣어 만듭니다." },
+          { who: "Aistb", text: "쉼표 앞이 행, 뒤가 열이었습니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "점심 칸은 [:, 1], 시간대별 평균은 axis 를 쓰시면 됩니다.",
+        nudge: "점심 열은 [:, 1], 시간대별 평균은 axis 를 쓰시면 됩니다.",
         report: function () {
           return checkFile(
             "work/task_04/lunch.py",
@@ -227,11 +229,11 @@ var CH02 = {
               "    assert not isinstance(eval(_n), type(Ellipsis)), f'{_n} 가 아직 ... 그대로입니다.'\n" +
               "table = np.array([[12, 30, 41, 9], [15, 28, 44, 11], [10, 33, 39, 7]])\n" +
               "want = table[:, 1]\n" +
-              "assert np.shape(lunch) == (3,), f'lunch 가 사흘치 세 개가 아닙니다. 지금은 {np.shape(lunch)} 입니다. 쉼표 앞이 줄, 뒤가 칸입니다.'\n" +
-              "assert np.array_equal(lunch, want), f'lunch 가 {np.asarray(lunch)} 입니다. 점심은 1번 칸이므로 {want} 가 나와야 합니다.'\n" +
+              "assert np.shape(lunch) == (3,), f'lunch 가 사흘치 세 개가 아닙니다. 지금은 {np.shape(lunch)} 입니다. 쉼표 앞이 행, 뒤가 열입니다.'\n" +
+              "assert np.array_equal(lunch, want), f'lunch 가 {np.asarray(lunch)} 입니다. 점심은 1번 열이므로 {want} 가 나와야 합니다.'\n" +
               "assert abs(float(lunch_avg) - float(want.mean())) < 0.01, f'lunch_avg 가 {lunch_avg} 입니다. {want.mean():.4f} 가 나와야 합니다.'\n" +
-              "assert np.shape(by_slot) == (4,), f'by_slot 이 네 개가 아닙니다. 지금은 {np.shape(by_slot)} 입니다. 칸별 평균은 axis=0 입니다.'\n" +
-              "assert np.allclose(by_slot, table.mean(axis=0)), f'by_slot 이 {np.asarray(by_slot)} 입니다. 칸별 평균은 {table.mean(axis=0)} 입니다.'\n"
+              "assert np.shape(by_slot) == (4,), f'by_slot 이 네 개가 아닙니다. 지금은 {np.shape(by_slot)} 입니다. 열별 평균은 axis=0 입니다.'\n" +
+              "assert np.allclose(by_slot, table.mean(axis=0)), f'by_slot 이 {np.asarray(by_slot)} 입니다. 열별 평균은 {table.mean(axis=0)} 입니다.'\n"
           );
         },
         wait: function (ctx) {
@@ -242,12 +244,12 @@ var CH02 = {
       // ── 마무리 ──────────────────────────────────────
       {
         lines: [
-          { who: "Aistb", text: "접수했습니다. 배차 2팀 세 건이 모두 끝났습니다." },
+          { who: "Aistb", text: "접수했습니다. 배차 2팀의 세 건이 모두 끝났습니다." },
           { who: "Aistb", text: "어제 오후에 배우신 셋은 아직 한 번도 안 쓰셨습니다. 그쪽 의뢰는 내일 들어옵니다." },
         ],
       },
       {
-        lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일뵙겠습니다." }],
+        lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." }],
         menu: ["end"],
         nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
         wait: function () {
@@ -260,15 +262,14 @@ var CH02 = {
   diary: [
     "421950년 10월 3일.",
     "",
-    "세 건. 배달료, 최근 사흘 보고, 점심 시간대.",
+    "오늘부터 빈 파일에서 시작.",
+    "처음엔 뭐부터 써야 되나 싶었는데 쓰고 보니 어제 친 거랑 거의 똑같았다.",
+    "아니 그럼 어제 그거 미리 준 거잖아.",
     "",
-    "오늘부터 Aistb가 코드를 안 깔아준다. 빈 파일에서 시작했다.",
-    "처음에는 막막했는데, 막상 쓰고 보니 어제 연습 파일이랑 거의 같은 줄이었다.",
-    "빈칸을 채우는 거랑 처음부터 쓰는 건 다르다. 후자가 훨씬 남는다.",
+    "배차 2팀에 답장 보냈더니 자동응답이 왔다.",
+    "\"담당자 부재중. 복귀 예정일 미정.\"",
     "",
-    "argmax 가 값이 아니라 자리를 준다는 걸 한 번 틀리고 나서 다시 기억했다.",
-    "어제도 같은 데서 틀렸다. 두 번 틀린 건 이제 안 틀릴 것 같다.",
-    "",
-    "어제 오후에 배운 것들은 아직 안 썼다. 내일 쓴다고 한다.",
+    "argmax 또 틀렸다. 어제도 여기서 틀렸는데.",
+    "값이 아니라 자리를 준다니까. 자리를. 이제 진짜 안 틀린다.",
   ],
 };
