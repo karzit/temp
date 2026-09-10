@@ -31,7 +31,7 @@ Google Colab에서 실습하는 머신러닝/LLM 입문 튜토리얼 저장소�
 | ③′ 프로젝트 동행 노트북 | `notebooks/project-walkthrough/` | ③의 프로젝트를 **하나씩 옆에 펼쳐놓고 같이 읽는** 노트북 (프로젝트당 1개) |
 | ④ 정형 데이터 워크플로우 | `notebooks/tabular-ml-practice/` | 결측치·이상치·문자열이 섞인 **실제 표 데이터**로 EDA → 전처리 → 모델링 → 평가까지 하는 전 과정 |
 | ⑤ 텍스트 분류 실습 | `notebooks/text-classification-practice/` | 뉴스 제목 같은 **짧은 한국어 텍스트**로 주제를 분류하는 전 과정 (TF-IDF → Keras → 사전 학습 모델, 공개 데이터셋 KLUE-YNAT) |
-| ⑥ 게임판 | `game/` | AI 정비 회사의 신입 엔지니어가 되어 **의뢰를 처리하며** 배우는 브라우저 게임 (노트북과 같은 내용, 다른 통로) |
+| ⑥ 게임판 | `game/` | AI 정비 회사의 신입 엔지니어가 되어 **의뢰를 처리하며** 배우는 브라우저 게임. NumPy/Pandas부터 트리·신경망·RAG까지 0~28장(스토리 완결) |
 
 ①·④·⑤는 ②/③과 주제가 겹치지 않는 별도 커리큘럼입니다. ⑤는 ④의 **텍스트 판**으로,
 같은 흐름(데이터 관찰 → 전처리 → 모델 → 평가)을 숫자가 아닌 글자에서 반복합니다. ②와 ③은 같은 파이프라인(사내 규정 검색 챗봇)을
@@ -59,10 +59,16 @@ PostgreSQL·OpenSearch·API 키 없이 Colab에서 전부 실행됩니다.
 ①과 ④는 서로를 보완합니다. **①이 "머신러닝이 어떻게 작동하는가"(경사 하강법·역전파를 직접 구현)라면,
 ④는 "현실의 데이터로 실제로 어떻게 하는가"**입니다. 순서는 상관없습니다.
 
-⑥은 노트북을 대체하지 않습니다. 브라우저 안에서 파이썬이 실제로 돌아가고, 사내 지원 AI가 옆에서
-사용법을 짚어준 뒤 의뢰를 하나씩 내줍니다. 제출한 코드는 실행해서 채점하고 틀린 이유를 알려줍니다.
-설명을 읽고 따라 치는 것보다 시켜야 손이 움직이는 사람을 위한 다른 통로입니다.
-실행 방법과 챕터 쓰는 법은 [`game/README.md`](game/README.md)에 있습니다.
+⑥은 노트북을 대체하지 않습니다. 브라우저 안에서 파이썬(Pyodide)이 실제로 돌아가고, 사내 지원 AI
+**Aistb**가 옆에서 사용법을 짚어준 뒤 의뢰를 하나씩 내줍니다. 제출한 코드는 실행해서 채점하고
+틀린 이유를 알려줍니다. 설명을 읽고 따라 치는 것보다 시켜야 손이 움직이는 사람을 위한 다른 통로입니다.
+
+다루는 내용은 ①(모델이 어떻게 작동하는가)과 ④(실제 표 데이터를 다루는 순서)를 하나의 이야기로
+엮은 것에 가깝습니다 — NumPy/Pandas(0~5장) → EDA/전처리 → 첫 모델 → 트리/포레스트 → 텍스트/평가/CV
+(A·B 덩이, 6~16장) → 신경망/CNN/RNN/어텐션(C 덩이, 17~21장) → 사전 학습 LLM/임베딩/RAG(D 덩이,
+22~25장) → 그 기법들로 고장난 Aistb를 직접 고치는 종장(26~28장)까지 스토리가 완결되어 있습니다.
+설치 없이 웹 서버 하나만 띄우면 됩니다. 실행 방법과 챕터별 설계 근거는
+[`game/README.md`](game/README.md)와 [`game/feed-back.md`](game/feed-back.md)에 있습니다.
 
 ## 전체 지도 — 지금 내가 어디를 배우는 건가요?
 
@@ -136,6 +142,9 @@ Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에�
   프로젝트당 노트북 하나가 붙어서, 실제 소스를 열어 보여주고 함수를 직접 import해 돌려봅니다.
   **인프라도 API 키도 없이 Colab에서 전부 실행됩니다.**
   자세한 내용은 **[시리즈 README](notebooks/project-walkthrough/README.md)** 참고.
+- **설명을 읽는 것보다 직접 눌러보고 코드를 고쳐가며 배우고 싶다** → `game/`. 브라우저에서 바로
+  실행되는 게임으로, NumPy부터 RAG까지 같은 커리큘럼(①·④)을 의뢰 처리 형식으로 풀어냅니다.
+  자세한 내용은 **[game/README.md](game/README.md)** 참고.
 
 **전부 다 해보고 싶다면 이 순서를 추천합니다.**
 
@@ -218,10 +227,6 @@ text-classification-practice 01~03에 각각 해설 노트북이 있고,
 | 01. 텍스트 분류 기준선 (TF-IDF·문자 n-gram) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/01_text_baseline/01_text_baseline.ipynb) |
 | 02. Keras 텍스트 분류 (임베딩) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/02_keras_text/02_keras_text.ipynb) |
 | 03. 사전 학습 한국어 모델 (KLUE-RoBERTa 파인튜닝) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/03_pretrained_korean/03_pretrained_korean.ipynb) |
-| 03. 사전 학습 한국어 모델 (KLUE-RoBERTa 파인튜닝) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/03_pretrained_korean/03_pretrained_korean.ipynb) |
-| 03. 사전 학습 한국어 모델 (KLUE-RoBERTa 파인튜닝) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/03_pretrained_korean/03_pretrained_korean.ipynb) |
-| 03. 사전 학습 한국어 모델 (KLUE-RoBERTa 파인튜닝) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/03_pretrained_korean/03_pretrained_korean.ipynb) |
-| 03. 사전 학습 한국어 모델 (KLUE-RoBERTa 파인튜닝) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/text-classification-practice/03_pretrained_korean/03_pretrained_korean.ipynb) |
 
 ## 폴더 구조 (각 폴더에는 무엇이 있나요)
 
@@ -259,10 +264,6 @@ notebooks/
     01_text_baseline/           BoW·TF-IDF, 문자 n-gram, macro f1·혼동 행렬, 오분류 분석, 분포 이동
     02_keras_text/              TextVectorization·임베딩, Conv1D/LSTM 비교, OOV 규명, 모델 저장의 함정
     03_pretrained_korean/        전이 학습, 서브워드 토큰화, KLUE-RoBERTa 파인튜닝, 정확도 말고 치르는 대가
-    03_pretrained_korean/        전이 학습, 서브워드 토큰화, KLUE-RoBERTa 파인튜닝, 정확도 말고 치르는 대가
-    03_pretrained_korean/        전이 학습, 서브워드 토큰화, KLUE-RoBERTa 파인튜닝, 정확도 말고 치르는 대가
-    03_pretrained_korean/        전이 학습, 서브워드 토큰화, KLUE-RoBERTa 파인튜닝, 정확도 말고 치르는 대가
-    03_pretrained_korean/        전이 학습, 서브워드 토큰화, KLUE-RoBERTa 파인튜닝, 정확도 말고 치르는 대가
 
 example-projects/               실전 예제 (③) — 자세한 내용은 example-projects/README.md
   run_all.py                    4개를 순서대로 이어서 돌리고, 막히면 어디서 막혔는지 알려주는 스크립트
@@ -271,6 +272,14 @@ example-projects/               실전 예제 (③) — 자세한 내용은 exam
   document-input-example/       [B]   서류 사진 -> OCR -> LLM 정형 출력(JSON), Streamlit UI
   rag-regulation-example/       [C]   PDF 구조 파싱 -> 조항 청킹 -> 하이브리드 검색·리랭킹
                                       -> LLM 응답(RAG) -> 검색 품질 평가(hit@5/MRR)
+
+game/              게임판 (⑥) — 브라우저 게임, 자세한 내용은 game/README.md
+  index.html       더블클릭 대신 웹 서버로 여는 진입점 (Pyodide 때문)
+  content/         챕터별 대본·의뢰·채점 조건 (ch00~ch28.js)
+  js/               게임 엔진 (에디터·파일시스템·파이썬 실행·씬 진행)
+  tools/            대본 추출·대사 일관성 검사 스크립트 (dump_script.js 등)
+  앞으로.md         이후 구성과 떡밥 정리
+  feed-back.md      덩이(A~D)별 설계 근거와 검토 기록
 
 extras/            커리큘럼 본편에 속하지 않는 보조 자료
   frozen-lake-viz/ Q-Learning(RL)을 브라우저에서 바로 보는 시각화 데모. RL은 ml-curriculum 범위

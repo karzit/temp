@@ -27,10 +27,10 @@ global.Self = { mount: () => {}, say: () => {}, note: () => {}, hush: () => {} }
 // 고장 대사는 무작위라 대본에 넣지 않는다. 대본은 정해진 것만 담는다.
 global.Glitch = { weave: (list) => list, roll: () => null };
 
-for (const f of ["ch00", "ch01", "ch02", "ch03", "ch04", "ch05", "ch06", "ch07", "ch08", "ch09", "ch10", "ch11", "ch12", "ch13", "ch14", "ch15", "ch16", "ch17", "ch18", "ch19", "ch20", "ch21", "ch22", "ch23", "ch24", "ch25", "ch26"]) {
+for (const f of ["ch00", "ch01", "ch02", "ch03", "ch04", "ch05", "ch06", "ch07", "ch08", "ch09", "ch10", "ch11", "ch12", "ch13", "ch14", "ch15", "ch16", "ch17", "ch18", "ch19", "ch20", "ch21", "ch22", "ch23", "ch24", "ch25", "ch26", "ch27", "ch28"]) {
   eval(fs.readFileSync(path.join(DIR, f + ".js"), "utf8"));
 }
-const CHAPTERS = [CH00, CH01, CH02, CH03, CH04, CH05, CH06, CH07, CH08, CH09, CH10, CH11, CH12, CH13, CH14, CH15, CH16, CH17, CH18, CH19, CH20, CH21, CH22, CH23, CH24, CH25, CH26];
+const CHAPTERS = [CH00, CH01, CH02, CH03, CH04, CH05, CH06, CH07, CH08, CH09, CH10, CH11, CH12, CH13, CH14, CH15, CH16, CH17, CH18, CH19, CH20, CH21, CH22, CH23, CH24, CH25, CH26, CH27, CH28];
 
 // ── wait 가 무엇을 기다리는지 알아낸다 ──────────────────
 function describeWait(waitFn, beat, docs) {
