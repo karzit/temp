@@ -23,11 +23,14 @@ global.FS = {
   read: () => "",
 };
 global.runCheck = () => ({ then: () => ({ catch: () => null }) });
+global.Self = { mount: () => {}, say: () => {}, note: () => {}, hush: () => {} };
+// 고장 대사는 무작위라 대본에 넣지 않는다. 대본은 정해진 것만 담는다.
+global.Glitch = { weave: (list) => list, roll: () => null };
 
-for (const f of ["ch00", "ch01", "ch02", "ch03", "ch04", "ch05"]) {
+for (const f of ["ch00", "ch01", "ch02", "ch03", "ch04", "ch05", "ch06", "ch07", "ch08", "ch09", "ch10", "ch11", "ch12", "ch13", "ch14", "ch15", "ch16", "ch17", "ch18", "ch19", "ch20", "ch21", "ch22", "ch23", "ch24", "ch25", "ch26"]) {
   eval(fs.readFileSync(path.join(DIR, f + ".js"), "utf8"));
 }
-const CHAPTERS = [CH00, CH01, CH02, CH03, CH04, CH05];
+const CHAPTERS = [CH00, CH01, CH02, CH03, CH04, CH05, CH06, CH07, CH08, CH09, CH10, CH11, CH12, CH13, CH14, CH15, CH16, CH17, CH18, CH19, CH20, CH21, CH22, CH23, CH24, CH25, CH26];
 
 // ── wait 가 무엇을 기다리는지 알아낸다 ──────────────────
 function describeWait(waitFn, beat, docs) {
@@ -111,13 +114,15 @@ out.push("# 바로벤토 — 전체 대본\n");
 out.push("`content/*.js` 에서 자동으로 뽑은 것입니다. 고칠 곳은 이 문서가 아니라 챕터 파일입니다.");
 out.push("다시 뽑으려면 `game` 폴더에서 `node tools/dump_script.js > 대본.md` 를 실행하세요.\n");
 
-for (const ch of CHAPTERS) {
+for (const [chIndex, ch] of CHAPTERS.entries()) {
   out.push(`\n---\n\n# ${ch.title}\n`);
   out.push(`파일: \`content/${ch.id}.js\` · 씬: ${ch.scenes.join(" → ")}\n`);
   const conf = ch.desk;
-  if (conf.files && conf.files.length) {
+  if ((conf.files && conf.files.length) || chIndex > 0) {
     out.push("**시작할 때 깔려 있는 파일**\n");
-    for (const f of conf.files) out.push(`- \`${f.path}\``);
+    for (const f of conf.files || []) out.push(`- \`${f.path}\``);
+    // 첫 장을 뺀 나머지는 전날 만든 것 위에서 시작한다(scenes.js 가 저장해 둔 것을 되살린다).
+    if (chIndex > 0) out.push("- (전날까지 만든 파일도 그대로 남아 있습니다)");
     out.push("");
   }
   // 이 챕터에 나오는 문서(의뢰서·참고 문서) 경로를 미리 모아 둔다.
