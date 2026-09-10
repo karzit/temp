@@ -20,7 +20,7 @@ var Settings = {
   },
 };
 
-var CHAPTERS = [CH00, CH01, CH02, CH03, CH04, CH05];
+var CHAPTERS = [CH00, CH01, CH02, CH03, CH04, CH05, CH06, CH07, CH08, CH09, CH10, CH11, CH12, CH13, CH14, CH15, CH16, CH17, CH18, CH19, CH20, CH21, CH22, CH23, CH24, CH25, CH26, CH27, CH28];
 
 (function boot() {
   var stage = document.getElementById("stage");
@@ -39,7 +39,7 @@ var CHAPTERS = [CH00, CH01, CH02, CH03, CH04, CH05];
     if (si >= list.length) {
       // 챕터 끝 — 다음 챕터로, 없으면 여기까지.
       if (ci + 1 < CHAPTERS.length) {
-        saveProgress({ chapter: ci + 1, scene: 0, settings: loadProgress().settings });
+        patchProgress({ chapter: ci + 1, scene: 0 });
         playScene(ci + 1, 0);
       } else {
         endOfContent(stage);
@@ -47,8 +47,7 @@ var CHAPTERS = [CH00, CH01, CH02, CH03, CH04, CH05];
       return;
     }
 
-    var st = loadProgress();
-    saveProgress({ chapter: ci, scene: si, settings: st.settings });
+    patchProgress({ chapter: ci, scene: si });
 
     stage.innerHTML = "";
     stage.className = "stage";

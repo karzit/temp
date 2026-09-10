@@ -252,6 +252,39 @@ function shortenTraceback(err) {
   return body.join("\n");
 }
 
+// ── 자동완성: 지금 살아 있는 이름 물어보기 ─────────────
+// 주피터와 같은 방식이다. 실행 중인 세션(ns)을 그대로 두고, 따로 만든 자리에서 물어본다.
+// eval 은 점으로 이어진 이름에만 쓴다 — 괄호가 들어간 식은 부작용이 있을 수 있어 막는다.
+const COMPLETE_SRC = [
+  "import builtins, keyword, json",
+  "def _names(expr, ns):",
+  "    if expr:",
+  "        try:",
+  "            obj = eval(expr, dict(ns))",
+  "        except Exception:",
+  "            return []",
+  "        return dir(obj)",
+  "    return list(ns.keys()) + dir(builtins) + keyword.kwlist",
+  "json.dumps(_names(_expr, _ns))",
+].join("\n");
+
+async function completeNames(ns, expr) {
+  if (!isPythonReady()) return [];
+  if (expr && !/^[A-Za-z_][A-Za-z0-9_.]*$/.test(expr)) return [];
+  const pyodide = await ensurePython();
+  const scratch = pyodide.globals.get("dict")();
+  scratch.set("_expr", expr || "");
+  scratch.set("_ns", ns || pyodide.globals.get("dict")());
+  let out = null;
+  try {
+    out = await pyodide.runPythonAsync(COMPLETE_SRC, { globals: scratch });
+  } catch (err) {
+    out = null; // 물어보다 실패하면 그냥 후보가 없는 것으로 둔다
+  }
+  scratch.destroy();
+  return out ? JSON.parse(out) : [];
+}
+
 // ── 한 문장씩 실행하기 ────────────────────────────────
 // 문장 경계는 파이썬 자신에게 물어본다. 여러 줄에 걸친 문장도 한 덩어리로 잡힌다.
 // 돌려주는 것은 [[시작줄, 끝줄], ...] 이고 줄 번호는 1부터 센다.

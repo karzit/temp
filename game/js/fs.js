@@ -7,6 +7,18 @@ var FS = {
     FS.root = { type: "dir", children: {} };
   },
 
+  // 트리가 그대로 JSON이 된다. 저장할 때는 이 모양 그대로 넣어 둔다.
+  snapshot: function () {
+    return JSON.parse(JSON.stringify(FS.root));
+  },
+
+  // 되돌릴 것이 없으면 false. 부른 쪽에서 reset 할지 정한다.
+  restore: function (tree) {
+    if (!tree || tree.type !== "dir" || !tree.children) return false;
+    FS.root = tree;
+    return true;
+  },
+
   split: function (path) {
     return String(path).split("/").filter(Boolean);
   },

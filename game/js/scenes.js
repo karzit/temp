@@ -213,8 +213,8 @@ Scenes.desk = function (stage, chapter, done) {
   monitor.appendChild(screen);
   stage.appendChild(monitor);
 
-  // 작업 폴더 준비
-  FS.reset();
+  // 작업 폴더 준비. 전날 만든 파일은 그대로 두고 이 장의 파일만 새로 깐다.
+  if (!FS.restore(loadProgress().files)) FS.reset();
   FS.mkdir("work");
   (conf.files || []).forEach(function (f) {
     FS.write(f.path, f.content, { readOnly: f.readOnly, kind: f.kind });
@@ -228,6 +228,10 @@ Scenes.desk = function (stage, chapter, done) {
   IDE.lastRun = null;
   IDE.mount(screen);
   Aistb.mount(screen);
+  Self.mount(screen);
+  Aistb.setDecay(chapter.decay || 0);
+  // 종장에서는 채점 결과를 Aistb 가 전해주지 않는다. 화자가 바뀐다.
+  var alone = chapter.voice === "self";
 
   var i = 0;
   var finished = false;
@@ -235,7 +239,7 @@ Scenes.desk = function (stage, chapter, done) {
   // wait()가 볼 수 있는 상태. 메뉴에서 무엇을 눌렀는지가 여기 담긴다.
   var ctx = { reported: false, ended: false };
   var currentBrief = (conf.files || []).filter(function (f) {
-    return f.kind === "brief";
+    return f.kind === "brief" || f.kind === "goal";
   }).map(function (f) {
     return f.path;
   })[0] || null;
@@ -248,6 +252,10 @@ Scenes.desk = function (stage, chapter, done) {
     var b = beat();
     if (!b) return;
     lastReject = null;
+    Self.hush(); // 지난 독백은 걷고 시작한다
+
+    // 씬 하나에서 고장 단계가 바뀔 수 있다. 종장 마지막에 Aistb 가 돌아오는 자리다.
+    if (b.decay !== undefined) Aistb.setDecay(b.decay);
 
     // 이 beat에서 도착하는 파일이 있으면 먼저 깔아둔다.
     if (b.addFiles) {
@@ -257,7 +265,7 @@ Scenes.desk = function (stage, chapter, done) {
         if (!FS.exists(f.path)) {
           FS.write(f.path, f.content, { readOnly: f.readOnly, kind: f.kind });
         }
-        if (f.kind === "brief") currentBrief = f.path;
+        if (f.kind === "brief" || f.kind === "goal") currentBrief = f.path;
         if (f.open !== undefined && f.open !== false) {
           openIn(f.path, f.open === true ? 0 : f.open);
         }
@@ -305,7 +313,8 @@ Scenes.desk = function (stage, chapter, done) {
     if (!b || !b.wait || Aistb.isSpeaking()) return;
     if (b.wait(ctx)) {
       Aistb.point(null);
-      if (b.menu && b.menu.indexOf("report") >= 0) ctx.reported = false; // 다음 의뢰를 위해 되돌린다
+      // 다음 의뢰(종장에서는 다음 토막)를 위해 되돌린다
+      if (b.menu && (b.menu.indexOf("report") >= 0 || b.menu.indexOf("repair") >= 0)) ctx.reported = false;
       next();
       return;
     }
@@ -327,14 +336,16 @@ Scenes.desk = function (stage, chapter, done) {
     var list = [];
 
     list.push({
-      label: "의뢰 확인",
+      label: alone ? "목표 확인" : "의뢰 확인",
       highlight: menu.indexOf("brief") >= 0,
       run: openBrief,
     });
 
-    if (menu.indexOf("report") >= 0) {
+    // "repair" 는 "report" 와 하는 일이 같고 이름만 다르다. 종장의 업무 메뉴다.
+    var fixing = menu.indexOf("repair") >= 0;
+    if (fixing || menu.indexOf("report") >= 0) {
       list.push({
-        label: "완료 보고",
+        label: fixing ? "Aistb 수리" : "완료 보고",
         highlight: true,
         enabled: !ctx.reported && !ctx.checking,
         run: function () {
@@ -357,7 +368,7 @@ Scenes.desk = function (stage, chapter, done) {
       });
     }
 
-    list.push({ label: "지금 할 일 다시 듣기", run: play });
+    list.push({ label: alone ? "지금 할 일 다시 보기" : "지금 할 일 다시 듣기", run: play });
     list.push({ label: "환경설정", run: openSettings });
 
     if (menu.indexOf("end") >= 0) {
@@ -378,13 +389,17 @@ Scenes.desk = function (stage, chapter, done) {
     Aistb.setActions(list);
   }
 
+  // 독백이 나오는 곳은 여기 하나뿐이다. 채점이 틀렸을 때.
+  // 드물게 나와야 나올 때 무겁다 — 실행 에러도 자리비움도 Aistb 가 맡는다.
   function finishReport(problem) {
     if (problem) {
-      Aistb.speak([{ text: problem, tone: "bad" }]);
+      if (alone) Self.say(problem);
+      else Aistb.speak([{ text: problem, tone: "bad" }]);
       actions();
       return;
     }
     ctx.reported = true;
+    Self.hush();
     evaluate();
   }
 
@@ -400,7 +415,7 @@ Scenes.desk = function (stage, chapter, done) {
 
   function openBrief() {
     if (!currentBrief) {
-      Aistb.speak(["지금 들어온 의뢰가 없습니다."]);
+      Aistb.speak([alone ? "지금 열어 드릴 것이 없습니다." : "지금 들어온 의뢰가 없습니다."]);
       return;
     }
     if (!IDE.isSplit()) IDE.toggleSplit();
@@ -415,6 +430,7 @@ Scenes.desk = function (stage, chapter, done) {
 
   IDE.onChange = function () {
     Aistb.poke();
+    saveFilesSoon();
     evaluate();
   };
   IDE.onRun = function (path, result) {
@@ -434,10 +450,19 @@ Scenes.desk = function (stage, chapter, done) {
     Aistb.speak([(b && b.nudge) || pick(conf.idleLines) || "천천히 하셔도 됩니다."]);
   });
 
+  // 하루 도중에 새로고침하면 그날 처음부터 다시 재생한다. 그래서 어디까지 말했는지는
+  // 남기지 않고, 만든 파일만 남긴다.
   function saveNow() {
-    var st = loadProgress();
-    st.beat = i;
-    saveProgress(st);
+    patchProgress({ files: FS.snapshot() });
+  }
+
+  // 글자를 칠 때마다 저장하면 잦으니 잠깐 모아서 한 번에 넣는다.
+  var fileTimer = null;
+  function saveFilesSoon() {
+    clearTimeout(fileTimer);
+    fileTimer = setTimeout(function () {
+      patchProgress({ files: FS.snapshot() });
+    }, 500);
   }
 
   function openSettings() {

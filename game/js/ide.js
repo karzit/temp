@@ -33,7 +33,7 @@ var IDE = {
       "<div class='ide-bottom'>" +
       "<div class='run-row'>" +
       "<button class='run' title='중단점까지, 없으면 끝까지'>▶ 실행</button>" +
-      "<button class='step' title='문장 하나만 실행'>↓ 한 줄</button>" +
+      "<button class='step' title='문장 하나만 실행'>↓ 한 문장</button>" +
       "<button class='reset-run' title='처음부터 다시'>↺</button>" +
       "<span class='run-target'></span><span class='run-state'></span></div>" +
       "<div class='out'><pre class='out-text'></pre><div class='out-plots'></div></div>" +
@@ -158,10 +158,10 @@ var IDE = {
       var label = document.createElement("span");
       label.textContent = name;
       row.appendChild(label);
-      if (node.kind === "brief") {
+      if (node.kind === "brief" || node.kind === "goal") {
         var tag = document.createElement("i");
         tag.className = "tree-tag";
-        tag.textContent = "의뢰서";
+        tag.textContent = node.kind === "goal" ? "목표" : "의뢰서";
         row.appendChild(tag);
       }
 
@@ -205,7 +205,7 @@ var IDE = {
     var node = FS.node(path);
     if (!node) return;
     if (node.readOnly) {
-      IDE.note("의뢰서는 지울 수 없습니다.");
+      IDE.note("읽기 전용 파일은 지울 수 없습니다.");
       return;
     }
     var inside = node.type === "dir" ? FS.countInside(path) : 0;
@@ -572,6 +572,7 @@ var IDE = {
     var ta = document.createElement("textarea");
     ta.className = "code";
     ta.spellcheck = false;
+    ta.wrap = "off"; // 줄이 접히면 줄 번호와 어긋난다
     ta.value = node.content;
 
     ta.oninput = function () {
@@ -590,6 +591,7 @@ var IDE = {
 
     wrap.append(gutter, stripe, ta);
     wrap.setAttribute("data-path", path);
+    Complete.attach(ta, wrap);
     setTimeout(function () {
       IDE.drawGutter(wrap, path);
     }, 0);

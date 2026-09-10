@@ -17,6 +17,16 @@ function saveProgress(state) {
   }
 }
 
+// 몇 가지만 덮어쓰고 나머지(파일, 진행 위치)는 건드리지 않는다.
+// 통째로 saveProgress 하면 다른 곳에서 넣어 둔 것이 지워진다.
+function patchProgress(patch) {
+  const state = loadProgress();
+  Object.keys(patch).forEach(function (key) {
+    state[key] = patch[key];
+  });
+  saveProgress(state);
+}
+
 function clearProgress() {
   try {
     localStorage.removeItem(KEY);

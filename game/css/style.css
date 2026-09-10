@@ -582,6 +582,53 @@ body.resizing { cursor: ns-resize; user-select: none; }
   95% { transform: scaleY(0.1); }
 }
 
+/* 고장 단계. 숫자가 커질수록 눈이 자주, 오래 빨개진다.
+   blink 는 transform 을, 아래 것들은 background 를 건드려서 서로 겹치지 않는다.
+   steps(1) 이라 색이 부드럽게 넘어가지 않고 툭 바뀐다 — 고장은 매끄러우면 안 된다. */
+@keyframes eyeGlitch {
+  0%, 96% { background: var(--accent); }
+  97%, 98.4% { background: var(--bad); }
+  98.8%, 100% { background: var(--accent); }
+}
+@keyframes eyeGlitchWide {
+  0%, 84% { background: var(--bad); }
+  86%, 92% { background: var(--accent); }
+  93%, 100% { background: var(--bad); }
+}
+.aistb.decay-1 .aistb-face .eye { animation: blink 5.5s infinite, eyeGlitch 17s steps(1) infinite; }
+.aistb.decay-2 .aistb-face .eye { animation: blink 5.5s infinite, eyeGlitch 8s steps(1) infinite; }
+.aistb.decay-3 .aistb-face .eye { animation: blink 4s infinite, eyeGlitch var(--eye-glitch, 3.5s) steps(1) infinite; }
+.aistb.decay-4 .aistb-face .eye { animation: blink 4s infinite, eyeGlitchWide 6s steps(1) infinite; }
+.aistb.decay-4 .aistb-face .mouth { background: #6a4550; }
+
+/* 움직임을 끈 경우. 애니메이션이 통째로 막히므로(body.no-motion *) 색만 남긴다.
+   1~2단계는 원래도 거의 안 보이는 정도라 평소 색 그대로 둔다 — 그쪽은 말투가 대신한다. */
+body.no-motion .aistb.decay-3 .aistb-face .eye,
+body.no-motion .aistb.decay-4 .aistb-face .eye { background: var(--bad); }
+
+/* 토이비의 독백. 종장에서만 나온다(js/self.js).
+   말풍선과 일부러 다르게 생겼다 — 이름표가 없고, 반대쪽 구석에 놓이고, 색이 죽어 있다.
+   누가 말해 주는 것이 아니라 혼자 생각하는 것이라는 뜻이다. */
+.self-line {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  z-index: 41;
+  max-width: 360px;
+  padding: 11px 14px;
+  border-left: 2px solid #55627a;
+  border-radius: 0 6px 6px 0;
+  background: rgba(10, 12, 16, 0.94);
+  color: #b9c0cc;   /* 일기 본문과 같은 색. 종장에서는 이것이 유일한 피드백이라 읽혀야 한다 */
+  font-size: 12.5px;
+  line-height: 1.75;
+  font-style: italic;
+  text-align: left;
+  pointer-events: none;
+  animation: fadeUp 0.25s ease both;
+}
+.self-line b { color: #c6ccd6; font-style: normal; }
+
 .aistb-bubble {
   /* 말풍선은 화면 위에 떠 있을 뿐이라 클릭을 가로채면 안 된다.
      (아래에 있는 결과 창 손잡이를 잡을 수 없게 되는 문제가 있었다.) */
@@ -844,7 +891,39 @@ body.dragging-tab .tab { cursor: grabbing; }
   background: transparent;
   line-height: 21px;
   padding: 12px 14px;
+  white-space: pre;
+  overflow-x: auto;
 }
+
+/* ── 자동완성 목록 ──────────────────────────────────── */
+.complete {
+  position: absolute;
+  z-index: 5;
+  min-width: 150px;
+  max-height: 218px;
+  overflow-y: auto;
+  background: #12161d;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  padding: 3px;
+}
+.complete-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 9px;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  cursor: pointer;
+}
+.complete-item:hover { color: var(--fg); }
+.complete-item.on { background: rgba(110, 168, 254, 0.16); color: var(--fg); }
 
 /* 실행 줄의 단계 버튼 */
 .step, .reset-run {
