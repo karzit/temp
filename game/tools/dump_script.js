@@ -145,7 +145,7 @@ for (const [chIndex, ch] of CHAPTERS.entries()) {
       const who = line.who ? `**${line.who}**: ` : "";
       out.push(`- ${who}${line.text}${spotText(line.spot !== undefined ? line.spot : b.spot)}`);
     }
-    if (b.menu) out.push(`\n〔업무 메뉴: ${b.menu.map((m) => ({ brief: "의뢰 확인", report: "완료 보고", end: "업무 종료" }[m] || m)).join(" · ")}〕`);
+    if (b.menu) out.push(`\n〔업무 메뉴: ${b.menu.map((m) => ({ brief: "의뢰 확인", report: "완료 보고", end: b.endLabel || "업무 종료" }[m] || m)).join(" · ")}〕`);
     if (b.report) out.push("〔완료 보고를 누르면 제출한 파일을 실제로 돌려 채점〕");
     const w = describeWait(b.wait, b, docs);
     if (w) out.push(`\n▶ ${w} 다음으로`);

@@ -201,6 +201,7 @@ Scenes.room = function (stage, chapter, done) {
 //   spot  : 말하는 동안 가리킬 곳 (선택자 또는 { text, in })
 //   wait  : 참이 될 때까지 기다린다. 없으면 말이 끝나는 대로 다음 beat
 //   menu  : 이 beat에서 열어줄 업무 메뉴 ("report" | "end")
+//   endLabel : "end" 버튼 이름. 하루를 반으로 끊는 날에만 쓴다(2·4장).
 //   reject: 잘못한 것이 있으면 그 이유를 돌려준다(문자열). 없으면 null
 Scenes.desk = function (stage, chapter, done) {
   stage.className = "stage scene-desk";
@@ -310,7 +311,10 @@ Scenes.desk = function (stage, chapter, done) {
 
   function evaluate() {
     var b = beat();
-    if (!b || !b.wait || Aistb.isSpeaking()) return;
+    if (!b || !b.wait) return;
+    // 조건을 채웠으면 아직 말하는 중이라도 넘어간다. 가리킨 버튼(.step 등)은 veil 위로
+    // 솟아 말하는 도중에도 눌리므로, 세 번 눌러 조건을 채운 순간 멈춰 있으면 안 된다.
+    // 넘어가면 다음 beat의 speak가 지금 veil을 걷어낸다.
     if (b.wait(ctx)) {
       Aistb.point(null);
       // 다음 의뢰(종장에서는 다음 토막)를 위해 되돌린다
@@ -318,6 +322,8 @@ Scenes.desk = function (stage, chapter, done) {
       next();
       return;
     }
+    // 아직 못 채웠으면, 말하는 중에는 재촉(reject)이나 메뉴 갱신을 미룬다.
+    if (Aistb.isSpeaking()) return;
     if (b.reject) {
       var why = b.reject();
       if (why && why !== lastReject) {
@@ -373,7 +379,7 @@ Scenes.desk = function (stage, chapter, done) {
 
     if (menu.indexOf("end") >= 0) {
       list.push({
-        label: "업무 종료",
+        label: b.endLabel || "업무 종료",
         highlight: true,
         run: function () {
           if (finished) return;
@@ -531,33 +537,64 @@ Scenes.diary = function (stage, chapter, done) {
   var box = document.createElement("div");
   box.className = "intro-box diary";
 
-  (chapter.diary || []).forEach(function (line) {
+  // 대본에서는 한 문장이 한 줄이지만 일기는 문단으로 읽혀야 한다.
+  // 빈 줄이 문단을 나누고, 그 사이 줄들은 한 문단으로 이어 붙인다.
+  paragraphs(chapter.diary).forEach(function (para) {
     var p = document.createElement("p");
-    p.className = "intro-line" + (line === "" ? " gap" : "");
-    p.innerHTML = rich(line);
+    p.className = "intro-line" + (para === "" ? " gap" : "");
+    p.innerHTML = rich(para);
     box.appendChild(p);
   });
 
+  // 일기 아래에 붙는 주석. 토이비가 쓴 것이 아니라 게임 밖에서 다는 것이라 선을 그어 나눈다.
+  // 지금은 마지막 장에서만 쓴다 — 크레딧과, 손으로 정해 주고 넘어간 자리들의 원래 모습.
+  if (chapter.notes && chapter.notes.length) {
+    var notes = document.createElement("div");
+    notes.className = "diary-notes";
+    chapter.notes.forEach(function (line) {
+      var p = document.createElement("p");
+      p.className = "intro-line" + (line === "" ? " gap" : "");
+      p.innerHTML = rich(line);
+      notes.appendChild(p);
+    });
+    box.appendChild(notes);
+  }
+
   var next = document.createElement("button");
   next.className = "big-btn";
-  next.textContent = "다음날로";
+  next.textContent = chapter.endLabel || "다음날로";
   next.onclick = done;
   box.appendChild(next);
 
   stage.appendChild(box);
 };
 
+function paragraphs(lines) {
+  var out = [], cur = [];
+  (lines || []).forEach(function (line) {
+    if (line !== "") { cur.push(line); return; }
+    if (cur.length) out.push(cur.join(" "));
+    out.push("");
+    cur = [];
+  });
+  if (cur.length) out.push(cur.join(" "));
+  return out;
+}
+
 function pick(list) {
   if (!list || !list.length) return null;
   return list[Math.floor(Math.random() * list.length)];
 }
 
-// 대본에서 쓸 수 있는 표시는 **굵게** 와 ~~취소선~~ 둘뿐이다.
+// 대본에서 쓸 수 있는 표시는 **굵게** 와 ~~취소선~~, 그리고 [글자](주소) 셋이다.
+// 링크는 http/https 만 받는다 — 대본에서 온 문자열을 그대로 href 에 넣기 때문이다.
 function rich(text) {
   return String(text)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
-    .replace(/~~(.+?)~~/g, "<s>$1</s>");
+    .replace(/~~(.+?)~~/g, "<s>$1</s>")
+    .replace(/\[([^\[\]]+?)\]\((https?:\/\/[^\s)]+)\)/g,
+             '<a href="$2" target="_blank" rel="noopener">$1</a>');
 }

@@ -82,8 +82,10 @@ function endOfContent(stage) {
   stage.className = "stage scene-intro";
   var box = document.createElement("div");
   box.className = "intro-box";
+  // 28장까지 전부 있으므로 여기는 "아직 안 만들어졌다" 가 아니라 끝난 자리다.
+  // 크레딧과 노트북 안내는 마지막 일기 아래에 붙어 있다.
   box.innerHTML =
-    "<p class='intro-line'>여기까지가 지금 준비된 분량입니다.</p>" +
-    "<p class='intro-line dim'>다음 챕터는 아직 만들어지지 않았습니다.</p>";
+    "<p class='intro-line'>여기까지입니다. 수고하셨습니다.</p>" +
+    "<p class='intro-line dim'>우측 아래 “처음부터”로 다시 시작할 수 있습니다.</p>";
   stage.appendChild(box);
 }

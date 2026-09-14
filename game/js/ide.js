@@ -420,8 +420,13 @@ var IDE = {
           doc.className = "doc";
           node.content.split("\n").forEach(function (line) {
             var p = document.createElement("p");
-            p.textContent = line;
-            if (/^#{1,3} /.test(line)) p.className = "doc-h";
+            if (/^>( |$)/.test(line)) {
+              p.textContent = line.slice(2) || "\u00a0";
+              p.className = "doc-q";
+            } else {
+              p.textContent = line;
+              if (/^#{1,3} /.test(line)) p.className = "doc-h";
+            }
             doc.appendChild(p);
           });
           area.appendChild(doc);

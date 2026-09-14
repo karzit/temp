@@ -1,10 +1,10 @@
-// 02_linear_regression 노트북에 대응하는 챕터.
+// 01_linear_regression 노트북에 대응하는 챕터.
 // 자리는 잠정이다 — 1장(데이터 탐색)이 정해지면 그 뒤로 밀린다.
 // 서사는 상황을 세우는 데까지만 쓰고, 설명은 위젯과 채점 피드백이 대신한다.
 var CH02 = {
   id: "ch02",
   title: "첫 업무 — 고장난 예측기",
-  notebook: "../notebooks/ml-curriculum/02_linear_regression/02_linear_regression.ipynb",
+  notebook: "../notebooks/ml-curriculum/01_linear_regression/01_linear_regression.ipynb",
   beats: [
     {
       narration:
@@ -105,7 +105,7 @@ assert abs(b - b_star) < 0.15, f"W는 맞았는데 b가 {b:.3f}입니다(정답 
     },
     {
       narration:
-        "예측기가 제 숫자를 뱉기 시작합니다. 첫 업무는 여기까지입니다. (같은 내용을 코드로 끝까지 따라가려면 02_linear_regression 노트북으로 가세요. 여기서 손으로 만져본 W와 b가 거기서는 여러 개로 늘어납니다.)",
+        "예측기가 제 숫자를 뱉기 시작합니다. 첫 업무는 여기까지입니다. (같은 내용을 코드로 끝까지 따라가려면 01_linear_regression 노트북으로 가세요. 여기서 손으로 만져본 W와 b가 거기서는 여러 개로 늘어납니다.)",
     },
   ],
 };

@@ -465,6 +465,12 @@ textarea.code {
 }
 .doc p { margin: 0 0 5px; }
 .doc .doc-h { color: var(--fg); font-weight: 600; margin: 12px 0 6px; }
+.doc .doc-q {
+  margin: 6px 0;
+  padding: 2px 0 2px 10px;
+  border-left: 2px solid var(--line);
+  color: #7f8795;
+}
 
 .ide-bottom {
   background: var(--panel);
@@ -784,6 +790,14 @@ body.no-motion .aistb.decay-4 .aistb-face .eye { background: var(--bad); }
 /* ── 일기 ───────────────────────────────────────────── */
 .intro-box.diary .intro-line { color: #b9c0cc; }
 .intro-box.diary .intro-line:first-child { color: var(--fg); font-weight: 600; }
+/* 일기 아래 주석 — 게임 밖에서 다는 것이라 선을 그어 나눈다(scenes.js diary). */
+.diary-notes {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.diary-notes .intro-line { color: #6b7280; font-size: 12px; }
+.diary-notes .intro-line:first-child { color: #6b7280; font-weight: 400; }
 
 /* 탐색기 행 — 이름과 지우기 버튼 */
 .tree-line { display: flex; align-items: center; }
