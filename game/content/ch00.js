@@ -115,20 +115,15 @@ var CH00 = {
       {
         lines: [
           { who: "???", text: "반갑습니다, 깁스 W 토이비님." },
-          { who: "???", text: "저는 Aistb 입니다. 바로벤토에서 직원 지원 업무를 맡고 있습니다." },
-          { who: "Aistb", text: "입사 첫날 안내를 담당하게 되었습니다. 오늘은 이 단말을 다루는 법만 익히시면 됩니다." },
-          {
-            who: "Aistb",
-            text: "AI 엔지니어링 쪽은 내일부터 들어갑니다. 습득 정도에 따라 배정되는 업무의 수준이 올라갑니다.",
-          },
+          { who: "???", text: "바로벤토에서 직원 지원 업무를 맡고 있는 Aistb 입니다." },
+          { who: "Aistb", text: "오늘은 이 단말을 다루는 법만 익힙니다." },
         ],
       },
 
       // ── 의뢰 확인 ──
       {
         lines: [
-          { who: "Aistb", text: "저를 누르시면 업무 메뉴가 열립니다." },
-          { who: "Aistb", text: "첫 항목이 의뢰 확인입니다. 오늘 배정된 것을 보시겠습니다." },
+          { who: "Aistb", text: "저를 누르시면 업무 메뉴가 열립니다. 첫 항목이 의뢰 확인입니다." },
         ],
         nudge: "오른쪽 아래의 저를 눌러 주세요. 첫 항목이 의뢰 확인입니다.",
         menu: ["brief"],
@@ -139,22 +134,13 @@ var CH00 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "의뢰서입니다. work 폴더에 들어 있으니 닫으셔도 다시 여실 수 있습니다." }],
+        lines: [{ who: "Aistb", text: "의뢰서입니다." }],
         spot: '.tree-row[data-path="work/의뢰_0001.md"]',
       },
 
       // ── 파일과 폴더 ──
       {
-        lines: [
-          { who: "Aistb", text: "다음은 파일과 폴더를 만드는 방법입니다." },
-          { who: "Aistb", text: "만들 위치가 될 폴더를 먼저 누르고, 그 다음에 ＋파일 또는 ＋폴더입니다." },
-          { who: "Aistb", text: "순서가 반대면 엉뚱한 곳에 생깁니다. 위치부터입니다." },
-          { who: "Aistb", text: "해 보시겠습니다." },
-        ],
-        spot: ".ide-side",
-      },
-      {
-        lines: [{ who: "Aistb", text: "work 폴더를 눌러 주세요." }],
+        lines: [{ who: "Aistb", text: "다음은 폴더입니다. work 를 눌러 주세요." }],
         spot: '.tree-row[data-path="work"]',
         nudge: "왼쪽 탐색기의 work 를 눌러 주세요.",
         wait: function () {
@@ -170,7 +156,7 @@ var CH00 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "이름은 의뢰서에 적힌 대로 first_task 입니다." }],
+        lines: [{ who: "Aistb", text: "이름은 first_task 입니다." }],
         spot: ".newform input",
         nudge: "이름 칸에 first_task 를 적고 만들기를 누르세요.",
         wait: function () {
@@ -187,7 +173,7 @@ var CH00 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "이번에는 그 폴더 안에 hello.py 를 만들어 주세요. 위치부터 고르는 것은 같습니다." }],
+        lines: [{ who: "Aistb", text: "이번에는 그 폴더 안에 hello.py 입니다." }],
         spot: "[data-new='file']",
         nudge: "first_task 를 고른 뒤 ＋파일을 누르고, 이름을 hello.py 로 적으세요.",
         wait: function () {
@@ -200,13 +186,11 @@ var CH00 = {
         lines: [
           { who: "Aistb", text: "완벽합니다. 해당 교육 수강자 중 상위 1%에 해당하는 성취도입니다." },
           { who: "Aistb", text: "**정정** 상위 98%입니다." },
-          { who: "Aistb", text: "이어서 코드를 실행해 보겠습니다." },
         ],
       },
       {
         lines: [
-          { who: "Aistb", text: 'hello.py 에 print("안녕하세요") 를 적고 ▶ 실행을 누르시면 됩니다.' },
-          { who: "Aistb", text: "처음 한 번은 준비에 시간이 걸립니다. 멈춘 것이 아니니 기다려 주십시오." },
+          { who: "Aistb", text: 'print("안녕하세요") 를 적고 ▶ 실행입니다. 처음은 몇 초 걸립니다.' },
         ],
         spot: ".run",
         nudge: "왼쪽 편집창에 코드를 적고 아래의 ▶ 실행을 누르세요.",
@@ -215,16 +199,11 @@ var CH00 = {
           return !!r && r.ok && r.path === "work/first_task/hello.py" && !!r.output;
         },
       },
-      {
-        lines: [{ who: "Aistb", text: "실행 결과는 이곳에 남습니다. 다음 실행 전까지 그대로 있습니다." }],
-        spot: ".out",
-      },
 
       // ── 완료 보고 ──
       {
         lines: [
-          { who: "Aistb", text: "일이 끝나면 완료 보고를 해 주십시오." },
-          { who: "Aistb", text: "보고가 없으면 하지 않은 일로 처리됩니다. 제 쪽 규정입니다." },
+          { who: "Aistb", text: "끝나면 완료 보고입니다." },
         ],
         menu: ["report"],
         nudge: "저를 누르시면 완료 보고가 있습니다.",

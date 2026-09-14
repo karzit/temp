@@ -1,4 +1,6 @@
-// 26장 응답기록의 정상 응답(,0)이 실제로 0~25장에 있는 대사인지 검사한다.
+// 26장 응답기록의 정상 응답(flag 0)이 실제로 0~25장에 있는 대사인지 검사한다.
+// 칸은 no,day,q,text,flag 다섯이고, 10월 이후 줄은 q 가 비어 있다.
+// 앞쪽 옛 기록(flag 빈칸)은 대사가 아니므로 검사 대상이 아니다.
 // 대사를 고치면 이 검사가 깨진다. 깨지면 대사 쪽이 아니라 기록 쪽을 맞춘다.
 //
 //   node tools/check_log.js
@@ -21,7 +23,7 @@ var bad = [];
 var total = 0;
 log.split("\n").forEach(function (raw) {
   var line = raw.replace(/\r$/, "");
-  var m = line.match(/^\s*"(\d+),(\d\d-\d\d),(.*),0",?$/);
+  var m = line.match(/^\s*"(\d+),(\d\d-\d\d),,(.*),0",?$/);
   if (!m) return;
   total++;
   if (!said.has(m[3].trim())) bad.push(m[1] + "  " + m[3]);
@@ -40,7 +42,7 @@ var risky = [];
 log.split("\n").forEach(function (raw) {
   var line = raw.replace(/\r$/, "").trim().replace(/^"|",?$/g, "");
   if (!/^\d{4},\d\d-\d\d,/.test(line)) return;
-  if (line.split(",").length !== 4) risky.push(line);
+  if (line.split(",").length !== 5) risky.push(line);
 });
 
 if (!quoted && risky.length) {
