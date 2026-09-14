@@ -102,14 +102,14 @@ flowchart LR
 
 ```
 머신러닝 → 딥러닝 → Transformer → LLM(GPT 등) → RAG
-   ①          ①        ① 08번         ②③          ②③
+   ①          ①        ① 07번         ②③          ②③
 ```
 
 ①에서 배우는 경사 하강법·역전파는 딥러닝의 기본기이고, 그 딥러닝을 아주 크게 키운 것이
 Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에게 회사 문서처럼 학습되지 않은 내용을
 찾아서 물어보게 만드는 기법이 **RAG**(②③)입니다.
 
-**Transformer 자리는 ① 08번이 채웁니다.** 어텐션부터 시작해 작은 GPT를 직접 만들고 학습시켜
+**Transformer 자리는 ① 07번이 채웁니다.** 어텐션부터 시작해 작은 GPT를 직접 만들고 학습시켜
 문장을 생성해봅니다. 다만 **거기까지입니다.** 진짜 LLM을 만드는 데 필요한 것(수천억 토큰의 사전 학습,
 지시 튜닝, RLHF)은 개인이 할 수 있는 일이 아니고 실무에서도 거의 하지 않으므로 다루지 않습니다.
 **"어떻게 생겼는지는 직접 만들어보고, 실제로는 만들어진 것을 가져다 쓴다"**가 이 저장소의 방침입니다 —
@@ -121,8 +121,8 @@ Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에�
 **목표에 따라 시작 지점이 다릅니다.**
 
 - **머신러닝/딥러닝을 처음부터 배우고 싶다** → `notebooks/ml-curriculum/` 00 → 01 → 02 … 순서대로.
-  00번은 NumPy/Pandas/PyTorch 사전 준비라 익숙하면 건너뛰어도 되고, 01번은 이론 없이 전체 흐름만
-  훑는 워밍업입니다. **이론은 02번부터 시작합니다.** 자세한 목차는 **[CURRICULUM.md](CURRICULUM.md)** 참고.
+  00번은 NumPy/Pandas/PyTorch 사전 준비라 익숙하면 건너뛰어도 됩니다. **이론은 01번(회귀)부터 시작하고**,
+  03번은 앞에서 배운 모델로 scikit-learn 파이프라인을 한 바퀴 돌려보는 실전입니다. 자세한 목차는 **[CURRICULUM.md](CURRICULUM.md)** 참고.
 - **내 CSV 데이터로 예측 모델을 만들고 싶다, 실무에서 쓰는 순서를 알고 싶다**
   → `notebooks/tabular-ml-practice/` 01 → 02 → 03 → 04 순서대로.
   결측치·이상치 처리부터 모델 평가·데이터 누출 진단까지 다룹니다.
@@ -146,24 +146,27 @@ Transformer 구조의 **LLM**(GPT 같은 모델)입니다. 그리고 그 LLM에�
   실행되는 게임으로, NumPy부터 RAG까지 같은 커리큘럼(①·④)을 의뢰 처리 형식으로 풀어냅니다.
   자세한 내용은 **[game/README.md](game/README.md)** 참고.
 
-**전부 다 해보고 싶다면 이 순서를 추천합니다.**
+**전부 다 해보고 싶다면 이 순서를 추천합니다.** 기초부터 쌓아 올려 LLM/RAG까지 이어지는 정공법입니다.
 
-1. `notebooks/rag-pipeline-practice/01~05` — Colab에서 설치 없이 개념과 라이브러리 사용법을 먼저 손에 익힙니다.
-2. `notebooks/project-walkthrough/01~04` — 그 라이브러리로 만들어진 **실제 프로젝트를 한 줄씩 읽습니다.**
+1. `notebooks/ml-curriculum/00~08` — 머신러닝과 딥러닝이 **어떻게 작동하는지**를 경사 하강법부터
+   직접 구현하며 익힙니다. 00번은 NumPy/Pandas/PyTorch 사전 준비라 익숙하면 건너뛰고, 이론은 01번부터입니다.
+   마지막 07번에서 어텐션과 작은 GPT를 직접 만들어보면, 뒤에 나오는 LLM이 어떤 구조인지 알고 쓰게 됩니다.
+   (`08_tensorflow_practice`는 01·04를 TensorFlow/Keras로 다시 풀어보는 보너스라 여유 있을 때 봐도 됩니다.)
+2. `notebooks/tabular-ml-practice/00~04` — 이론에서 실무로 내려옵니다. 결측치·이상치·문자열이 섞인
+   **실제 표 데이터**를 EDA → 전처리 → 모델 → 평가 순서로 다룹니다.
+3. `notebooks/text-classification-practice/01~03` — 같은 흐름을 숫자가 아닌 **텍스트**에서 반복합니다.
+   03번에서 사전 학습 한국어 모델(KLUE-RoBERTa)을 직접 파인튜닝하는데, 여기가 머신러닝 트랙에서
+   LLM에 가장 가까이 닿는 지점이라 다음 단계로 자연스럽게 이어집니다.
+4. `notebooks/rag-pipeline-practice/01~05` — 이제 LLM을 **가져다 쓰는** 쪽입니다. 크롤링·청킹·구조화·
+   RAG 검색·프롬프트 인젝션 방어에 쓰이는 라이브러리를 Colab에서 설치 없이 손에 익힙니다.
+5. `notebooks/project-walkthrough/01~04` — 그 라이브러리로 만들어진 **실제 프로젝트를 한 줄씩 읽습니다.**
    여기까지도 설치가 필요 없습니다. 인프라를 띄우기 전에 코드부터 이해하는 단계입니다.
-3. `example-projects/` — 같은 파이프라인을 실제 인프라(PostgreSQL, OpenSearch)와 진짜 API로 동작시켜봅니다.
+6. `example-projects/` — 같은 파이프라인을 실제 인프라(PostgreSQL, OpenSearch)와 진짜 API로 동작시켜봅니다.
    시작하기 전에 **[example-projects/README.md](example-projects/README.md)**의 파이프라인 다이어그램을
    먼저 읽으면 4개 프로젝트가 어떻게 이어지는지 한눈에 파악됩니다.
-4. (선택) `notebooks/ml-curriculum/00~06` — ML/딥러닝 기초 이론까지 확장하고 싶을 때.
-   **08번은 여기서 쓰는 LLM이 어떤 구조인지를 직접 만들어보는 장이라, RAG를 먼저 한 사람에게
-   특히 잘 맞습니다.** `07_tensorflow_practice`는 02/04를 TensorFlow/Keras로 다시 풀어보는
-   보너스 실습이니 순서에 상관없이 여유가 있을 때 봐도 됩니다.
-5. (선택) `notebooks/tabular-ml-practice/00~04` — 실제 표 데이터를 다루는 전 과정.
-   ①과 독립적이라 먼저 봐도 되고, ①을 끝낸 뒤 "그래서 실무에서는 어떻게 하나"로 이어봐도 됩니다.
-6. (선택) `notebooks/text-classification-practice/01~03` — 같은 과정을 텍스트 데이터로.
-   03번에서 Transformer 계열 사전 학습 모델을 실제로 파인튜닝합니다(머신러닝 트랙에서 LLM에
-   가장 가까이 가는 지점입니다).
-   ④를 먼저 보면 흐름이 익숙해서 편하지만, 순서를 지킬 필요는 없습니다.
+
+ML 기초가 이미 익숙하다면 1~3을 건너뛰고 4번(rag-pipeline-practice)부터 시작해도 됩니다 —
+①과 ②③은 서로 독립적이라, 이 순서는 "권장"이지 "필수"가 아닙니다.
 
 각 단계 안에서도 `_solutions.ipynb`는 정답 코드이므로 먼저 혼자 풀어본 뒤에 열어보는 걸 권장합니다.
 ml-curriculum 00~07, rag-pipeline-practice 01~05, project-walkthrough 01~04, tabular-ml-practice 01~04,
@@ -180,14 +183,14 @@ text-classification-practice 01~03에 각각 해설 노트북이 있고,
 | 노트북 | 열기 |
 |---|---|
 | 00. NumPy/Pandas/PyTorch 필수 라이브러리 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/00_python_essentials/00_python_essentials.ipynb) |
-| 01. 기본 분류 (scikit-learn) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/01_basic_classification/01_basic_classification.ipynb) |
-| 02. Linear Regression | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/02_linear_regression/02_linear_regression.ipynb) |
-| 03. Classification | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/03_classification/03_classification.ipynb) |
+| 01. Linear Regression | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/01_linear_regression/01_linear_regression.ipynb) |
+| 02. Classification | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/02_classification/02_classification.ipynb) |
+| 03. 기본 분류 파이프라인 (scikit-learn) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/03_basic_classification/03_basic_classification.ipynb) |
 | 04. Neural Networks | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/04_neural_networks/04_neural_networks.ipynb) |
 | 05. CNN | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/05_cnn/05_cnn.ipynb) |
 | 06. RNN | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/06_rnn/06_rnn.ipynb) |
-| 07. TensorFlow/Keras 실습 (선택) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/07_tensorflow_practice/07_tensorflow_practice.ipynb) |
-| 08. Transformer | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/08_transformer/08_transformer.ipynb) |
+| 07. Transformer | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/07_transformer/07_transformer.ipynb) |
+| 08. TensorFlow/Keras 실습 (선택) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karzit/temp/blob/master/notebooks/ml-curriculum/08_tensorflow_practice/08_tensorflow_practice.ipynb) |
 
 ### ② rag-pipeline-practice
 
@@ -235,14 +238,14 @@ notebooks/
   NOTEBOOK_STYLE.md             (집필자용) 노트북을 새로 쓰거나 고칠 때 지키는 서술 규칙 — 학습자는 안 봐도 됨
   ml-curriculum/                이론 커리큘럼 (①) — scikit-learn/PyTorch
     00_python_essentials/       NumPy/Pandas/PyTorch 필수 라이브러리 실습 (사전 준비, 건너뛰어도 됨)
-    01_basic_classification/    scikit-learn 파이프라인 입문
-    02_linear_regression/       Lec 1-4: Linear Regression
-    03_classification/          Lec 5-6: Logistic/Softmax Regression
+    01_linear_regression/       Lec 1-4: Linear Regression
+    02_classification/          Lec 5-6: Logistic/Softmax Regression
+    03_basic_classification/    배운 회귀·분류를 scikit-learn 파이프라인으로 한 바퀴 (로드→평가→저장)
     04_neural_networks/         Lec 7-10: 실전 팁, XOR, ReLU, Dropout, MNIST
     05_cnn/                     Lec 11: CNN
     06_rnn/                     Lec 12: RNN
-    07_tensorflow_practice/     (선택) TensorFlow/Keras 라이브러리 실습 — 02/04의 PyTorch 예제를 TF로 재구현
-    08_transformer/             어텐션부터 작은 GPT까지 직접 구현 — RNN과 LLM 사이를 잇는 장
+    07_transformer/             어텐션부터 작은 GPT까지 직접 구현 — RNN과 LLM 사이를 잇는 장
+    08_tensorflow_practice/     (선택) TensorFlow/Keras 라이브러리 실습 — 01/04의 PyTorch 예제를 TF로 재구현
   rag-pipeline-practice/        라이브러리 실습 (②) — 자세한 내용은 notebooks/rag-pipeline-practice/README.md
     01_web_crawling/            requests + BeautifulSoup 크롤링, sqlite3/dotenv 실습 (crawl-storage-example)
     02_text_chunking/           langchain-text-splitters, PyMuPDF/pypdf, tiktoken 실습 (preprocess/rag-regulation-example)
@@ -334,7 +337,7 @@ GitHub raw로 내려받습니다.
 
 ```bash
 pip install -r requirements.txt
-jupyter notebook notebooks/ml-curriculum/01_basic_classification/01_basic_classification.ipynb
+jupyter notebook notebooks/ml-curriculum/03_basic_classification/03_basic_classification.ipynb
 ```
 
 `example-projects/`의 각 프로젝트는 별도의 `requirements.txt`와 `.env.example`을 가지고 있고,
@@ -344,6 +347,6 @@ Docker로 띄워야 합니다. 실행 방법은 각 프로젝트 폴더의 `READ
 ## 다음 튜토리얼 아이디어
 - PyTorch로 이미지 분류 (CNN, MNIST/CIFAR-10)
 - 자신의 CSV 데이터셋으로 파이프라인 재사용
-- LLM이 조수가 되는 과정(지시 튜닝 / RLHF) — 지금은 ① 08번이 **사전 학습까지**만 다룹니다.
+- LLM이 조수가 되는 과정(지시 튜닝 / RLHF) — 지금은 ① 07번이 **사전 학습까지**만 다룹니다.
   "다음 글자 맞히기"를 배운 모델이 어떻게 대화하게 되는지는 빠져 있습니다
 - 효율적인 파인튜닝(LoRA / QLoRA) — ⑤ 03번의 전체 파인튜닝에서 자연스럽게 이어집니다

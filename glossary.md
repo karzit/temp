@@ -80,7 +80,7 @@ Colab에서 노트북 하나만 열면 저장소가 없어 상대 경로가 동�
 Google이 만든 딥러닝 프레임워크. [PyTorch](#pytorch)와 마찬가지로 `Tensor` 연산과 자동미분
 (`tf.GradientTape`)을 제공하며, 원본 강의([모두를 위한 머신러닝과 딥러닝](https://hunkim.github.io/ml/))가
 사용한 프레임워크다. 이 커리큘럼은 최신 Colab 환경 호환을 위해 PyTorch로 다시 작성했지만,
-`07_tensorflow_practice`에서 TensorFlow/Keras 버전을 별도로 실습할 수 있다.
+`08_tensorflow_practice`에서 TensorFlow/Keras 버전을 별도로 실습할 수 있다.
 
 #### <a id="keras"></a>Keras (`tf.keras`)
 TensorFlow에 내장된 고수준 신경망 API. `Sequential`로 레이어를 쌓고 `compile`/`fit`으로 학습 루프를
@@ -822,7 +822,7 @@ epoch도 2~4면 충분하다. 더 돌린다고 좋아지지 않는다.
 ## 9. Transformer / LLM 내부 구조 (ml-curriculum 08)
 
 RNN 다음에 나온 구조이자, 오늘날 LLM 전부가 쓰는 구조.
-`notebooks/ml-curriculum/08_transformer`에서 직접 만들어본다.
+`notebooks/ml-curriculum/07_transformer`에서 직접 만들어본다.
 
 #### <a id="transformer"></a>Transformer
 [어텐션](#attention)만으로 시퀀스를 처리하는 신경망 구조. [RNN](#rnn)처럼 순서대로 훑지 않고
@@ -957,7 +957,7 @@ y:  요 일 에 ' ' 하 나 는
 [Transformer](#transformer)를 아주 크게 키워 방대한 텍스트로 [다음 토큰 예측](#next-token-prediction)을
 학습시킨 모델. GPT 계열이 대표적이다. **구조 자체는 실습용 TinyGPT와 같고, 규모가 다르다.**
 
-| | TinyGPT (08번 실습) | GPT-3 |
+| | TinyGPT (07번 실습) | GPT-3 |
 |---|---|---|
 | 파라미터 | 약 11만 개 | 1,750억 개 |
 | 층 / 헤드 | 2 / 4 | 96 / 96 |
@@ -966,7 +966,7 @@ y:  요 일 에 ' ' 하 나 는
 
 #### <a id="kv-cache"></a>KV 캐시 (KV Cache)
 생성할 때 **앞 글자들의 K와 V를 저장해두고 재사용하는 것.** 없으면 글자 하나 만들 때마다
-문장 전체를 처음부터 다시 계산한다(08번 실습의 `generate`가 그렇다).
+문장 전체를 처음부터 다시 계산한다(07번 실습의 `generate`가 그렇다).
 실제 LLM 서비스의 응답 속도는 대부분 이 최적화에 달려 있다.
 
 #### <a id="rope"></a>RoPE (Rotary Position Embedding)
@@ -977,4 +977,4 @@ y:  요 일 에 ' ' 하 나 는
 #### <a id="lora"></a>LoRA (Low-Rank Adaptation)
 큰 모델의 가중치를 전부 학습시키는 대신, **작은 행렬 두 개만 덧붙여 학습**하는 파인튜닝 방법.
 원래 가중치는 얼려둔다. 학습해야 할 파라미터가 수백~수천분의 1로 줄어 개인 GPU에서도
-[파인튜닝](#fine-tuning)이 가능해진다. 08번 실습에서는 다루지 않는다.
+[파인튜닝](#fine-tuning)이 가능해진다. 07번 실습에서는 다루지 않는다.
