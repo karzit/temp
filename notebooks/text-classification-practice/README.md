@@ -90,7 +90,7 @@
 ## 시작하기 전에
 
 - **선수 지식**: pandas 기본기와 scikit-learn의 `fit`/`predict` 흐름.
-  낯설다면 [`ml-curriculum/01_basic_classification`](../ml-curriculum/01_basic_classification/01_basic_classification.ipynb)을 먼저 보세요
+  낯설다면 [`ml-curriculum/03_basic_classification`](../ml-curriculum/03_basic_classification/03_basic_classification.ipynb)을 먼저 보세요
 - **인터넷 연결이 필요합니다.** 첫 셀이 GitHub에서 데이터를 내려받습니다
 - **02번만** TensorFlow가 필요합니다(Colab에는 이미 설치되어 있습니다). CPU로 모델 하나에 20~30초입니다
 - 낯선 용어는 [glossary.md](../../glossary.md)의 "7. 텍스트 분류 실무" 섹션에서 찾아보세요

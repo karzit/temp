@@ -85,7 +85,7 @@ seaborn이 내장한 원본 그대로이며, 첫 실행 시 인터넷에서 내�
 | 데이터 | Iris, MNIST (이미 정리된 상태) | **결측치·이상치·문자열이 섞인 원본** |
 | 프레임워크 | PyTorch 중심 (07번만 Keras) | scikit-learn 중심 (04번만 Keras) |
 
-`ml-curriculum/01_basic_classification`이 scikit-learn 파이프라인을 Iris로 한 바퀴 훑는다면,
+`ml-curriculum/03_basic_classification`이 scikit-learn 파이프라인을 Iris로 한 바퀴 훑는다면,
 이 시리즈는 **그 각 단계에서 실제로 무슨 일이 벌어지는지**를 파고듭니다.
 
 ## 다음으로 해볼 만한 것
