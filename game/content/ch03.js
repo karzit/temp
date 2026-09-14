@@ -119,18 +119,25 @@ var CH03 = {
               "table = ...\n" +
               "\n" +
               "# 3) table 의 열별 합계(세로)를 col_sum 에 넣으세요\n" +
-              "col_sum = ...\n" +
-              DRILL_CHECKER +
-              "확인('1번', nums, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])\n" +
-              "확인('2번', table, [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]])\n" +
-              "확인('3번', col_sum, [12, 15, 18, 21])\n" +
-              DRILL_TAIL,
+              "col_sum = ...\n",
           },
         ],
-        lines: [{ who: "Aistb", text: "실습 과제입니다. 세 번째는 axis 입니다." }],
-        spot: ".run",
+        lines: [{ who: "Aistb", text: "실습 과제입니다. 세 번째는 axis 입니다. 다 되면 완료 보고입니다." }],
+        menu: ["report"],
         nudge: "열별은 세로입니다. 참고 문서의 axis 항목을 보세요.",
-        wait: solvedDrill("work/실습/04_모양.py"),
+        report: function () {
+          return checkFile(
+            "work/실습/04_모양.py",
+            drillCheck([
+              ["nums", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]],
+              ["table", [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]]],
+              ["col_sum", [12, 15, 18, 21]],
+            ])
+          );
+        },
+        wait: function (ctx) {
+          return ctx.reported;
+        },
       },
 
 

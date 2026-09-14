@@ -287,7 +287,6 @@ var CH06 = {
             path: "work/실습/07_세어보기.py",
             open: 0,
             content:
-              "import numpy as np   # 아래 확인표에서 씁니다\n" +
               "import pandas as pd\n" +
               "\n" +
               "df = pd.DataFrame({\n" +
@@ -306,21 +305,28 @@ var CH06 = {
               "dups = ...\n" +
               "\n" +
               "# 4) weight 가 400 보다 큰 행이 몇 개인지 heavy 에 넣으세요\n" +
-              "heavy = ...\n" +
-              DRILL_CHECKER +
-              "확인('1번', rows, 7)\n" +
-              "확인('2번', blanks, 2)\n" +
-              "확인('3번', dups, 2)\n" +
-              "확인('4번', heavy, 1)\n" +
-              DRILL_TAIL,
+              "heavy = ...\n",
           },
         ],
         lines: [
-          { who: "Aistb", text: "실습 과제입니다. 2번은 weight 열 하나만 골라서 세시면 됩니다." },
+          { who: "Aistb", text: "실습 과제입니다. 2번은 weight 열 하나만 골라서 세시면 됩니다. 다 되면 완료 보고입니다." },
         ],
-        spot: ".run",
+        menu: ["report"],
         nudge: "빈칸은 isna, 겹치는 행은 duplicated, 조건은 괄호로 감싼 뒤 sum 입니다.",
-        wait: solvedDrill("work/실습/07_세어보기.py"),
+        report: function () {
+          return checkFile(
+            "work/실습/07_세어보기.py",
+            drillCheck([
+              ["rows", 7],
+              ["blanks", 2],
+              ["dups", 2],
+              ["heavy", 1],
+            ])
+          );
+        },
+        wait: function (ctx) {
+          return ctx.reported;
+        },
       },
 
       // ── 의뢰 처리 ───────────────────────────────────

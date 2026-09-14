@@ -27,43 +27,27 @@ function steppedTo(path, n) {
   };
 }
 
-// 실습 파일을 끝까지 돌려서 전부 맞혔는가.
-function solvedDrill(path) {
-  return function () {
-    var r = IDE.lastRun;
-    return !!r && r.ok && r.path === path && (r.output || "").indexOf("전부 맞았습니다") >= 0;
-  };
+// 실습 채점 코드를 만든다. 이 코드는 편집 파일이 아니라 checkFile 을 거쳐
+// 따로 돌기 때문에, 정답도 채점기도 학습자가 여는 파일에는 남지 않는다.
+// items 는 [이름, 정답] 쌍의 목록. 순서대로 보다가 처음 틀린 곳을 짚어준다.
+function drillCheck(items) {
+  var lines = ["import numpy as np"];
+  items.forEach(function (it) {
+    var name = it[0];
+    var want = JSON.stringify(it[1]); // 숫자·문자열·목록 모두 그대로 파이썬 리터럴이 된다
+    lines.push(
+      "assert '" + name + "' in dir(), '" + name + " 가 없습니다. 문제에 적힌 이름 그대로 만들어 주세요.'"
+    );
+    lines.push(
+      "assert " + name + " is not Ellipsis, '" + name + " 가 아직 ... 그대로입니다.'"
+    );
+    lines.push(
+      "assert np.array_equal(np.asarray(" + name + "), np.asarray(" + want + ")), " +
+        "f'" + name + " 가 아직 다릅니다. 지금은 {np.asarray(" + name + ")} 입니다.'"
+    );
+  });
+  return lines.join("\n") + "\n";
 }
-
-// 실습 파일 아래에 붙는 확인표. 문제마다 맞았는지 알려주고, 다 맞으면 한 줄을 더 찍는다.
-var DRILL_CHECKER =
-  "\n" +
-  "# ── 여기부터는 확인표입니다. 고치지 마세요 ──\n" +
-  "맞은 = 0\n" +
-  "전체 = 0\n" +
-  "\n" +
-  "def 확인(번호, 내답, 정답):\n" +
-  "    global 맞은, 전체\n" +
-  "    전체 = 전체 + 1\n" +
-  "    try:\n" +
-  "        ok = np.array_equal(np.asarray(내답), np.asarray(정답))\n" +
-  "    except Exception:\n" +
-  "        ok = False\n" +
-  "    if ok:\n" +
-  "        맞은 = 맞은 + 1\n" +
-  "        print(번호, '맞았습니다')\n" +
-  "    elif 내답 is Ellipsis:\n" +
-  "        print(번호, '아직 ... 그대로입니다')\n" +
-  "    else:\n" +
-  "        print(번호, '다시 — 지금은 이렇게 나옵니다:', 내답)\n" +
-  "\n";
-
-var DRILL_TAIL =
-  "\n" +
-  "if 맞은 == 전체:\n" +
-  "    print('전부 맞았습니다')\n" +
-  "else:\n" +
-  "    print(전체, '문제 중', 맞은, '개 맞았습니다. 고쳐서 다시 실행해 보세요.')\n";
 
 // 하루 종일 쓰는 참고 문서. 배우는 날과 푸는 날 양쪽에서 같은 것을 내려준다.
 var NUMPY_DOC = {
@@ -439,21 +423,28 @@ var CH01 = {
               "avg = ...\n" +
               "\n" +
               "# 4) m 의 1번 열 전체(세로)를 col1 에 넣으세요\n" +
-              "col1 = ...\n" +
-              DRILL_CHECKER +
-              "확인('1번', plus_ten, [20, 30, 40, 50, 60])\n" +
-              "확인('2번', last_two, [40, 50])\n" +
-              "확인('3번', avg, 30.0)\n" +
-              "확인('4번', col1, [2, 5])\n" +
-              DRILL_TAIL,
+              "col1 = ...\n",
           },
         ],
         lines: [
-          { who: "Aistb", text: "실습 과제입니다. ▶ 실행을 누르면 확인표가 채점합니다." },
+          { who: "Aistb", text: "실습 과제입니다. 네 자리를 다 채우시면 완료 보고를 눌러 주세요." },
         ],
-        spot: ".run",
-        nudge: "... 자리를 채우고 ▶ 실행을 누르면 확인표가 알려줍니다.",
-        wait: solvedDrill("work/실습/01_기본.py"),
+        menu: ["report"],
+        nudge: "... 자리를 채운 뒤 완료 보고를 누르시면 제가 확인해 드립니다.",
+        report: function () {
+          return checkFile(
+            "work/실습/01_기본.py",
+            drillCheck([
+              ["plus_ten", [20, 30, 40, 50, 60]],
+              ["last_two", [40, 50]],
+              ["avg", 30.0],
+              ["col1", [2, 5]],
+            ])
+          );
+        },
+        wait: function (ctx) {
+          return ctx.reported;
+        },
       },
       {
         lines: [{ who: "Aistb", text: "오전은 여기까지입니다." }],
@@ -552,18 +543,25 @@ var CH01 = {
               "pass_count = ...\n" +
               "\n" +
               "# 3) 60점 미만은 60으로 올리고 나머지는 그대로 둔 배열을 fixed 에 넣으세요\n" +
-              "fixed = ...\n" +
-              DRILL_CHECKER +
-              "확인('1번', pass_scores, [72, 90, 61, 83])\n" +
-              "확인('2번', pass_count, 4)\n" +
-              "확인('3번', fixed, [72, 60, 90, 61, 60, 83])\n" +
-              DRILL_TAIL,
+              "fixed = ...\n",
           },
         ],
-        lines: [{ who: "Aistb", text: "실습 과제입니다." }],
-        spot: ".run",
+        lines: [{ who: "Aistb", text: "실습 과제입니다. 다 되면 완료 보고입니다." }],
+        menu: ["report"],
         nudge: "고르기는 대괄호, 개수는 sum, 값을 바꾸는 것은 where 입니다.",
-        wait: solvedDrill("work/실습/02_조건.py"),
+        report: function () {
+          return checkFile(
+            "work/실습/02_조건.py",
+            drillCheck([
+              ["pass_scores", [72, 90, 61, 83]],
+              ["pass_count", 4],
+              ["fixed", [72, 60, 90, 61, 60, 83]],
+            ])
+          );
+        },
+        wait: function (ctx) {
+          return ctx.reported;
+        },
       },
 
       // ── 개념 5: 줄 세우기 ───────────────────────────
@@ -651,19 +649,26 @@ var CH01 = {
               "desc = ...\n" +
               "\n" +
               "# 2) 가장 많이 판 가게 두 곳의 이름을 순서대로 top2 에 넣으세요\n" +
-              "top2 = ...\n" +
-              DRILL_CHECKER +
-              "확인('1번', desc, [47, 38, 25, 19, 12])\n" +
-              "확인('2번', top2, ['가게B', '가게D'])\n" +
-              DRILL_TAIL,
+              "top2 = ...\n",
           },
         ],
         lines: [
           { who: "Aistb", text: "실습 과제입니다. 두 번째는 자리 번호를 만들고, 뒤집고, 앞에서 둘을 자릅니다." },
         ],
-        spot: ".run",
+        menu: ["report"],
         nudge: "shops[np.argsort(sales)] 까지 만들어 놓고, 거기에 [::-1] 과 [:2] 를 차례로 붙여 보세요.",
-        wait: solvedDrill("work/실습/03_줄세우기.py"),
+        report: function () {
+          return checkFile(
+            "work/실습/03_줄세우기.py",
+            drillCheck([
+              ["desc", [47, 38, 25, 19, 12]],
+              ["top2", ["가게B", "가게D"]],
+            ])
+          );
+        },
+        wait: function (ctx) {
+          return ctx.reported;
+        },
       },
 
       // ── 마무리 ──────────────────────────────────────

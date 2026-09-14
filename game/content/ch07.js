@@ -213,7 +213,6 @@ var CH07 = {
             path: "work/실습/08_걷어내기.py",
             open: 0,
             content:
-              "import numpy as np   # 아래 확인표에서 씁니다\n" +
               "import pandas as pd\n" +
               "\n" +
               "df = pd.DataFrame({\n" +
@@ -232,21 +231,28 @@ var CH07 = {
               "c = ...\n" +
               "\n" +
               "# 4) 원래 표의 grade 를 정상 0, 이상 1 로 바꾼 것을 g 에 넣으세요\n" +
-              "g = ...\n" +
-              DRILL_CHECKER +
-              "확인('1번', a, 4)\n" +
-              "확인('2번', b, 3)\n" +
-              "확인('3번', c, 2)\n" +
-              "확인('4번', g, [0, 0, 0, 0, 1])\n" +
-              DRILL_TAIL,
+              "g = ...\n",
           },
         ],
         lines: [
-          { who: "Aistb", text: "실습 과제입니다. 1번부터 3번까지는 앞의 결과 위에 이어서 손질하시면 됩니다." },
+          { who: "Aistb", text: "실습 과제입니다. 1번부터 3번까지는 앞의 결과 위에 이어서 손질하시면 됩니다. 다 되면 완료 보고입니다." },
         ],
-        spot: ".run",
+        menu: ["report"],
         nudge: "중간 결과를 변수에 받아 두고 그 위에 다음 손질을 얹으세요.",
-        wait: solvedDrill("work/실습/08_걷어내기.py"),
+        report: function () {
+          return checkFile(
+            "work/실습/08_걷어내기.py",
+            drillCheck([
+              ["a", 4],
+              ["b", 3],
+              ["c", 2],
+              ["g", [0, 0, 0, 0, 1]],
+            ])
+          );
+        },
+        wait: function (ctx) {
+          return ctx.reported;
+        },
       },
 
       // ── 의뢰 처리 ───────────────────────────────────

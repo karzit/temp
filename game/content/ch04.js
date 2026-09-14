@@ -239,7 +239,6 @@ var CH04 = {
             path: "work/실습/05_고르기.py",
             open: 0,
             content:
-              "import numpy as np   # 아래 확인표에서 씁니다\n" +
               "import pandas as pd\n" +
               "\n" +
               "df = pd.DataFrame({\n" +
@@ -255,20 +254,27 @@ var CH04 = {
               "busy_names = ...\n" +
               "\n" +
               "# 3) 그런 사람이 몇 명인지 how_many 에 넣으세요\n" +
-              "how_many = ...\n" +
-              DRILL_CHECKER +
-              "확인('1번', counts, [12, 20, 30, 40])\n" +
-              "확인('2번', busy_names, ['노을', '다움', '라온'])\n" +
-              "확인('3번', how_many, 3)\n" +
-              DRILL_TAIL,
+              "how_many = ...\n",
           },
         ],
         lines: [
-          { who: "Aistb", text: "실습 과제입니다. 2번은 조건으로 행을 고른 다음, 거기서 이름 열 하나를 다시 고르시면 됩니다." },
+          { who: "Aistb", text: "실습 과제입니다. 2번은 조건으로 행을 고른 다음, 거기서 이름 열 하나를 다시 고르시면 됩니다. 다 되면 완료 보고입니다." },
         ],
-        spot: ".run",
+        menu: ["report"],
         nudge: "조건을 대괄호에 넣어 고르고, 행 수는 len 으로 셉니다.",
-        wait: solvedDrill("work/실습/05_고르기.py"),
+        report: function () {
+          return checkFile(
+            "work/실습/05_고르기.py",
+            drillCheck([
+              ["counts", [12, 20, 30, 40]],
+              ["busy_names", ["노을", "다움", "라온"]],
+              ["how_many", 3],
+            ])
+          );
+        },
+        wait: function (ctx) {
+          return ctx.reported;
+        },
       },
 
       // ── 실습 2 ──────────────────────────────────────
@@ -278,7 +284,6 @@ var CH04 = {
             path: "work/실습/06_묶고세우기.py",
             open: 0,
             content:
-              "import numpy as np   # 아래 확인표에서 씁니다\n" +
               "import pandas as pd\n" +
               "\n" +
               "df = pd.DataFrame({\n" +
@@ -297,22 +302,29 @@ var CH04 = {
               "team_sum = ...\n" +
               "\n" +
               "# 4) 건수가 많은 순서로 두 명의 이름을 top2 에 넣으세요\n" +
-              "top2 = ...\n" +
-              DRILL_CHECKER +
-              "확인('1번', avg, 25.5)\n" +
-              "확인('2번', by_team, [21.0, 30.0])\n" +
-              "확인('3번', team_sum, [42, 60])\n" +
-              "확인('4번', top2, ['라온', '다움'])\n" +
-              DRILL_TAIL,
+              "top2 = ...\n",
           },
         ],
         lines: [
           { who: "Aistb", text: "마지막 실습입니다. 합계는 mean 자리에 sum 입니다." },
-          { who: "Aistb", text: "4번은 줄을 세운 뒤 이름 열만 남기시면 됩니다." },
+          { who: "Aistb", text: "4번은 줄을 세운 뒤 이름 열만 남기시면 됩니다. 다 되면 완료 보고입니다." },
         ],
-        spot: ".run",
+        menu: ["report"],
         nudge: '묶는 것은 df.groupby("team")["count"] 뒤에 .mean() 이나 .sum(), 줄 세우기는 df.sort_values("count", ascending=False) 입니다.',
-        wait: solvedDrill("work/실습/06_묶고세우기.py"),
+        report: function () {
+          return checkFile(
+            "work/실습/06_묶고세우기.py",
+            drillCheck([
+              ["avg", 25.5],
+              ["by_team", [21.0, 30.0]],
+              ["team_sum", [42, 60]],
+              ["top2", ["라온", "다움"]],
+            ])
+          );
+        },
+        wait: function (ctx) {
+          return ctx.reported;
+        },
       },
 
       // ── 마무리 ──────────────────────────────────────
