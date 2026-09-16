@@ -27,8 +27,8 @@ var CLEAN_DOC = {
     'df["result"].map({"합격": 0, "불합격": 1}) — 값을 표대로 바꿔치기한 새 열.\n' +
     "\n" +
     "## 새 열 붙이기\n" +
-    'df["fail"] = ... — 그 이름의 열이 없으면 새로 생기고, 있으면 덮어씁니다.\n' +
-    "열을 붙이는 것은 버리기 전에 해 두는 편이 편합니다.\n" +
+    'clean["fail"] = ... — 그 이름의 열이 없으면 새로 생기고, 있으면 덮어씁니다.\n' +
+    "손질을 마친 표(clean)에 그대로 붙이면 됩니다. 걸러내기 전에 붙여 두어도 걸러낼 때 함께 따라옵니다.\n" +
     "\n" +
     "## 손질한 뒤에는 다시 셉니다\n" +
     "len(df), df.isna().sum(), df.duplicated().sum() — 어제 쓰신 것 그대로입니다.\n" +
@@ -152,8 +152,8 @@ var CH07 = {
               'clean = clean[(clean["temp"] >= 100) & (clean["temp"] <= 140)]\n' +
               "print(len(clean))\n" +
               "\n" +
-              'df["fail"] = df["result"].map({"합격": 0, "불합격": 1})\n' +
-              'print(df[["result", "fail"]].head())\n',
+              'clean["fail"] = clean["result"].map({"합격": 0, "불합격": 1})\n' +
+              'print(clean[["result", "fail"]].head())\n',
           },
         ],
         lines: [
@@ -281,7 +281,7 @@ var CH07 = {
         ],
         menu: ["brief", "report"],
         nudge: [
-          "fail 열은 버리기 전에 df 에 붙여 두시면 뒤가 편합니다.",
+          "fail 열은 손질을 마친 clean 에 붙이시면 됩니다.",
           "결과 표는 clean 이라는 이름에 넣어 주세요.",
           "잘못 들어간 값은 고치지 마시고 버립니다. 고객 요청입니다.",
           "고쳤다고 생각하신 것이 실제로 고쳐졌는지는, 다시 세어 보셔야 압니다.",
