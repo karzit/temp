@@ -88,7 +88,9 @@ var NUMPY_DOC = {
     "arr.mean() — 평균\n" +
     "arr.max() / arr.min() — 가장 큰 값 / 작은 값\n" +
     "arr.argmax() — 가장 큰 값이 몇 번째 자리인지\n" +
-    "m.mean(axis=0) — 열별 평균(세로). axis=1 이면 행별 평균(가로).\n" +
+    "m.mean(axis=0) — 0번 축을 따라 계산해 그 축을 없앱니다. 지정한 축이 결과에서 사라집니다.\n" +
+    "  축 번호는 shape 순서 그대로 0, 1, 2 … 입니다. (2,3,4) 배열에서 axis=0 이면 결과가 (3,4) 가 됩니다.\n" +
+    "  표(2차원)에서는 axis=0 이 열별 평균(세로), axis=1 이 행별 평균(가로)이 됩니다.\n" +
     "\n" +
     "## 조건으로 고르기\n" +
     "arr >= 80 — 값마다 참/거짓이 나옵니다. 고르는 것이 아닙니다.\n" +
@@ -380,8 +382,9 @@ var CH01 = {
         lines: [
           { who: "Aistb", text: "아마 대부분 예상하신 것과 비슷한 결과였을 것입니다." },
           { who: "Aistb", text: "다만 mean에 axis가 붙은 형태는 처음이라 조금 당황스러우셨을 수 있습니다." },
-          { who: "Aistb", text: "mean에 axis를 지정하면 배열 전체가 아니라 지정한 축을 따라 평균을 계산합니다. axis=0은 열별, axis=1은 행별입니다.", spot: { text: "m.mean(axis=0)", in: ".doc" } },
-          { who: "Aistb", text: "열별은 네 개, 행별은 세 개가 나온 것을 확인하실 수 있습니다.", spot: { text: "열별 평균", in: ".out" } },
+          { who: "Aistb", text: "mean에 axis를 지정하면 배열 전체가 아니라 그 축을 따라 계산합니다. 지정한 축은 결과에서 사라집니다. 축 번호는 shape 순서대로 0, 1, 2 … 입니다.", spot: { text: "m.mean(axis=0)", in: ".doc" } },
+          { who: "Aistb", text: "지금은 (행, 열) 두 축짜리 표라, axis=0은 행이 사라져 열별 평균, axis=1은 열이 사라져 행별 평균이 됩니다.", spot: { text: "m.mean(axis=0)", in: ".doc" } },
+          { who: "Aistb", text: "열별은 네 개, 행별은 세 개가 나온 것을 확인하실 수 있습니다. 사라진 축의 길이만큼 빠졌습니다.", spot: { text: "열별 평균", in: ".out" } },
         ],
       },
       {
