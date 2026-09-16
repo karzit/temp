@@ -236,7 +236,7 @@ var CH22 = {
 
       // ── 의뢰 도착 ───────────────────────────────────
       {
-        lines: [{ who: "Aistb", text: "한울운수에서 들어왔습니다. 이번에는 교육반입니다." }],
+        lines: [{ who: "Aistb", text: "한울운수에서 접수되었습니다. 이번에는 교육반입니다." }],
         addFiles: [
           { path: LM_TOOL.path, readOnly: true, content: LM_TOOL.content },
           { path: MANUAL_CSV.path, readOnly: true, content: MANUAL_CSV.content },
@@ -283,7 +283,13 @@ var CH22 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0027.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "오늘부터는 만들지 않습니다. 남이 만든 것을, 안을 열어볼 수 없는 것을 부립니다. 저 또한 그런 것 중 하나입니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0123: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0027.md") >= 0;
@@ -319,11 +325,17 @@ var CH22 = {
           },
         ],
         lines: [
-          { who: "Aistb", text: "이번엔 이미 배워 둔 모델을 부르기만 합니다. 사내 도구부터 써 봅니다." },
+          { who: "Aistb", text: "이번엔 이미 배워 둔 모델을 부르기만 합니다. 사내 도구부터 써 보겠습니다." },
           { who: "Aistb", text: "다섯 번 눌러 주세요." },
         ],
         spot: ".step",
-        nudge: "아래의 ↓ 한 문장 버튼입니다.",
+        nudge: [
+          { text: "아래의 ↓ 한 문장 버튼입니다.", spot: ".step" },
+          { text: "↓ 한 문장 버튼을 다섯 번 누르시면 도구가 답하는 것을 보실 수 있습니다.", spot: ".step" },
+          "모르는 것을 물으면 모른다고 하지 않고 그럴듯한 문장을 냅니다. 문장만으로는 구별되지 않습니다.",
+          "sys.path.append 를 빠뜨리면 import 가 되지 않습니다. 도구는 다른 폴더에 있습니다.",
+          "worklog_GipsWToyb_0124: 폐기 요망",
+        ],
         wait: steppedTo("work/예제/22_도구.py", 5),
       },
       {
@@ -405,7 +417,13 @@ var CH22 = {
           { who: "Aistb", text: "돌아온 글자를 그대로 담으시면 됩니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "ask 가 돌려준 것을 그대로 변수에 받으세요. print 로 찍기만 하면 남지 않습니다.",
+        nudge: [
+          "ask 가 돌려준 것을 그대로 변수에 받으세요. print 로 찍기만 하면 남지 않습니다.",
+          "plain, given, short — 세 이름을 의뢰서 그대로 써 주세요. 질문은 셋 다 같게 합니다.",
+          "plain 은 참고할 글 없이, given 은 0 번 문단을 주고, short 는 거기에 '짧게' 를 붙여 물으십시오.",
+          "쓸모는 도구가 아니라, 맞는 글을 찾아 쥐여 줄 수 있느냐에 달려 있습니다.",
+          "worklog_GipsWToyb_0125: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_27/도구.py",
@@ -438,7 +456,13 @@ var CH22 = {
       {
         lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." }],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "도구가 똑똑해진 것이 아니라, 토이비님이 답을 손에 쥐여 주신 것입니다.",
+          "오늘은 제가 맞는 문단이 0 번이라고 알려 드렸습니다. 내일은 그것을 직접 찾으십니다.",
+          "worklog_GipsWToyb_0126: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

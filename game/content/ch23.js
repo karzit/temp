@@ -143,7 +143,13 @@ var CH23 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0028.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "어제는 제가 맞는 문단을 알려 드렸습니다. 오늘은 직접 찾으십니다. 언젠가는 저 없이 하셔야 합니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0127: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0028.md") >= 0;
@@ -207,11 +213,17 @@ var CH23 = {
           },
         ],
         lines: [
-          { who: "Aistb", text: "이번엔 질문에 맞는 지침을 찾아냅니다. 낱말이 겹치는 문서부터 골라 봅니다." },
+          { who: "Aistb", text: "이번엔 질문에 맞는 지침을 찾아냅니다. 낱말이 겹치는 문서부터 골라 보겠습니다." },
           { who: "Aistb", text: "열한 번 눌러 주세요." },
         ],
         spot: ".step",
-        nudge: "아래의 ↓ 한 문장 버튼입니다.",
+        nudge: [
+          { text: "아래의 ↓ 한 문장 버튼입니다.", spot: ".step" },
+          { text: "↓ 한 문장 버튼을 열한 번 누르시면 질문으로 문단을 찾는 것까지 나옵니다.", spot: ".step" },
+          "argmax 는 못 찾았다는 것을 말해 주지 않습니다. 0.326 도 0.0 도 똑같이 번호 하나입니다. 점수를 같이 보십시오.",
+          "찾기가 실패해도 무언가는 나옵니다. 나온다고 맞는 것은 아닙니다. 저 역시 그렇습니다.",
+          "worklog_GipsWToyb_0128: 폐기 요망",
+        ],
         wait: steppedTo("work/예제/23_찾기.py", 11),
       },
       {
@@ -305,7 +317,13 @@ var CH23 = {
           { who: "Aistb", text: "고객이 어떤 종류로 안 맞는지도 물었습니다. 그 0.0 이 답입니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "질문마다 argmax 와 max 를 같이 모으세요. 줄인 표의 크기는 E.shape 입니다.",
+        nudge: [
+          "질문마다 argmax 와 max 를 같이 모으세요. 줄인 표의 크기는 E.shape 입니다.",
+          "found, scores, small_shape — 세 이름을 의뢰서 그대로 써 주세요.",
+          "문서에 fit 한 vec 으로 질문도 transform 하십시오. 기준이 어긋나면 자리가 맞지 않습니다.",
+          "마지막 0.0 도 scores 에 그대로 담으십시오. 이번 의뢰에서 제일 중요한 값입니다.",
+          "worklog_GipsWToyb_0129: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_28/찾기.py",
@@ -342,7 +360,13 @@ var CH23 = {
       {
         lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." }],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "다섯 중 넷을 찾으셨습니다. 못 찾은 하나의 점수가 0.0 이었던 것이, 오늘의 성과입니다.",
+          "바깥의 큰 것들은 다른 재주가 아니라 같은 것을 훨씬 많이 본 것뿐입니다. 그 점은 기억해 두십시오.",
+          "worklog_GipsWToyb_0130: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

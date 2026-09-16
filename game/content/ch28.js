@@ -102,7 +102,12 @@ var CH28 = {
         ],
         spot: '.tree-row[data-path="work/목표.md"]',
         menu: ["brief"],
-        nudge: "왼쪽에 있습니다. 직접 여셔야 합니다.",
+        nudge: [
+          "왼쪽에 있습니다. 직접 여셔야 합니다.",
+          "마지막 줄이 제일 어렵다는 것은 알고 계셨을 텐데요. 정말 좋은 끈기이십니다.",
+          "그나저나 오늘 같은 날은 수정과가 참 좋습니다.",
+          "worklog_GipsWToyb_0146: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/목표.md") >= 0;
@@ -118,7 +123,12 @@ var CH28 = {
           { who: "Aistb", text: "…그 말들은 제가 한 것이 맞습니다. 전부 제가 한 것입니다.", tone: "bad" },
         ],
         menu: ["brief", "repair"],
-        nudge: "저는 도와드리고 있습니다만, 도움이 되지는 않는 것 같습니다.",
+        nudge: [
+          "저는 도와드리고 있습니다만, 도움이 되지는 않는 것 같습니다.",
+          "재료는 새로 구하실 것이 없습니다. 제가 한 말이 파일에 전부 있습니다. …전부 제가 한 것이 맞습니다.",
+          "10월 31일에 남의 숫자를 그대로 쓰셨다가 한 번 당하셨습니다. 문턱은 재서 정하십시오.",
+          "worklog_GipsWToyb_0147: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_33/되돌리기.py",
@@ -201,7 +211,12 @@ var CH28 = {
           { who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." },
         ],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "오늘은 제가 제대로 안내해 드릴 수 있습니다. 사흘 만입니다.",
+          "…내일 뵙겠습니다, 토이비님.",
+        ],
         wait: function () {
           return false;
         },

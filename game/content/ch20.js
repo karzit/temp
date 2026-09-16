@@ -84,7 +84,7 @@ var CH20 = {
 
       // ── 의뢰 도착 ───────────────────────────────────
       {
-        lines: [{ who: "Aistb", text: "같은 분이 다시 보내셨습니다." }],
+        lines: [{ who: "Aistb", text: "같은 분에게서 다시 접수되었습니다." }],
         addFiles: [
           {
             path: "work/의뢰_0025.md",
@@ -123,7 +123,13 @@ var CH20 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0025.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "'못 했다'는 회신이 오히려 쓸모가 있었다고 합니다. 왜 안 되는지를 적었기 때문입니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0116: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0025.md") >= 0;
@@ -210,11 +216,17 @@ var CH20 = {
           },
         ],
         lines: [
-          { who: "Aistb", text: "이번엔 순서를 한 번에 훑는 방법입니다." },
+          { who: "Aistb", text: "이번엔 순서를 한 번에 훑는 방법을 살펴보겠습니다." },
           { who: "Aistb", text: "열세 번 눌러 주세요." },
         ],
         spot: ".step",
-        nudge: "아래의 ↓ 한 문장 버튼입니다.",
+        nudge: [
+          { text: "아래의 ↓ 한 문장 버튼입니다.", spot: ".step" },
+          { text: "↓ 한 문장 버튼을 열세 번 누르시면 어텐션 판이 그려집니다.", spot: ".step" },
+          "어텐션은 읽어 나가지 않습니다. 자리마다 나머지 전부를 한 번에 봅니다. 거리가 상관없습니다.",
+          "20 번이 0 번을 볼 때 중간의 열아홉 자리를 거치지 않습니다. 앞이 지워지지 않는 이유입니다.",
+          "worklog_GipsWToyb_0117: 폐기 요망",
+        ],
         wait: steppedTo("work/예제/21_한번에.py", 13),
       },
       {
@@ -291,7 +303,13 @@ var CH20 = {
           { who: "Aistb", text: "top_pos 는 그 비율이 가장 큰 자리의 번호입니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "가장 큰 값이 몇 번째인지는 argmax 로 찾습니다. 첫 주에 쓰셨습니다.",
+        nudge: [
+          "가장 큰 값이 몇 번째인지는 argmax 로 찾습니다. 첫 주에 쓰셨습니다.",
+          "flat_ratio, top_pos, attn_acc — 세 이름을 의뢰서 그대로 써 주세요.",
+          "flat_ratio 는 금요일과 같은 방법으로, 다만 RNN 이 아니라 어텐션으로 재십시오.",
+          "번호가 작을수록 좋다는 질문이니 맨 앞을 가장 크게 봅니다. 질문의 부호를 확인하세요.",
+          "worklog_GipsWToyb_0118: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_25/한번에.py",
@@ -320,7 +338,13 @@ var CH20 = {
       {
         lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." }],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "나흘 내내 모델은 건드리지 않으셨습니다. 바뀐 것은 자료를 넣어 주는 모양뿐입니다.",
+          "다만 어디를 볼지는 매번 제가 손으로 정해 드렸습니다. 실제로는 그 질문까지 학습으로 찾습니다.",
+          "worklog_GipsWToyb_0119: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

@@ -418,17 +418,26 @@ var IDE = {
         } else if (node.readOnly) {
           var doc = document.createElement("div");
           doc.className = "doc";
-          node.content.split("\n").forEach(function (line) {
-            var p = document.createElement("p");
-            if (/^>( |$)/.test(line)) {
-              p.textContent = line.slice(2) || "\u00a0";
-              p.className = "doc-q";
-            } else {
-              p.textContent = line;
-              if (/^#{1,3} /.test(line)) p.className = "doc-h";
-            }
-            doc.appendChild(p);
-          });
+          if (node.kind === "image") {
+            // \uc774\ubbf8\uc9c0 \ud30c\uc77c\uc740 \uae00\ub85c \ucabc\uac1c\uc9c0 \uc54a\uace0 \uadf8\ub9bc \ud558\ub098\ub85c \ub744\uc6b4\ub2e4. content \ub294 \uadf8\ub9bc \uc8fc\uc18c\ub2e4.
+            var img = document.createElement("img");
+            img.className = "doc-image";
+            img.src = node.content;
+            img.alt = pane.active;
+            doc.appendChild(img);
+          } else {
+            node.content.split("\n").forEach(function (line) {
+              var p = document.createElement("p");
+              if (/^>( |$)/.test(line)) {
+                p.textContent = line.slice(2) || "\u00a0";
+                p.className = "doc-q";
+              } else {
+                p.textContent = line;
+                if (/^#{1,3} /.test(line)) p.className = "doc-h";
+              }
+              doc.appendChild(p);
+            });
+          }
           area.appendChild(doc);
         } else {
           area.appendChild(IDE.buildEditor(pane.active, node));

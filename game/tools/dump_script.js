@@ -133,6 +133,10 @@ for (const [chIndex, ch] of CHAPTERS.entries()) {
   conf.beats.forEach((b, i) => {
     out.push(`\n### ${i + 1}\n`);
     for (const f of b.addFiles || []) {
+      if (f.kind === "image" || /\.(png|jpe?g|gif|webp|svg)$/i.test(f.path)) {
+        out.push(`🖼 **참고 이미지 도착 — \`${f.path}\`** (오른쪽 화면에 그림으로 표시)\n`);
+        continue;
+      }
       const kind = f.kind === "brief" ? "의뢰서" : f.path.includes("/익힘/") ? "익힘" : f.path.includes("/연습/") ? "연습" : f.path.includes("/참고/") ? "참고" : "파일";
       out.push(`📄 **${kind} 도착 — \`${f.path}\`**\n`);
       out.push("```" + (f.path.endsWith(".py") ? "python" : "markdown"));
@@ -149,7 +153,17 @@ for (const [chIndex, ch] of CHAPTERS.entries()) {
     if (b.report) out.push("〔완료 보고를 누르면 제출한 파일을 실제로 돌려 채점〕");
     const w = describeWait(b.wait, b, docs);
     if (w) out.push(`\n▶ ${w} 다음으로`);
-    if (b.nudge) out.push(`\n💤 한참 조용하면: "${b.nudge}"`);
+    if (b.nudge) {
+      if (Array.isArray(b.nudge)) {
+        const parts = b.nudge.map((n) => {
+          const e = typeof n === "string" ? { text: n } : n;
+          return `"${e.text}"${spotText(e.spot)}`;
+        });
+        out.push(`\n💤 한참 조용하면: {${parts.join(", ")}}`);
+      } else {
+        out.push(`\n💤 한참 조용하면: "${b.nudge}"`);
+      }
+    }
   });
   if (ch.diary) {
     out.push("\n### 일기\n");

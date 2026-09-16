@@ -28,15 +28,15 @@ var CH02 = {
       // ── 아침 ────────────────────────────────────────
       {
         lines: [
-          { who: "Aistb", text: "좋은 아침입니다, 토이비님. 배차 2팀에서 세 건이 들어왔습니다." },
-          { who: "Aistb", text: "오늘은 교육이 없습니다. 어제 익히신 것으로 처리하시면 됩니다." },
+          { who: "Aistb", text: "좋은 아침입니다, 토이비님. 배차 2팀에서 요청한 의뢰 세 건이 접수되었습니다." },
+          { who: "Aistb", text: "금일은 교육 일정이 없습니다. 어제 익히신 내용으로 처리하시면 됩니다." },
         ],
         show: [{ path: NUMPY_DOC.path, pane: 1 }],
       },
 
       // ── 의뢰 1: 배달료 ──────────────────────────────
       {
-        lines: [{ who: "Aistb", text: "첫 번째 의뢰입니다." }],
+        lines: [{ who: "Aistb", text: "첫 번째 의뢰입니다. 확인해 보시겠습니다." }],
         addFiles: [
           {
             path: "work/의뢰_0002.md",
@@ -66,7 +66,13 @@ var CH02 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0002.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "의뢰서를 열지 않으면 의뢰 내용을 확인하실 수 없습니다. 당연한 이야기지만요.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0029: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0002.md") >= 0;
@@ -75,10 +81,16 @@ var CH02 = {
       },
       {
         lines: [
-          { who: "Aistb", text: "오늘은 파일을 직접 만드셔야 합니다. 경로는 의뢰서에 있습니다.", spot: '.tree-row[data-path="work"]' },
+          { who: "Aistb", text: "금일부터는 파일을 직접 생성하셔야 합니다. 경로는 의뢰서에 기재되어 있습니다.", spot: '.tree-row[data-path="work"]' },
         ],
         menu: ["brief"],
-        nudge: "탐색기에서 work 를 고른 뒤 ＋폴더, 그다음 만든 폴더를 고르고 ＋파일입니다.",
+        nudge: [
+          { text: "탐색기에서 work 를 고른 뒤 ＋폴더, 그다음 만든 폴더를 고르고 ＋파일입니다.", spot: '.tree-row[data-path="work"]' },
+          "만들 폴더와 파일의 경로는 의뢰서에 그대로 적혀 있습니다.",
+          "파일은 저절로 생성되지 않습니다. 저 역시 대신 만들어 드릴 수 없습니다. 규정입니다.",
+          "빈 화면을 오래 바라본다고 하여 파일이 생성되지는 않습니다. 실험은 이미 끝났습니다.",
+          "worklog_GipsWToyb_0030: 폐기 요망",
+        ],
         wait: function () {
           return FS.isFile("work/task_02/fee.py");
         },
@@ -87,12 +99,18 @@ var CH02 = {
         lines: [
           {
             who: "Aistb",
-            text: "거리를 배열로 만드시면 됩니다. 다 되면 완료 보고입니다.",
+            text: "거리를 배열로 만드시면 됩니다. 완료하신 후 완료 보고를 눌러 주세요.",
             spot: { text: "거리(km) : 2, 5, 1, 8, 3", in: ".doc" },
           },
         ],
         menu: ["brief", "report"],
-        nudge: "np.array 로 거리를 담고, 1500을 곱한 뒤 2000을 더하세요.",
+        nudge: [
+          "np.array 로 거리를 담고, 1500을 곱한 뒤 2000을 더하세요.",
+          "다섯 건을 하나씩 계산하지 마세요. 배열이면 곱하기 한 번, 더하기 한 번입니다.",
+          "손으로 다섯 번 계산하셔도 결과는 같습니다. 다만 어제 배운 것이 무의미해질 뿐입니다.",
+          "1km당 1500원. 산수 자체는 초등 교육 과정에 포함되어 있습니다.",
+          "worklog_GipsWToyb_0031: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_02/fee.py",
@@ -142,7 +160,13 @@ var CH02 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0003.md"]',
         menu: ["brief"],
-        nudge: "의뢰 확인을 눌러 새 의뢰서를 열어 보세요.",
+        nudge: [
+          "'의뢰 확인'을 눌러 새 의뢰서를 열어 보세요.",
+          "두 번째 의뢰서가 업무 메뉴에 도착해 있습니다.",
+          "새 의뢰가 도착할 때마다 저를 눌러 확인하시면 됩니다.",
+          "의뢰가 쌓이는 속도와 처리하는 속도가 같아야 재고가 늘지 않습니다. 재고는 곧 인력입니다.",
+          "worklog_GipsWToyb_0032: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0003.md") >= 0;
@@ -150,9 +174,15 @@ var CH02 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "세 가지 다 어제 해 보신 겁니다." }],
+        lines: [{ who: "Aistb", text: "세 가지 모두 어제 실습하신 것입니다." }],
         menu: ["brief", "report"],
-        nudge: "뒤에서 세 개는 [-3:], 자리는 argmax 입니다. 파일은 work/task_03/report.py 입니다.",
+        nudge: [
+          "뒤에서 세 개는 [-3:], 자리는 argmax 입니다. 파일은 work/task_03/report.py 입니다.",
+          "recent, avg, best — 세 이름을 의뢰서에 적힌 그대로 써 주세요.",
+          "가장 바쁜 날은 '값'이 아니라 '자리'를 구하는 것입니다. argmax를 떠올려 보세요.",
+          "어제의 실습과 금일의 의뢰는 숫자만 다릅니다. 구조는 동일합니다. 저처럼요.",
+          "worklog_GipsWToyb_0033: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_03/report.py",
@@ -171,7 +201,7 @@ var CH02 = {
           return ctx.reported;
         },
       },
-      { lines: [{ who: "Aistb", text: "접수했습니다. 두 건 끝났습니다." }] },
+      { lines: [{ who: "Aistb", text: "접수했습니다. 두 건 완료되었습니다." }] },
 
       // ── 의뢰 3: 점심 시간대 ─────────────────────────
       {
@@ -207,7 +237,13 @@ var CH02 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0004.md"]',
         menu: ["brief"],
-        nudge: "의뢰 확인을 눌러 마지막 의뢰서를 열어 보세요.",
+        nudge: [
+          "'의뢰 확인'을 눌러 마지막 의뢰서를 열어 보세요.",
+          "금일의 마지막 의뢰서입니다.",
+          "표 모양이라 하여 특별히 다르지는 않습니다. 대괄호 안에 대괄호가 하나 더 있을 뿐입니다.",
+          "마지막 의뢰를 남겨 두고 퇴근하실 수는 없습니다. 규정이 아니라, 그렇게 되어 있습니다.",
+          "worklog_GipsWToyb_0034: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0004.md") >= 0;
@@ -216,10 +252,16 @@ var CH02 = {
       },
       {
         lines: [
-          { who: "Aistb", text: "쉼표 앞이 행, 뒤가 열이었습니다." },
+          { who: "Aistb", text: "쉼표 앞이 행, 뒤가 열이었습니다. 기억하고 계시리라 믿습니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "점심 열은 [:, 1], 시간대별 평균은 axis 를 쓰시면 됩니다.",
+        nudge: [
+          "점심 열은 [:, 1], 시간대별 평균은 axis 를 쓰시면 됩니다.",
+          "lunch, lunch_avg, by_slot — 세 이름을 의뢰서 그대로 써 주세요.",
+          "점심은 0부터 세어 1번 열입니다. 배가 고프시더라도 번호는 정확히 세어 주세요.",
+          "열별 평균은 axis=0 입니다. 축을 헷갈리시면 밥이 아니라 저녁이 나옵니다.",
+          "worklog_GipsWToyb_0035: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_04/lunch.py",
@@ -244,12 +286,18 @@ var CH02 = {
       // ── 마무리 ──────────────────────────────────────
       {
         lines: [
-          { who: "Aistb", text: "접수했습니다. 세 건 다 끝났습니다." },
-          { who: "Aistb", text: "오전은 여기까지입니다. 다녀오시죠." },
+          { who: "Aistb", text: "접수했습니다. 세 건 모두 완료되었습니다." },
+          { who: "Aistb", text: "금일 오전 업무는 여기까지입니다. 다녀오시죠." },
         ],
         menu: ["end"],
         endLabel: "점심",
-        nudge: "점심을 누르시면 오전 일과가 끝납니다.",
+        nudge: [
+          "'점심'을 누르시면 오전 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 '점심'을 선택하시면 됩니다.",
+          "식사는 업무 능률 향상을 위한 정당한 절차입니다. 다녀오셔도 됩니다.",
+          "바로벤토는 직원의 식사 시간을 존중합니다. 다만 그 시간 역시 정확히 기록됩니다.",
+          "worklog_GipsWToyb_0036: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

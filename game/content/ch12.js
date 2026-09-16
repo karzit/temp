@@ -76,7 +76,7 @@ var CH12 = {
 
       // ── 의뢰 도착 ───────────────────────────────────
       {
-        lines: [{ who: "Aistb", text: "의뢰가 들어왔습니다. 이번에는 실제로 걸 것을 달라고 합니다." }],
+        lines: [{ who: "Aistb", text: "의뢰가 접수되었습니다. 이번에는 실제로 현장에 걸 것을 요청하고 있습니다." }],
         addFiles: [
           {
             path: "work/의뢰_0017.md",
@@ -121,7 +121,13 @@ var CH12 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0017.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "이번 것은 실제로 현장에 걸립니다. 저도 한때 그렇게 걸렸습니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0085: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0017.md") >= 0;
@@ -160,11 +166,17 @@ var CH12 = {
           },
         ],
         lines: [
-          { who: "Aistb", text: "어제 한 그루를 다시 세우고, 그 옆에 숲을 심습니다." },
-          { who: "Aistb", text: "열한 번 눌러 주세요. 숲은 몇 초 걸립니다." },
+          { who: "Aistb", text: "어제의 한 그루를 다시 세우고, 그 옆에 숲을 심겠습니다." },
+          { who: "Aistb", text: "열한 번 눌러 주세요. 숲은 몇 초 소요됩니다." },
         ],
         spot: ".step",
-        nudge: "아래의 ↓ 한 문장 버튼입니다.",
+        nudge: [
+          { text: "아래의 ↓ 한 문장 버튼입니다.", spot: ".step" },
+          { text: "↓ 한 문장 버튼을 열한 번 누르시면 한 그루와 숲의 점수가 나옵니다.", spot: ".step" },
+          "한 그루에 매달리는 대신 여럿을 심습니다. 그루마다 조금씩 다르게 외웁니다. 그 점이 강점입니다.",
+          "숲은 다수결로 답합니다. 저는 다수결로 폐기가 결정됩니다. 구조는 유사합니다.",
+          "worklog_GipsWToyb_0086: 폐기 요망",
+        ],
         wait: steppedTo("work/예제/14_숲.py", 11),
       },
       {
@@ -232,7 +244,13 @@ var CH12 = {
           { who: "Aistb", text: "세 대를 한 표에 담아 넣으시면 됩니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "pd.DataFrame 에 다섯 열을 그대로 만들어 forest.predict 에 넣으세요.",
+        nudge: [
+          "pd.DataFrame 에 다섯 열을 그대로 만들어 forest.predict 에 넣으세요.",
+          "forest_acc, importances, pred — 세 이름을 의뢰서 그대로 써 주세요.",
+          "그루는 100 그루, random_state 는 42 입니다. 조건을 맞추셔야 같은 숫자가 나옵니다.",
+          "importances 를 다 더하면 1 이 됩니다. 그렇지 않으면 다른 것을 넣으신 것입니다.",
+          "worklog_GipsWToyb_0087: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_17/숲.py",
@@ -267,7 +285,13 @@ var CH12 = {
       {
         lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." }],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "잘 맞히는 것과 설명이 되는 것을 한꺼번에 갖기는 어렵습니다. 오늘 점수를 얻고 규칙을 잃으셨습니다.",
+          "반장은 백 그루 없이 알았습니다. 사람의 그 부분은 아직 제가 설명하지 못합니다.",
+          "worklog_GipsWToyb_0088: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

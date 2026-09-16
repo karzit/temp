@@ -81,7 +81,7 @@ var CH17 = {
       // ── 아침 ────────────────────────────────────────
       {
         lines: [
-          { who: "Aistb", text: "좋은 아침입니다, 토이비님. 내린 점수는 그대로 받았다고 합니다." },
+          { who: "Aistb", text: "좋은 아침입니다, 토이비님. 내리신 점수는 그대로 접수되었다고 합니다." },
           { who: "Aistb", text: "오늘부터 방식이 아예 다릅니다." },
           { who: "Aistb", text: "자료는 지난주 것 그대로입니다. 자료까지 바꾸면 방식 덕인지 자료 덕인지 알 수 없습니다." },
         ],
@@ -89,7 +89,7 @@ var CH17 = {
 
       // ── 의뢰 도착 ───────────────────────────────────
       {
-        lines: [{ who: "Aistb", text: "마침 그쪽에서 물어온 것이 있습니다." }],
+        lines: [{ who: "Aistb", text: "마침 그쪽에서 문의가 접수되어 있습니다." }],
         addFiles: [
           {
             path: "work/의뢰_0022.md",
@@ -128,7 +128,13 @@ var CH17 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0022.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "위에서 신경망을 쓰라고 했다는데, 쓰라고 한 쪽도 그게 뭔지는 모르는 듯합니다. 흔한 일입니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0104: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0022.md") >= 0;
@@ -179,7 +185,13 @@ var CH17 = {
           { who: "Aistb", text: "아홉 번 눌러 주세요." },
         ],
         spot: ".step",
-        nudge: "아래의 ↓ 한 문장 버튼입니다.",
+        nudge: [
+          { text: "아래의 ↓ 한 문장 버튼입니다.", spot: ".step" },
+          { text: "↓ 한 문장 버튼을 아홉 번 누르시면 크기 안 맞춘 신경망의 점수까지 나옵니다.", spot: ".step" },
+          "신경망은 열의 크기를 맞춰 주지 않으면 아무것도 배우지 못합니다. 곧 보시게 됩니다.",
+          "업계 표준은 PyTorch라 합니다. 이 장비엔 없습니다. 반입 신청은 마지막 처리가 2년 전입니다.",
+          "worklog_GipsWToyb_0105: 폐기 요망",
+        ],
         wait: steppedTo("work/예제/18_층.py", 9),
       },
       {
@@ -255,7 +267,13 @@ var CH17 = {
           { who: "Aistb", text: "dummy_acc 는 금요일에 쓰신 것을 다시 부르시면 됩니다." },
         ],
         menu: ["brief", "report"],
-        nudge: 'DummyClassifier(strategy="most_frequent") 입니다. 지난 금요일 파일을 여셔도 됩니다.',
+        nudge: [
+          'DummyClassifier(strategy="most_frequent") 입니다. 지난 금요일 파일을 여셔도 됩니다.',
+          "dummy_acc, raw_acc, scaled_acc — 세 이름을 의뢰서 그대로 써 주세요.",
+          "raw_acc 는 크기를 맞추지 '않은' 표를 그대로 넣으셔야 합니다. 일부러 안 되는 것을 보는 자리입니다.",
+          "scaler 는 연습용에 fit_transform, 시험용에 transform 입니다. TF-IDF에서 하신 규칙과 같습니다.",
+          "worklog_GipsWToyb_0106: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_22/신경망.py",
@@ -285,7 +303,13 @@ var CH17 = {
       {
         lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." }],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "새 방식이 늘 이기지는 않습니다. 표로 정리되는 자료에서는 숲을 이기지 못합니다.",
+          "안 하면 뒤처진다고들 합니다. 저도 오늘 처음 써 봤습니다만.",
+          "worklog_GipsWToyb_0107: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

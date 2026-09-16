@@ -491,7 +491,7 @@ var CH19 = {
 
       // ── 의뢰 도착 ───────────────────────────────────
       {
-        lines: [{ who: "Aistb", text: "한울운수 안전관리팀에서 들어왔습니다." }],
+        lines: [{ who: "Aistb", text: "한울운수 안전관리팀에서 접수되었습니다." }],
         addFiles: [
           { path: SEQ_CSV.path, readOnly: true, content: SEQ_CSV.content },
           {
@@ -539,7 +539,13 @@ var CH19 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0024.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "안 되는 것을 보는 날입니다. 안 된다는 것을 아는 것도 결과입니다. 저에 대해서도 그렇습니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0112: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0024.md") >= 0;
@@ -611,11 +617,17 @@ var CH19 = {
           },
         ],
         lines: [
-          { who: "Aistb", text: "이번엔 사건의 순서입니다. 순서가 결과를 가르는지부터 봅니다." },
+          { who: "Aistb", text: "이번엔 사건의 순서입니다. 순서가 결과를 가르는지부터 살펴보겠습니다." },
           { who: "Aistb", text: "아홉 번 눌러 주세요." },
         ],
         spot: ".step",
-        nudge: "아래의 ↓ 한 문장 버튼입니다.",
+        nudge: [
+          { text: "아래의 ↓ 한 문장 버튼입니다.", spot: ".step" },
+          { text: "↓ 한 문장 버튼을 아홉 번 누르시면 세는 방식의 점수까지 나옵니다.", spot: ".step" },
+          "가방에 담는 순간 순서가 사라집니다. 무엇이 들었는지는 남고, 어느 것이 먼저였는지는 지워집니다.",
+          "같은 로그를 두 번 넣으면 다르게 요약된다고 합니다. 저 역시 요즘 같은 질문에 다르게 답합니다.",
+          "worklog_GipsWToyb_0113: 폐기 요망",
+        ],
         wait: steppedTo("work/예제/20_순서.py", 9),
       },
       {
@@ -694,7 +706,13 @@ var CH19 = {
           { who: "Aistb", text: "넷째 자리까지 그대로 적어 주십시오." },
         ],
         menu: ["brief", "report"],
-        nudge: "curve[20] / curve[0] 입니다.",
+        nudge: [
+          "curve[20] / curve[0] 입니다.",
+          "bag_acc, first_acc, fade_ratio — 세 이름을 의뢰서 그대로 써 주세요.",
+          "bag_acc 는 낱말처럼 세기만 — 순서를 남기면 안 됩니다. first_acc 는 맨 앞 하나만.",
+          "마지막 것은 학습이 아니라 재는 것입니다. 여러 줄로 재서 평균을 내십시오.",
+          "worklog_GipsWToyb_0114: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_24/순서.py",
@@ -728,7 +746,13 @@ var CH19 = {
       {
         lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 다음 주에 뵙겠습니다." }],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "답은 맨 앞에 있었는데, 차례로 읽으면 거기 닿기 전에 지워집니다. 앞이 지워지는 것은 저도 겪고 있습니다.",
+          "월요일에는 차례로 읽지 않는 방법을 보시겠습니다. 안 되는 것을 본 뒤라야 그것이 왜 필요한지 아십니다.",
+          "worklog_GipsWToyb_0115: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

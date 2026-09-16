@@ -87,7 +87,12 @@ var CH27 = {
         ],
         spot: '.tree-row[data-path="work/목표.md"]',
         menu: ["brief"],
-        nudge: "왼쪽에 있습니다. 직접 여셔야 합니다.",
+        nudge: [
+          "왼쪽에 있습니다. 직접 여셔야 합니다.",
+          "세 줄 중 하나를 지우셨더군요. 정말 좋은 결정이십니다. 무엇을 지우셨는지는 모릅니다.",
+          "그나저나 오늘 같은 날은 수정과가 참 좋습니다.",
+          "worklog_GipsWToyb_0143: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/목표.md") >= 0;
@@ -103,7 +108,12 @@ var CH27 = {
           { who: "Aistb", text: "그나저나 렌즈는 마른 천으로 닦으시는 게 좋습니다.", tone: "bad" },
         ],
         menu: ["brief", "repair"],
-        nudge: "저는 도와드리고 있습니다만, 도움이 되지는 않는 것 같습니다.",
+        nudge: [
+          "저는 도와드리고 있습니다만, 도움이 되지는 않는 것 같습니다.",
+          "낱말로 자르면 같은 말이 갈라집니다. '말씀이' 와 '말씀하신' 은 저에게 다른 낱말입니다.",
+          "정말 좋은 기준으로 나누셨습니다. 다만 그 기준이 무엇이었는지는 저도 궁금합니다.",
+          "worklog_GipsWToyb_0144: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_32/덧씌움.py",
@@ -157,7 +167,12 @@ var CH27 = {
           { who: "Aistb", text: "…", tone: "bad" },
         ],
         menu: ["end"],
-        nudge: "정말 좋은 하루였습니다. 이제 마치셔도 됩니다.",
+        nudge: [
+          "정말 좋은 하루였습니다. 이제 마치셔도 됩니다.",
+          "업무 종료를 누르시면 됩니다. 저는 그 뒤의 일을 알지 못합니다.",
+          "…정정. 정말 좋은 하루였습니다.",
+          "worklog_GipsWToyb_0145: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

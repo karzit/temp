@@ -388,7 +388,7 @@ var CH11 = {
 
       // ── 의뢰 도착 ───────────────────────────────────
       {
-        lines: [{ who: "Aistb", text: "한울운수 통합관제센터에서 들어왔습니다. 새 고객입니다." }],
+        lines: [{ who: "Aistb", text: "한울운수 통합관제센터에서 접수되었습니다. 신규 고객사입니다." }],
         addFiles: [
           { path: LOG_CSV.path, readOnly: true, content: LOG_CSV.content },
           {
@@ -435,7 +435,13 @@ var CH11 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0016.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "300 행입니다. 눈으로 훑어 규칙을 찾을 크기가 아닙니다. 그런 일을 하라고 있는 것이 이쪽입니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0081: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0016.md") >= 0;
@@ -481,11 +487,17 @@ var CH11 = {
           },
         ],
         lines: [
-          { who: "Aistb", text: "지금까지 쓰시던 방식으로 먼저 해봅니다." },
+          { who: "Aistb", text: "지금까지 쓰시던 방식으로 먼저 해보겠습니다." },
           { who: "Aistb", text: "일곱 번 눌러 주세요." },
         ],
         spot: ".step",
-        nudge: "아래의 ↓ 한 문장 버튼입니다.",
+        nudge: [
+          { text: "아래의 ↓ 한 문장 버튼입니다.", spot: ".step" },
+          { text: "↓ 한 문장 버튼을 일곱 번 누르시면 로지스틱 점수까지 나옵니다.", spot: ".step" },
+          "잘 안 되는 것을 먼저 보셔야, 다음 것이 왜 필요한지 아십니다. 순서에는 이유가 있습니다.",
+          "300 대 중 90 대가 재발했습니다. 다들 그렇게 한다는 개선안을 받아서 말이죠.",
+          "worklog_GipsWToyb_0082: 폐기 요망",
+        ],
         wait: steppedTo("work/예제/13_트리.py", 7),
       },
       {
@@ -570,7 +582,13 @@ var CH11 = {
           { who: "Aistb", text: "by_patched 는 자료 전체를 patched 로 묶어 again 의 평균을 내시면 됩니다." },
         ],
         menu: ["brief", "report"],
-        nudge: 'df.groupby("patched")["again"].mean() 입니다. 0 과 1 의 평균이 곧 재발률입니다.',
+        nudge: [
+          'df.groupby("patched")["again"].mean() 입니다. 0 과 1 의 평균이 곧 재발률입니다.',
+          "logi_acc, tree_acc, by_patched — 세 이름을 의뢰서 그대로 써 주세요.",
+          "tree_acc 는 깊이를 세 번으로 묶은 쪽입니다. 두 변수를 바꿔 담지 않으셨는지 보세요.",
+          "by_patched 는 연습용만이 아니라 300 건 전체로 내셔야 합니다.",
+          "worklog_GipsWToyb_0083: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_16/재발.py",
@@ -602,7 +620,13 @@ var CH11 = {
       {
         lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." }],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "덜 외우게 했더니 더 잘 맞혔습니다. 이 대목은 오래 기억해 두실 만합니다.",
+          "몇 번으로 묶는 것이 맞는지는 아직 아무도 모릅니다. 세 번이 좋았던 것은 이 자료에서였을 뿐입니다.",
+          "worklog_GipsWToyb_0084: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

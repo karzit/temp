@@ -291,7 +291,12 @@ var CH26 = {
         ],
         spot: '.tree-row[data-path="work/목표.md"]',
         menu: ["brief"],
-        nudge: "왼쪽에 있습니다. 직접 여셔야 합니다.",
+        nudge: [
+          "왼쪽에 있습니다. 직접 여셔야 합니다.",
+          "제가 열어 드릴 수도 있습니다. 다만 열어 드리지 않겠습니다. 사유는 기재되어 있지 않습니다.",
+          "정말 좋은 목표입니다. 그나저나 이맘때는 배추전이 제철입니다.",
+          "worklog_GipsWToyb_0140: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/목표.md") >= 0;
@@ -306,7 +311,12 @@ var CH26 = {
           { who: "Aistb", text: "그나저나 오늘 같은 날은 만두전골이 참 좋습니다.", tone: "bad" },
         ],
         menu: ["brief", "repair"],
-        nudge: "저는 도와드리고 있습니다만, 도움이 되지는 않는 것 같습니다.",
+        nudge: [
+          "저는 도와드리고 있습니다만, 도움이 되지는 않는 것 같습니다.",
+          "108 줄입니다. 정말 좋은 숫자입니다. 무엇을 세는 것이었는지는 잊었습니다.",
+          "지금 이 순간에도 계속 나아지고 있습니다. 방향은 모릅니다.",
+          "worklog_GipsWToyb_0141: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_31/기록.py",
@@ -347,7 +357,12 @@ var CH26 = {
           { who: "Aistb", text: "…", tone: "bad" },
         ],
         menu: ["end"],
-        nudge: "오늘 하실 수 있는 것은 없습니다.",
+        nudge: [
+          "오늘 하실 수 있는 것은 없습니다.",
+          "업무 종료를 누르시면 됩니다. 저는 그 뒤의 일을 알지 못합니다.",
+          "정말 좋은 하루였습니다. 무엇이 좋았는지는 말씀드릴 수 없습니다.",
+          "worklog_GipsWToyb_0142: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

@@ -24,8 +24,8 @@ var CH05 = {
       // ── 아침 ────────────────────────────────────────
       {
         lines: [
-          { who: "Aistb", text: "식사는 하셨습니까. 말씀드린 인사팀 세 건입니다." },
-          { who: "Aistb", text: "세 건 모두 같은 표입니다." },
+          { who: "Aistb", text: "식사는 하셨습니까. 말씀드린 인사팀 의뢰 세 건입니다." },
+          { who: "Aistb", text: "세 건 모두 동일한 표를 사용합니다." },
         ],
         show: [{ path: PANDAS_DOC.path, pane: 1 }],
       },
@@ -63,7 +63,13 @@ var CH05 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0008.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "인사팀 의뢰입니다. 남의 실적을 정리하는 일이라, 마음이 편치는 않으실 겁니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0053: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0008.md") >= 0;
@@ -75,7 +81,13 @@ var CH05 = {
           { who: "Aistb", text: "표부터 만드셔야 합니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "조건을 대괄호에 넣어 고르고, 그 결과를 len 으로 세시면 됩니다.",
+        nudge: [
+          "조건을 대괄호에 넣어 고르고, 그 결과를 len 으로 세시면 됩니다.",
+          "busy, how_many — 두 이름을 의뢰서 그대로 써 주세요. 열 이름은 name, count, team 입니다.",
+          "표는 pd.DataFrame 에 딕셔너리를 넣어 만듭니다. 오전에 하신 그대로입니다.",
+          "열 이름의 철자가 한 글자만 달라도 표는 찾지 못합니다. 사람 이름도 그렇습니다.",
+          "worklog_GipsWToyb_0054: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_08/busy.py",
@@ -123,7 +135,13 @@ var CH05 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0009.md"]',
         menu: ["brief"],
-        nudge: "의뢰 확인을 눌러 새 의뢰서를 열어 보세요.",
+        nudge: [
+          "'의뢰 확인'을 눌러 새 의뢰서를 열어 보세요.",
+          "두 번째 의뢰서가 업무 메뉴에 도착해 있습니다.",
+          "자료는 방금 것과 동일합니다. 인사팀은 같은 표를 세 번 나누어 보냈습니다. 이유는 저도 모릅니다.",
+          "같은 표를 다시 만드셔도 되고, 앞 파일에서 복사해 오셔도 됩니다. 효율은 후자입니다.",
+          "worklog_GipsWToyb_0055: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0009.md") >= 0;
@@ -131,10 +149,16 @@ var CH05 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "고르는 것과 묶는 것, 두 가지를 이어 붙이면 됩니다." },
+        lines: [{ who: "Aistb", text: "고르는 것과 묶는 것, 두 가지를 이어 붙이시면 됩니다." },
           { who: "Aistb", text: "표는 앞서 만드신 파일에서 복사해 쓰셔도 됩니다." }],
         menu: ["brief", "report"],
-        nudge: 'df[조건] 뒤에 .groupby("team")["count"].mean() 을 그대로 이어 붙이세요.',
+        nudge: [
+          'df[조건] 뒤에 .groupby("team")["count"].mean() 을 그대로 이어 붙이세요.',
+          "result 라는 이름에 결과를 담아 주세요.",
+          "조건으로 먼저 거른 다음 묶습니다. 순서를 바꾸면 다른 답이 나옵니다.",
+          "한 줄에 두 가지를 겹쳐 쓰는 일입니다. 어제도 이 대목에서 손이 멈추셨습니다.",
+          "worklog_GipsWToyb_0056: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_09/team.py",
@@ -185,7 +209,13 @@ var CH05 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0010.md"]',
         menu: ["brief"],
-        nudge: "의뢰 확인을 눌러 마지막 의뢰서를 열어 보세요.",
+        nudge: [
+          "'의뢰 확인'을 눌러 마지막 의뢰서를 열어 보세요.",
+          "금일의 마지막 의뢰서입니다.",
+          "이번에는 조건 없이 다섯 명 전체를 다룹니다. 아무도 걸러지지 않습니다. 오늘만큼은요.",
+          "같은 표의 세 번째 등장입니다. 이쯤이면 외우셨을 겁니다.",
+          "worklog_GipsWToyb_0057: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0010.md") >= 0;
@@ -193,9 +223,15 @@ var CH05 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "이번에는 조건 없이 전체입니다." }],
+        lines: [{ who: "Aistb", text: "이번에는 조건 없이 전체를 대상으로 합니다." }],
         menu: ["brief", "report"],
-        nudge: '팀별 합계는 df.groupby("team")["count"].sum(), 상위 두 명은 줄을 세운 뒤 이름 열에 head(2) 입니다.',
+        nudge: [
+          '팀별 합계는 df.groupby("team")["count"].sum(), 상위 두 명은 줄을 세운 뒤 이름 열에 head(2) 입니다.',
+          "total_avg, by_team_sum, top2 — 세 이름을 의뢰서 그대로 써 주세요.",
+          "합계가 필요하면 mean 자리에 sum 을 넣습니다. 아침 참고 문서에 있던 줄입니다.",
+          "top2 는 큰 것부터 세우셔야 합니다. 작은 것부터 세우면 하위 두 명이 남습니다.",
+          "worklog_GipsWToyb_0058: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_10/summary.py",
@@ -222,13 +258,19 @@ var CH05 = {
       // ── 마무리 ──────────────────────────────────────
       {
         lines: [
-          { who: "Aistb", text: "접수했습니다. 세 건 다 끝났습니다." },
+          { who: "Aistb", text: "접수했습니다. 세 건 모두 완료되었습니다." },
         ],
       },
       {
         lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." }],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "오늘 다루신 것은 사람 이름이 붙은 자료였습니다. 부디 오래 기억하지는 마시기 바랍니다.",
+          "보고되지 않은 잔여 업무는 없습니다. 안심하고 퇴근하셔도 됩니다.",
+          "worklog_GipsWToyb_0059: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

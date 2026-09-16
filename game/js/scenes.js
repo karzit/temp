@@ -450,10 +450,25 @@ Scenes.desk = function (stage, chapter, done) {
     evaluate();
   };
 
+  // nudge 는 문자열 하나이거나, 여러 대사가 담긴 배열일 수 있다. 배열이면 자리를
+  // 비울 때마다 다음 대사로 넘어가며 돌려가며 보여 준다. 각 대사는 문자열이거나
+  // { text, spot } 이고, spot 이 있으면 그 대사에서만 그곳을 가리킨다.
+  var nudgeBeat = -1;
+  var nudgeAt = 0;
   Aistb.watchIdle(75, function () {
     if (Aistb.isSpeaking()) return; // 이미 할 말이 떠 있으면 끼어들지 않는다
     var b = beat();
-    Aistb.speak([(b && b.nudge) || pick(conf.idleLines) || "천천히 하셔도 됩니다."]);
+    var src = b && b.nudge;
+    var entry;
+    if (Array.isArray(src) && src.length) {
+      if (nudgeBeat !== i) { nudgeBeat = i; nudgeAt = 0; } // beat 이 바뀌면 처음부터
+      entry = src[nudgeAt % src.length];
+      nudgeAt += 1;
+    } else {
+      entry = src || pick(conf.idleLines) || "천천히 하셔도 됩니다.";
+    }
+    var line = typeof entry === "string" ? { text: entry } : { text: entry.text, spot: entry.spot };
+    Aistb.speak([line]);
   });
 
   // 하루 도중에 새로고침하면 그날 처음부터 다시 재생한다. 그래서 어디까지 말했는지는

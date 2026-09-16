@@ -127,7 +127,7 @@ var CH25 = {
 
       // ── 의뢰 도착 ───────────────────────────────────
       {
-        lines: [{ who: "Aistb", text: "교육반입니다. 처음 물어보셨던 그분입니다." }],
+        lines: [{ who: "Aistb", text: "교육반에서 접수되었습니다. 처음 물어보셨던 그분입니다." }],
         addFiles: [
           { path: QSET_CSV.path, readOnly: true, content: QSET_CSV.content },
           {
@@ -172,7 +172,13 @@ var CH25 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0030.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "다섯 개로 시험한 것을, 이번엔 정비원들이 실제로 물어본 27 개로 재십니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0135: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0030.md") >= 0;
@@ -187,7 +193,13 @@ var CH25 = {
           { who: "Aistb", text: "문턱 아래면 못 찾은 것, 위인데 답이 다르면 틀린 것입니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "질문마다 argmax 와 max 를 같이 받아 두고, 점수로 먼저 가른 다음 번호를 비교하세요.",
+        nudge: [
+          "질문마다 argmax 와 max 를 같이 받아 두고, 점수로 먼저 가른 다음 번호를 비교하세요.",
+          "hits, silent, wrong — 세 이름을 의뢰서 그대로 써 주세요.",
+          "silent 는 점수가 문턱 아래, wrong 은 문턱 위인데 답이 다른 것입니다. 두 종류를 바꿔 담지 마세요.",
+          "답 안 하는 것과 틀리게 답하는 것은 손 쓰는 방법이 다릅니다. 그래서 갈라 세는 것입니다.",
+          "worklog_GipsWToyb_0136: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_30/평가.py",
@@ -264,7 +276,13 @@ var CH25 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0031.md"]',
         menu: ["brief", "report"],
-        nudge: "지침이 바뀌었으니 fit 을 다시 하셔야 합니다. 아까 표를 그대로 쓰시면 안 됩니다.",
+        nudge: [
+          "지침이 바뀌었으니 fit 을 다시 하셔야 합니다. 아까 표를 그대로 쓰시면 안 됩니다.",
+          "hits2, changed — 두 이름을 의뢰서 그대로 써 주세요.",
+          "문턱과 자르는 방식은 아까와 같게 두시고, 지침만 정비지침_v2.csv 로 바꾸십시오.",
+          "changed 는 가져오는 문단 번호가 아까와 달라진 질문들입니다.",
+          "worklog_GipsWToyb_0137: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_30/재평가.py",
@@ -291,7 +309,12 @@ var CH25 = {
         ],
         show: [{ path: "work/task_30/재평가.py", pane: 0 }],
         spot: '.tree-row[data-path="work/task_30/평가.py"]',
-        nudge: "왼쪽 나무에서 work/task_30/평가.py 를 여시면 됩니다. 넷과 둘, 그리고 여섯입니다.",
+        nudge: [
+          { text: "왼쪽 나무에서 work/task_30/평가.py 를 여시면 됩니다. 넷과 둘, 그리고 여섯입니다.", spot: '.tree-row[data-path="work/task_30/평가.py"]' },
+          { text: "아침에 내신 silent 와 wrong 을 방금의 changed 옆에 놓고 번호만 보십시오.", spot: '.tree-row[data-path="work/task_30/평가.py"]' },
+          "달라진 여섯 개와 못 맞힌 여섯 개가 같은지 — 이것만은 눈으로 확인하시길 권합니다.",
+          "worklog_GipsWToyb_0138: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/task_30/평가.py") >= 0;
@@ -329,7 +352,13 @@ var CH25 = {
           { who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다." },
         ],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "27 / 27 은 고친 것을 다시 잰 숫자입니다. 시험 문제를 보고 교과서를 고친 셈입니다. 실력이라 부르지는 마십시오.",
+          "이것으로 배우신 것을 전부 쓰셨습니다. 내일은… 제가 말씀드릴 것이, 없습니다.",
+          "worklog_GipsWToyb_0139: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

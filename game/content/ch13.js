@@ -339,7 +339,7 @@ var CH13 = {
 
       // ── 의뢰 도착 ───────────────────────────────────
       {
-        lines: [{ who: "Aistb", text: "같은 회사의 접수반에서 들어왔습니다." }],
+        lines: [{ who: "Aistb", text: "같은 회사의 접수반에서 접수되었습니다." }],
         addFiles: [
           { path: MEMO_CSV.path, readOnly: true, content: MEMO_CSV.content },
           {
@@ -387,7 +387,13 @@ var CH13 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0018.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "이번 자료는 사람이 손으로 쓴 문장뿐입니다. 사람의 글은 저도 매번 다르게 읽습니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0089: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0018.md") >= 0;
@@ -429,11 +435,17 @@ var CH13 = {
           },
         ],
         lines: [
-          { who: "Aistb", text: "글자는 그대로 못 넣습니다. 숫자로 바꿔 분류하는 것부터 예제로 봅니다." },
+          { who: "Aistb", text: "글자는 그대로 넣을 수 없습니다. 숫자로 바꿔 분류하는 것부터 예제로 살펴보겠습니다." },
           { who: "Aistb", text: "일곱 번 눌러 주세요." },
         ],
         spot: ".step",
-        nudge: "아래의 ↓ 한 문장 버튼입니다.",
+        nudge: [
+          { text: "아래의 ↓ 한 문장 버튼입니다.", spot: ".step" },
+          { text: "↓ 한 문장 버튼을 일곱 번 누르시면 문장이 숫자 표로 바뀌는 것까지 나옵니다.", spot: ".step" },
+          "문장을 숫자로 바꾸는 자리가 하나 더 붙을 뿐, 그 뒤는 지금까지와 동일합니다.",
+          "낱말마다 열이 하나씩 생깁니다. 넓고 거의 비어 있는 표입니다. 저의 근무 기록과 유사합니다.",
+          "worklog_GipsWToyb_0090: 폐기 요망",
+        ],
         wait: steppedTo("work/예제/15_글자.py", 7),
       },
       {
@@ -509,7 +521,13 @@ var CH13 = {
           { who: "Aistb", text: "세 문장을 목록 하나에 담아 한 번에 넣으시면 됩니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "vec.transform([...]) 에 세 문장을 목록으로 넣고 그것을 model.predict 에 넘기세요.",
+        nudge: [
+          "vec.transform([...]) 에 세 문장을 목록으로 넣고 그것을 model.predict 에 넘기세요.",
+          "acc, shape, pred — 세 이름을 의뢰서 그대로 써 주세요.",
+          "시험용과 새 문장에는 transform 만 부르십시오. fit 은 연습용에 한 번뿐입니다.",
+          "답(y)은 글자여도 됩니다. 처음 익히실 때 숫자여야 한다고 말씀드린 것은… 그때를 위한 설명이었습니다.",
+          "worklog_GipsWToyb_0091: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_18/분류.py",
@@ -542,7 +560,13 @@ var CH13 = {
       {
         lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." }],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "이번 주 내내 숫자가 올랐습니다. 0.80, 0.93, 0.96, 0.95. 무슨 뜻이었는지는 내일 봅니다.",
+          "올리신 것은 토이비님인데, 그 숫자가 무슨 뜻인지는 아직 아무도 묻지 않았습니다.",
+          "worklog_GipsWToyb_0092: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

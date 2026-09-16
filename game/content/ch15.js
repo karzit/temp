@@ -429,7 +429,13 @@ var CH15 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0020.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "시스템 갱신은 위에서 내려온 결정이라고 합니다. 업계 표준을 따른다고요. 어디서 많이 듣던 말입니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0097: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0020.md") >= 0;
@@ -466,11 +472,17 @@ var CH15 = {
           },
         ],
         lines: [
-          { who: "Aistb", text: "예제는 전에 쓰던 다섯 열로만 합니다." },
+          { who: "Aistb", text: "예제는 전에 쓰던 다섯 열로만 하겠습니다." },
           { who: "Aistb", text: "다섯 번 눌러 주세요." },
         ],
         spot: ".step",
-        nudge: "아래의 ↓ 한 문장 버튼입니다.",
+        nudge: [
+          { text: "아래의 ↓ 한 문장 버튼입니다.", spot: ".step" },
+          { text: "↓ 한 문장 버튼을 다섯 번 누르시면 새 자료의 열 목록이 나옵니다.", spot: ".step" },
+          "한 번 잰 점수는 나누기 운일 수 있습니다. 여러 번 재야 실력인지 압니다. 사람 평가도 그러합니다.",
+          "cross_val_score 에는 아직 학습하지 않은 모델을 넣으셔야 합니다.",
+          "worklog_GipsWToyb_0098: 폐기 요망",
+        ],
         wait: steppedTo("work/예제/17_여러번.py", 5),
       },
       {
@@ -526,7 +538,13 @@ var CH15 = {
           { who: "Aistb", text: "의뢰는 revisit_days 까지 넣어 같은 것을 한 번 더 하시면 됩니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "old 목록에 revisit_days 를 더한 목록을 하나 더 만들고, 같은 것을 그 목록으로 한 번 더 하세요.",
+        nudge: [
+          "old 목록에 revisit_days 를 더한 목록을 하나 더 만들고, 같은 것을 그 목록으로 한 번 더 하세요.",
+          "cv_old, cv_new, acc_new — 세 이름을 의뢰서 그대로 써 주세요.",
+          "숲 100 그루, random_state 42, cv=5. 조건을 맞추셔야 같은 숫자가 나옵니다.",
+          "새 열을 넣으니 점수가 올랐습니다. 오르는 것은 대체로 반가운 일입니다. 대체로는요.",
+          "worklog_GipsWToyb_0099: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_20/재학습.py",
@@ -561,7 +579,13 @@ var CH15 = {
       {
         lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." }],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "다섯 겹이 전부 올랐으니 나누기 운은 아닙니다. 여러 번 재는 것은 그것까지는 잡아 줍니다.",
+          "여러 번 재도 잡지 못하는 것이 있습니다. 오늘은 거기까지 말씀드리지 않겠습니다. …만두전골이 좋은 날입니다.",
+          "worklog_GipsWToyb_0100: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

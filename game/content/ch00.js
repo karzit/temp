@@ -115,18 +115,27 @@ var CH00 = {
       {
         lines: [
           { who: "???", text: "반갑습니다, 깁스 W 토이비님." },
-          { who: "???", text: "바로벤토에서 직원 지원 업무를 맡고 있는 Aistb 입니다." },
-          { who: "Aistb", text: "오늘은 이 단말을 다루는 법을 익힙니다." },
+          { who: "???", text: "저는 바로벤토에서 직원 지원을 위해 개발된 AI, Aistb 입니다." },
+          { who: "Aistb", text: "토이비님이 바로벤토에 적응하실 수 있도록 도와드리겠습니다." },
+          { who: "Aistb", text: "금일은 우선 업무 진행을 위한 인터페이스에 대해 설명드리겠습니다." },
         ],
       },
 
       // ── 의뢰 확인 ──
       {
         lines: [
-          { who: "Aistb", text: "저를 누르시면 업무 메뉴가 열립니다. 첫 항목이 의뢰 확인입니다." },
+          { who: "Aistb", text: "먼저 금일 할당된 의뢰를 확인하시겠습니다." },
+          { who: "Aistb", text: "저를 누르시면 업무 메뉴를 확인하실 수 있으며, 그 중 첫 번째 '의뢰 확인' 버튼을 통해 할당된 의뢰에 대한 개요를 확인하실 수 있습니다." },
+          { who: "Aistb", text: "할당된 의뢰를 확인해봅시다." },
         ],
-        nudge: "오른쪽 아래의 저를 눌러 주세요. 첫 항목이 의뢰 확인입니다.",
         menu: ["brief"],
+        nudge: [
+          "저를 눌러 업무 메뉴를 확인하실 수 있습니다.",
+          "여기입니다!",
+          "이쪽을 보세요",
+          "바로벤토에서는 업무 능률 향상 및 직원 복지를 위해 휴식에 별도 제약을 두지는 않지만, 그것이 업무 태만을 용납한다는 것은 아닙니다.",
+          "worklog_GipsWToyb_0000: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0001.md") >= 0;
@@ -134,31 +143,57 @@ var CH00 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "의뢰서입니다." }],
-        spot: '.tree-row[data-path="work/의뢰_0001.md"]',
+        lines: [
+          { who: "Aistb", text: "금일은 바로벤토 교육팀에서 전달된 '신입 교육: 작업 단말 사용법'에 따라 작업 단말 사용법을 익히실 예정입니다." },
+          { who: "Aistb", text: "의뢰에 대한 상세한 정보는" },
+          { who: "Aistb", text: "의뢰서에서 확인하실 수 있습니다.", spot: '.tree-row[data-path="work/의뢰_0001.md"]' },
+          { who: "Aistb", text: "다음으로 작업물을 생성하고 관리하는 방법에 대해 알아보겠습니다." },
+        ],
       },
 
       // ── 파일과 폴더 ──
       {
-        lines: [{ who: "Aistb", text: "다음은 폴더입니다. work 를 눌러 주세요." }],
-        spot: '.tree-row[data-path="work"]',
-        nudge: "왼쪽 탐색기의 work 를 눌러 주세요.",
+        lines: [
+          { who: "Aistb", text: "먼저 폴더와 파일의 생성 방법입니다." },
+          { who: "Aistb", text: "폴더와 파일은 생성하고자 하는 폴더를 선택 후 ＋파일, ＋폴더 버튼을 통해 생성하실 수 있습니다." },
+        ],
+      },
+      {
+        lines: [{ who: "Aistb", text: "먼저 work 폴더를 선택해주세요.", spot: '.tree-row[data-path="work"]' }],
+        nudge: [
+          { text: "왼쪽 탐색기의 work 를 눌러 주세요.", spot: '.tree-row[data-path="work"]' },
+          { text: "먼저 폴더를 생성할 상위 폴더를 선택해주세요.", spot: '.tree-row[data-path="work"]' },
+          "바로벤토에서는 불어오는 바람, 그 너머로 함께 나아갈 인재를 찾고 있습니다.",
+          "TMI: 업무 수준을 미달한 일부 직원의 프로필은 현재 '퇴사자 자료' 폴더로 이동되었습니다.",
+          "worklog_GipsWToyb_0001: 폐기 요망",
+        ],
         wait: function () {
           return IDE.selectedDir === "work";
         },
       },
       {
-        lines: [{ who: "Aistb", text: "그 상태에서 ＋폴더입니다." }],
-        spot: "[data-new='dir']",
-        nudge: "＋폴더 버튼을 눌러 주세요.",
+        lines: [{ who: "Aistb", text: "그 상태에서 '＋폴더' 버튼을 클릭하여 폴더를 생성하실 수 있습니다.", spot: "[data-new='dir']" }],
+        nudge: [
+          { text: "＋폴더 버튼을 눌러 폴더를 생성하실 수 있습니다.", spot: "[data-new='dir']" },
+          { text: "'＋폴더' 버튼을 눌러 폴더를 생성하실 수 있습니다.", spot: "[data-new='dir']" },
+          { text: "폴더를 생성하는 가장 쉬운 방법: ＋폴더", spot: "[data-new='dir']" },
+          "지능 기대 수준을 13세에서 7세로 변경합니다.",
+          { text: "여기 ＋폴더 버튼이 있지이~? 이걸 꾹~ 눌러주면요오~! 짜잔~! 새로운 폴더가 뿅~ 하고 만들어진답니다아~! ✨", spot: "[data-new='dir']" },
+          "worklog_GipsWToyb_0002: 폐기 요망",
+        ],
         wait: function () {
           return (IDE.newform && IDE.newform.kind === "dir") || FS.exists("work/first_task");
         },
       },
       {
-        lines: [{ who: "Aistb", text: "이름은 first_task 입니다." }],
-        spot: ".newform input",
-        nudge: "이름 칸에 first_task 를 적고 만들기를 누르세요.",
+        lines: [{ who: "Aistb", text: "여기에서 폴더와 파일의 이름을 지정하실 수 있습니다. 이번에는 '신입 교육: 작업 단말 사용법'에 따라 first_task 로 지정하겠습니다.", spot: ".newform input" }],
+        nudge: [
+          { text: "이름 칸에 first_task 를 적고 만들기를 누르세요.", spot: ".newform input" },
+          { text: "폴더 이름을 first_task 로 지정하여 생성해주세요.", spot: ".newform input" },
+          "폴더 이름을 first_task 로 생성하여주시옵서서.",
+          "현재 하위 3%에 해당하는 재능을 가지고 있습니다.",
+          "worklog_GipsWToyb_0003: 폐기 요망",
+        ],
         wait: function () {
           return FS.exists("work/first_task");
         },
@@ -173,9 +208,14 @@ var CH00 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "이번에는 그 폴더 안에 hello.py 입니다." }],
-        spot: "[data-new='file']",
-        nudge: "first_task 를 고른 뒤 ＋파일을 누르고, 이름을 hello.py 로 적으세요.",
+        lines: [{ who: "Aistb", text: "좋습니다. 이번에는 직접 first_task 폴더에 hello.py 파일을 생성해주세요.", spot: "[data-new='file']" }],
+        nudge: [
+          { text: "first_task 를 고른 뒤 ＋파일을 누르고, 이름을 hello.py 로 적으세요.", spot: "[data-new='file']" },
+          { text: "first_task 폴더를 선택하고, ＋파일을 눌러 hello.py 를 생성해주세요.", spot: "[data-new='file']" },
+          { text: "first_task: first_task를 선택, second_task: ＋파일 버튼을 클릭, third_task: hello.py 입력, fourth_task: 파일 생성", spot: "[data-new='file']" },
+          "제가 말씀드리는 모든 이야기는 전력을 사용해 생성되었습니다. 즉, 산소뿐만 아니라 전기까지 낭비하고 계십니다.",
+          "worklog_GipsWToyb_0004: 폐기 요망",
+        ],
         wait: function () {
           return FS.isFile("work/first_task/hello.py");
         },
@@ -184,29 +224,41 @@ var CH00 = {
       // ── 코드 실행 ──
       {
         lines: [
-          { who: "Aistb", text: "완벽합니다. 해당 교육 수강자 중 상위 1%에 해당하는 성취도입니다." },
-          { who: "Aistb", text: "**정정** 상위 98%입니다." },
+          { who: "Aistb", text: "마지막으로 코드를 실행하는 방법에 대해 알아보겠습니다." },
+          { who: "Aistb", text: 'hello.py 에 print("안녕하세요") 를 입력한 후 \'▶ 실행\' 버튼을 눌러 실행할 수 있습니다. 처음에는 작업 구성을 위해 약간의 시간이 소요될 수 있습니다.', spot: ".run" },
         ],
-      },
-      {
-        lines: [
-          { who: "Aistb", text: 'print("안녕하세요") 를 적고 ▶ 실행입니다. 처음은 몇 초 걸립니다.' },
+        nudge: [
+          { text: "왼쪽 편집창에서 hello.py를 선택 후 코드를 적고 아래의 ▶ 실행을 누르세요.", spot: "[data-path='work/first_task/hello.py']" },
+          { text: "왼쪽 편집창에서 hello.py를 선택 후 코드를 적고 아래의 ▶ 실행을 누르세요.", spot: "[data-path='work/first_task/hello.py']" },
+          { text: "왼쪽 편집창에서 hello.py를 선택 후 코드를 적고 아래의 ▶ 실행을 누르세요.", spot: "[data-path='work/first_task/hello.py']" },
+          "일부 직원의 작업 능률 향상을 위해 Python 모듈을 Colt Python으로 교체 요망: 기각되었습니다.",
+          "worklog_GipsWToyb_0005: 폐기 요망",
         ],
-        spot: ".run",
-        nudge: "왼쪽 편집창에 코드를 적고 아래의 ▶ 실행을 누르세요.",
         wait: function () {
           var r = IDE.lastRun;
           return !!r && r.ok && r.path === "work/first_task/hello.py" && !!r.output;
         },
       },
+      {
+        lines: [
+          { who: "Aistb", text: "완벽합니다. 해당 교육 수강자 중 상위 1%에 해당하는 성취도입니다." },
+          { who: "Aistb", text: "**정정** 상위 98%입니다." },
+        ],
+      },
 
       // ── 완료 보고 ──
       {
         lines: [
-          { who: "Aistb", text: "끝나면 완료 보고입니다." },
+          { who: "Aistb", text: "업무를 완료하신 후 업무 메뉴에서 완료 보고를 통해 업무를 종료하실 수 있습니다." },
         ],
         menu: ["report"],
-        nudge: "저를 누르시면 완료 보고가 있습니다.",
+        nudge: [
+          "저를 누르시면 완료 보고가 있습니다.",
+          "저를 클릭해 업무 메뉴를 확인하실 수 있습니다.",
+          "여기에 퇴근이 있습니다.",
+          "보고하지 않은 업무는 완료되지 않습니다.",
+          "worklog_GipsWToyb_0006: 폐기 요망",
+        ],
         wait: function (ctx) {
           return ctx.reported;
         },
@@ -215,9 +267,16 @@ var CH00 = {
       {
         lines: [
           { who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." },
+          { who: "Aistb", text: "업무 메뉴에서 업무 종료를 선택해 PC를 종료하시고 퇴근하시면 됩니다." },
         ],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "출근 첫날의 조기 퇴근은 환경 변화에 대한 배려로, 바로벤토는 직원과 함께 불어오는 바람, 그 너머로 나아갑니다.",
+          "회사를 위해 봉사하고자 하는 마음은 훌륭하지만, 더 이상 할당된 업무가 없습니다.",
+          "분명 바로벤토에서는 초과 근무에 대한 추가 수당을 지급하지만, 전기를 낭비하는 것에 대한 수당은 지급하지 않습니다.",
+          "worklog_GipsWToyb_0007: 실제 근무 내역 없음, 초과 근무수당을 지급하지 말것",
+        ],
         wait: function () {
           return false; // 업무 종료를 눌러야 하루가 끝난다
         },
@@ -229,18 +288,16 @@ var CH00 = {
   diary: [
     "421950년 10월 1일.",
     "",
-    "첫 출근.",
-    "문 열었더니 불이 꺼져 있고 켜진 건 모니터 하나였다.",
-    "자리 찾는 데 좀 걸렸다.",
+    "오늘은 입사 후 첫 출근 날이었다.",
+    "출근해 보니 방에 모니터만 하나 켜져 있었다.",
+    "모니터에 다가가 보니 사내 AI가 말을 걸었다. 캠이라도 있었나?",
+    "Aistb라고 하는데 흔히 쓰는 AI와 다르게 농담을 안 받아준다. 그 정도는 직원의 정신 건강을 위해 받아 주라고, 잡담할 사람도 없잖아.",
     "",
-    "Aistb라는 사내 AI가 말을 걸었다. 오늘 할 일까지 다 짜여 있었다.",
-    "생각보다 친절했다.",
+    "뭐 첫날이라 OT 같은 걸 했는데 끝나고 상위 1%라더니 바로 98%로 정정했다.",
+    "그럼 처음부터 98%라고 하라고. 정정 안 했으면 그냥 기분 좋았을 건데 말이지.",
     "",
-    "오는 길에 햄 광고판을 실컷 봤다. 돈스햄이 제일 컸는데",
-    "맞은편 가게가 더 싸 보였다. 내일은 그쪽으로.",
-    "",
-    "한 거라곤 폴더 하나 파일 하나에 \"안녕하세요\" 한 줄.",
-    "상위 1%라더니 바로 98%로 정정했다. 정정 안 했으면 몰랐잖아.",
-    "아니 그럼 처음부터 98%라고 하든가.",
+    "뭐 AI와는 별개로 첫날 조기 퇴근 덕분에 이사한 동네를 조금 둘러볼 시간이 있었다.",
+    "소시지 가게는 돈스랑 맠크도르, 밐모크, 포킈 뭐 선택지가 많은 건 좋은데 말이지, 왜 정작 모나크가 없는거냐.",
+    "나는 모나크가 좋다고.",
   ],
 };

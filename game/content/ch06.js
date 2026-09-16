@@ -134,14 +134,14 @@ var CH06 = {
       // ── 아침 ────────────────────────────────────────
       {
         lines: [
-          { who: "Aistb", text: "좋은 아침입니다, 토이비님. 오늘부터 의뢰가 바깥에서 들어옵니다." },
-          { who: "Aistb", text: "자료도 파일로 옵니다." },
+          { who: "Aistb", text: "좋은 아침입니다, 토이비님. 금일부터는 의뢰가 사외 고객사에서 들어옵니다." },
+          { who: "Aistb", text: "자료 또한 파일 형태로 전달됩니다." },
         ],
       },
 
       // ── 의뢰 도착 ───────────────────────────────────
       {
-        lines: [{ who: "Aistb", text: "런천미트연구소에서 한 건 들어왔습니다." }],
+        lines: [{ who: "Aistb", text: "런천미트연구소에서 한 건 접수되었습니다." }],
         addFiles: [
           { path: INSPECT_CSV.path, readOnly: true, content: INSPECT_CSV.content },
           {
@@ -186,7 +186,13 @@ var CH06 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0011.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "사외 의뢰의 첫 건입니다. 고객사가 지켜본다고 생각하시면 도움이 될 수도 있습니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0060: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0011.md") >= 0;
@@ -195,7 +201,7 @@ var CH06 = {
       },
       {
         lines: [
-          { who: "Aistb", text: "예순 행이 넘습니다. 눈으로 읽지 말고 세는 방법부터입니다." },
+          { who: "Aistb", text: "예순 행이 넘습니다. 눈으로 읽지 마시고, 세는 방법부터 알아보겠습니다." },
         ],
       },
 
@@ -226,7 +232,13 @@ var CH06 = {
           { who: "Aistb", text: "네 번 눌러 주세요." },
         ],
         spot: ".step",
-        nudge: "아래의 ↓ 한 문장 버튼입니다.",
+        nudge: [
+          { text: "아래의 ↓ 한 문장 버튼입니다.", spot: ".step" },
+          { text: "↓ 한 문장 버튼을 네 번 누르시면 표의 크기와 앞부분이 나옵니다.", spot: ".step" },
+          "예순 행을 손으로 세실 수도 있습니다. 다만 도중에 몇 번 세셨는지 잊으실 겁니다.",
+          "자료를 읽는 것과 사람을 읽는 것은 다릅니다. 전자는 함수가 있습니다.",
+          "worklog_GipsWToyb_0061: 폐기 요망",
+        ],
         wait: steppedTo("work/예제/09_훑어보기.py", 4),
       },
       {
@@ -309,10 +321,16 @@ var CH06 = {
           },
         ],
         lines: [
-          { who: "Aistb", text: "실습 과제입니다. 2번은 weight 열 하나만 골라서 세시면 됩니다. 다 되면 완료 보고입니다." },
+          { who: "Aistb", text: "실습 과제입니다. 2번은 weight 열 하나만 골라서 세시면 됩니다. 완료하신 후 완료 보고를 눌러 주세요." },
         ],
         menu: ["report"],
-        nudge: "빈칸은 isna, 겹치는 행은 duplicated, 조건은 괄호로 감싼 뒤 sum 입니다.",
+        nudge: [
+          "빈칸은 isna, 겹치는 행은 duplicated, 조건은 괄호로 감싼 뒤 sum 입니다.",
+          "rows, blanks, dups, heavy — 네 이름을 그대로 써 주세요.",
+          "참은 1로 세어집니다. 배열에서도, 표에서도 동일합니다.",
+          "네 자리를 모두 채우셔야 채점이 진행됩니다.",
+          "worklog_GipsWToyb_0062: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/실습/07_세어보기.py",
@@ -336,7 +354,13 @@ var CH06 = {
           { who: "Aistb", text: "bad_temp 는 조건이 둘입니다. 100 미만 또는 140 초과입니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "조건 두 개는 (조건) | (조건) 으로 묶습니다. 괄호를 빠뜨리면 에러가 납니다.",
+        nudge: [
+          "조건 두 개는 (조건) | (조건) 으로 묶습니다. 괄호를 빠뜨리면 에러가 납니다.",
+          "rows, missing_weight, dup_rows, bad_temp — 네 이름을 의뢰서 그대로 써 주세요.",
+          "고치지 마시고 세기만 하십시오. 고객은 개수만 요청했습니다.",
+          "이상한 값을 뻔히 보고도 그냥 세기만 하는 것은, 규정상 그렇게 되어 있습니다.",
+          "worklog_GipsWToyb_0063: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_11/살펴보기.py",
@@ -365,7 +389,13 @@ var CH06 = {
       {
         lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 내일 뵙겠습니다." }],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "고치는 것은 내일입니다. 오늘은 세기만 하셨습니다. 손이 근질거리셔도 참으시죠.",
+          "잘못을 알고도 두고 가는 첫날입니다. 익숙해지실 겁니다.",
+          "worklog_GipsWToyb_0064: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },

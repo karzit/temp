@@ -26,7 +26,7 @@ var CH03 = {
       // ── 아침 ────────────────────────────────────────
       {
         lines: [
-          { who: "Aistb", text: "식사는 하셨습니까. 점심 동안 정비 1팀과 배차 2팀에서 세 건이 더 들어왔습니다." },
+          { who: "Aistb", text: "식사는 하셨습니까. 점심 시간 동안 정비 1팀과 배차 2팀에서 세 건이 추가로 접수되었습니다." },
         ],
         show: [{ path: NUMPY_DOC.path, pane: 1 }],
       },
@@ -53,11 +53,17 @@ var CH03 = {
           },
         ],
         lines: [
-          { who: "Aistb", text: "그 전에 하나 더입니다. 긴 기록은 손으로 적을 수 없습니다." },
+          { who: "Aistb", text: "그 전에 한 가지 더 알려드립니다. 긴 기록은 손으로 일일이 적을 수 없습니다." },
           { who: "Aistb", text: "세 번 눌러 주세요." },
         ],
         spot: ".step",
-        nudge: "↓ 한 문장 버튼을 세 번 누르시면 두 줄이 출력됩니다.",
+        nudge: [
+          { text: "↓ 한 문장 버튼을 세 번 누르시면 두 줄이 출력됩니다.", spot: ".step" },
+          { text: "아래의 ↓ 한 문장 버튼입니다.", spot: ".step" },
+          "긴 수열을 손으로 적으실 수도 있습니다. 다만 그 시간에도 봉급은 동일하게 지급됩니다.",
+          "arange와 zeros는 손목 건강을 위한 기능이기도 합니다.",
+          "worklog_GipsWToyb_0037: 폐기 요망",
+        ],
         wait: steppedTo("work/예제/06_모양바꾸기.py", 3),
       },
       {
@@ -122,9 +128,15 @@ var CH03 = {
               "col_sum = ...\n",
           },
         ],
-        lines: [{ who: "Aistb", text: "실습 과제입니다. 세 번째는 axis 입니다. 다 되면 완료 보고입니다." }],
+        lines: [{ who: "Aistb", text: "실습 과제입니다. 세 번째는 axis 입니다. 완료하신 후 완료 보고를 눌러 주세요." }],
         menu: ["report"],
-        nudge: "열별은 세로입니다. 참고 문서의 axis 항목을 보세요.",
+        nudge: [
+          "열별은 세로입니다. 참고 문서의 axis 항목을 보세요.",
+          "0부터 11까지는 arange, 모양은 reshape, 열별 합계는 axis=0 입니다.",
+          "세로로 더하실지 가로로 더하실지 헷갈리시면, 그림을 그려 보시는 것도 방법입니다. 종이는 별도 지급되지 않습니다.",
+          "세 자리를 모두 채우셔야 채점이 진행됩니다.",
+          "worklog_GipsWToyb_0038: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/실습/04_모양.py",
@@ -174,7 +186,13 @@ var CH03 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0005.md"]',
         menu: ["brief"],
-        nudge: "저를 눌러 의뢰 확인을 고르시면 의뢰서가 열립니다.",
+        nudge: [
+          "저를 눌러 '의뢰 확인'을 고르시면 의뢰서가 열립니다.",
+          "업무 메뉴 첫 번째 항목이 의뢰 확인입니다.",
+          "점심 이후의 첫 의뢰입니다. 소화가 채 되기도 전이라는 점은 저도 인지하고 있습니다.",
+          "확인하지 않은 의뢰도 마감 기한은 동일하게 적용됩니다.",
+          "worklog_GipsWToyb_0039: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0005.md") >= 0;
@@ -182,9 +200,15 @@ var CH03 = {
         },
       },
       {
-        lines: [{ who: "Aistb", text: "어제 실습 과제로 푸신 세 가지와 같습니다." }],
+        lines: [{ who: "Aistb", text: "어제 실습 과제로 푸신 세 가지와 동일한 구조입니다." }],
         menu: ["brief", "report"],
-        nudge: "고르기는 대괄호, 개수는 sum, 값을 바꾸는 것은 where 입니다.",
+        nudge: [
+          "고르기는 대괄호, 개수는 sum, 값을 바꾸는 것은 where 입니다.",
+          "hot, hot_count, cooled — 세 이름을 의뢰서 그대로 써 주세요.",
+          "cooled 는 개수가 줄지 않습니다. 여덟 개 그대로여야 합니다. 부품을 함부로 폐기하지 마세요.",
+          "골라내기(줄어듦)와 바꾸기(그대로)는 다릅니다. 인사 조치도 그렇습니다.",
+          "worklog_GipsWToyb_0040: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_05/heat.py",
@@ -243,7 +267,13 @@ var CH03 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0006.md"]',
         menu: ["brief"],
-        nudge: "의뢰 확인을 눌러 새 의뢰서를 열어 보세요.",
+        nudge: [
+          "'의뢰 확인'을 눌러 새 의뢰서를 열어 보세요.",
+          "두 번째 의뢰서가 업무 메뉴에 도착해 있습니다.",
+          "이번 의뢰는 방금 배우신 모양 바꾸기가 등장합니다. 우연이 아닙니다.",
+          "긴 기록을 덩어리로 자르는 일입니다. 손으로 자르시면 열두 조각이 나옵니다.",
+          "worklog_GipsWToyb_0041: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0006.md") >= 0;
@@ -252,10 +282,16 @@ var CH03 = {
       },
       {
         lines: [
-          { who: "Aistb", text: "모양을 바꾸고, 행별로 더하고, 자리를 찾고, 조건으로 셉니다." },
+          { who: "Aistb", text: "모양을 바꾸고, 행별로 더하고, 자리를 찾고, 조건으로 세는 순서입니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "덩어리별 합계는 행별이니 axis=1 입니다.",
+        nudge: [
+          "덩어리별 합계는 행별이니 axis=1 입니다.",
+          "blocks, by_block, busiest, quiet — 네 이름을 의뢰서 그대로 써 주세요.",
+          "가장 바쁜 덩어리는 값이 아니라 '몇 번째'입니다. arg가 붙은 함수입니다.",
+          "quiet 은 덩어리가 아니라 원래 열두 개에서 세십니다. 셈은 정확히.",
+          "worklog_GipsWToyb_0042: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_06/half.py",
@@ -322,7 +358,13 @@ var CH03 = {
         ],
         spot: '.tree-row[data-path="work/의뢰_0007.md"]',
         menu: ["brief"],
-        nudge: "의뢰 확인을 눌러 마지막 의뢰서를 열어 보세요.",
+        nudge: [
+          "'의뢰 확인'을 눌러 마지막 의뢰서를 열어 보세요.",
+          "금일의 마지막 의뢰서입니다.",
+          "이번 것은 한 줄에 두세 가지를 겹쳐 쓰셔야 합니다. 오늘의 고비입니다.",
+          "새 함수는 하나도 없습니다. 이미 아시는 것들의 조합입니다. 그 점이 더 곤란하실 수도 있습니다.",
+          "worklog_GipsWToyb_0043: 폐기 요망",
+        ],
         wait: function () {
           return IDE.panes.some(function (p) {
             return p.tabs.indexOf("work/의뢰_0007.md") >= 0;
@@ -339,7 +381,13 @@ var CH03 = {
           { who: "Aistb", text: "합계로 만든 참/거짓을 이름 쪽 대괄호에 넣으면, 그 조건에 맞는 이름만 남습니다." },
         ],
         menu: ["brief", "report"],
-        nudge: "totals 를 먼저 만들어 두고, busy_names 는 names[조건], top2 는 자리 번호로 이름을 꺼내시면 됩니다.",
+        nudge: [
+          "totals 를 먼저 만들어 두고, busy_names 는 names[조건], top2 는 자리 번호로 이름을 꺼내시면 됩니다.",
+          "한 줄에 다 쓰려 하지 마시고, 중간 결과를 변수에 담아 두고 보셔도 됩니다.",
+          "top2 는 뒤집는 것을 빠뜨리지 마세요. 적은 순서로 뽑히면 곤란합니다.",
+          "peak_slot 은 로봇이 아니라 시간대입니다. 세로로 더하셔야 합니다(axis=0).",
+          "worklog_GipsWToyb_0044: 폐기 요망",
+        ],
         report: function () {
           return checkFile(
             "work/task_07/robots.py",
@@ -372,13 +420,19 @@ var CH03 = {
       // ── 마무리 ──────────────────────────────────────
       {
         lines: [
-          { who: "Aistb", text: "접수했습니다. 여섯 건 다 끝났습니다." },
+          { who: "Aistb", text: "접수했습니다. 여섯 건 모두 완료되었습니다." },
         ],
       },
       {
         lines: [{ who: "Aistb", text: "수고하셨습니다. 이것으로 금일 업무가 종료되었습니다. 월요일에 뵙겠습니다." }],
         menu: ["end"],
-        nudge: "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+        nudge: [
+          "업무 종료를 누르시면 오늘 일과가 끝납니다.",
+          "저를 눌러 업무 메뉴에서 업무 종료를 선택하시면 됩니다.",
+          "금주의 근무는 여기까지입니다. 주말에는 저도 대기 상태로 전환됩니다.",
+          "주말 동안 의뢰는 접수되지 않습니다. 다만 세상이 멈추는 것은 아닙니다.",
+          "worklog_GipsWToyb_0045: 폐기 요망",
+        ],
         wait: function () {
           return false;
         },
