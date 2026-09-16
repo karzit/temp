@@ -59,7 +59,7 @@ var CH20 = {
     files: [
       { path: PANDAS_DOC.path, content: PANDAS_DOC.content, readOnly: true },
       { path: SEQ_DOC.path, content: SEQ_DOC.content, readOnly: true },
-      { path: SEQ_CSV.path, content: SEQ_CSV.content, readOnly: true },
+      { path: SEQ_CSV.path, src: SEQ_CSV.src, readOnly: true },
     ],
 
     idleLines: [

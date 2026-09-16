@@ -50,7 +50,7 @@ var CH10 = {
     files: [
       { path: PANDAS_DOC.path, content: PANDAS_DOC.content, readOnly: true },
       { path: MODEL_DOC.path, content: MODEL_DOC.content, readOnly: true },
-      { path: CLEAN_CSV.path, content: CLEAN_CSV.content, readOnly: true },
+      { path: CLEAN_CSV.path, src: CLEAN_CSV.src, readOnly: true },
     ],
 
     idleLines: [

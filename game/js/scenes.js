@@ -207,6 +207,32 @@ Scenes.desk = function (stage, chapter, done) {
   stage.className = "stage scene-desk";
   var conf = chapter.desk;
 
+  // 외부 자료 파일(addFiles 의 src)은 먼저 받아 둔다. content 대신 파일로 관리하는
+  // 자료(예: 의뢰 CSV)가 여기 해당한다. 받아 온 텍스트를 가상 FS 에 심어야 파이썬이
+  // work/... 경로로 읽을 수 있다(python.js 가 실행 직전 FS 를 Pyodide 로 옮긴다).
+  var srcCache = {};
+  var srcUrls = [];
+  (conf.beats || []).forEach(function (b) {
+    (b.addFiles || []).forEach(function (f) {
+      if (f.src && srcUrls.indexOf(f.src) < 0) srcUrls.push(f.src);
+    });
+  });
+  var dataReady = Promise.all(
+    srcUrls.map(function (u) {
+      return fetch(u)
+        .then(function (r) {
+          if (!r.ok) throw new Error(u);
+          return r.text();
+        })
+        .then(function (t) { srcCache[u] = t; })
+        .catch(function () { srcCache[u] = ""; }); // 못 받아도 실행은 막지 않는다
+    })
+  );
+  // content 를 직접 준 파일은 그대로, src 로 준 파일은 받아 둔 텍스트를 쓴다.
+  function fileContent(f) {
+    return f.src ? (srcCache[f.src] || "") : f.content;
+  }
+
   var monitor = document.createElement("div");
   monitor.className = "monitor";
   var screen = document.createElement("div");
@@ -218,7 +244,7 @@ Scenes.desk = function (stage, chapter, done) {
   if (!FS.restore(loadProgress().files)) FS.reset();
   FS.mkdir("work");
   (conf.files || []).forEach(function (f) {
-    FS.write(f.path, f.content, { readOnly: f.readOnly, kind: f.kind });
+    FS.write(f.path, fileContent(f), { readOnly: f.readOnly, kind: f.kind });
   });
 
   IDE.panes = [{ tabs: [], active: null }];
@@ -264,7 +290,7 @@ Scenes.desk = function (stage, chapter, done) {
         // 이미 있는 파일은 건드리지 않는다. 같은 beat을 다시 듣더라도
         // 플레이어가 써둔 코드가 처음 상태로 되돌아가면 안 된다.
         if (!FS.exists(f.path)) {
-          FS.write(f.path, f.content, { readOnly: f.readOnly, kind: f.kind });
+          FS.write(f.path, fileContent(f), { readOnly: f.readOnly, kind: f.kind });
         }
         if (f.kind === "brief" || f.kind === "goal") currentBrief = f.path;
         if (f.open !== undefined && f.open !== false) {
@@ -543,7 +569,11 @@ Scenes.desk = function (stage, chapter, done) {
     return row;
   }
 
-  setTimeout(play, 600);
+  // 자료 파일을 다 받은 뒤에 첫 beat 을 시작한다. 그래야 의뢰가 도착할 때
+  // 가상 FS 에 CSV 가 준비돼 있다(대개 소개 대사 도중에 이미 끝난다).
+  dataReady.then(function () {
+    setTimeout(play, 600);
+  });
 };
 
 // ── 하루의 끝, 일기 ─────────────────────────────────────

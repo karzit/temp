@@ -44,7 +44,7 @@ var CH07 = {
     files: [
       { path: PANDAS_DOC.path, content: PANDAS_DOC.content, readOnly: true },
       { path: EDA_DOC.path, content: EDA_DOC.content, readOnly: true },
-      { path: INSPECT_CSV.path, content: INSPECT_CSV.content, readOnly: true },
+      { path: INSPECT_CSV.path, src: INSPECT_CSV.src, readOnly: true },
     ],
 
     idleLines: [

@@ -63,7 +63,7 @@ var CH17 = {
       { path: PANDAS_DOC.path, content: PANDAS_DOC.content, readOnly: true },
       { path: FOREST_DOC.path, content: FOREST_DOC.content, readOnly: true },
       { path: METRIC_DOC.path, content: METRIC_DOC.content, readOnly: true },
-      { path: LOG_EXT_CSV.path, content: LOG_EXT_CSV.content, readOnly: true },
+      { path: LOG_EXT_CSV.path, src: LOG_EXT_CSV.src, readOnly: true },
     ],
 
     idleLines: [

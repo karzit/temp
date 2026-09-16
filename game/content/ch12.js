@@ -49,7 +49,7 @@ var CH12 = {
       { path: PANDAS_DOC.path, content: PANDAS_DOC.content, readOnly: true },
       { path: MODEL_DOC.path, content: MODEL_DOC.content, readOnly: true },
       { path: TREE_DOC.path, content: TREE_DOC.content, readOnly: true },
-      { path: LOG_CSV.path, content: LOG_CSV.content, readOnly: true },
+      { path: LOG_CSV.path, src: LOG_CSV.src, readOnly: true },
     ],
 
     idleLines: [

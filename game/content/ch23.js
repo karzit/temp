@@ -70,7 +70,7 @@ var CH23 = {
       { path: TEXT_DOC.path, content: TEXT_DOC.content, readOnly: true },
       { path: TOOL_DOC.path, content: TOOL_DOC.content, readOnly: true },
       { path: LM_TOOL.path, content: LM_TOOL.content, readOnly: true },
-      { path: MANUAL_CSV.path, content: MANUAL_CSV.content, readOnly: true },
+      { path: MANUAL_CSV.path, src: MANUAL_CSV.src, readOnly: true },
     ],
 
     idleLines: [

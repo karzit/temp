@@ -60,7 +60,7 @@ var CH24 = {
       { path: FIND_DOC.path, content: FIND_DOC.content, readOnly: true },
       { path: METRIC_DOC.path, content: METRIC_DOC.content, readOnly: true },
       { path: LM_TOOL.path, content: LM_TOOL.content, readOnly: true },
-      { path: MANUAL_CSV.path, content: MANUAL_CSV.content, readOnly: true },
+      { path: MANUAL_CSV.path, src: MANUAL_CSV.src, readOnly: true },
     ],
 
     idleLines: [

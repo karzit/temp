@@ -138,9 +138,12 @@ for (const [chIndex, ch] of CHAPTERS.entries()) {
         continue;
       }
       const kind = f.kind === "brief" ? "의뢰서" : f.path.includes("/익힘/") ? "익힘" : f.path.includes("/연습/") ? "연습" : f.path.includes("/참고/") ? "참고" : "파일";
+      // content 대신 src(실제 파일)로 준 자료는 디스크에서 읽어 온다.
+      const body = f.src ? fs.readFileSync(path.join(__dirname, "..", f.src), "utf8") : f.content;
+      const lang = f.path.endsWith(".py") ? "python" : f.path.endsWith(".csv") ? "" : "markdown";
       out.push(`📄 **${kind} 도착 — \`${f.path}\`**\n`);
-      out.push("```" + (f.path.endsWith(".py") ? "python" : "markdown"));
-      out.push(f.content.trimEnd());
+      out.push("```" + lang);
+      out.push(body.trimEnd());
       out.push("```\n");
     }
     for (const f of b.show || []) out.push(`👁 \`${f.path}\` 를 ${f.pane === 1 ? "오른쪽" : "왼쪽"} 화면에 띄움\n`);

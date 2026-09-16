@@ -7,15 +7,7 @@
 var NEW_CHECK_CSV = {
   path: "work/자료/신규점검.csv",
   readOnly: true,
-  content:
-  [
-    "id,hours,reboots,delay,errors,patched,revisit_days",
-    "4401,2100,5,540.0,7,1,",
-    "4402,3400,13,210.0,9,0,",
-    "4403,760,2,150.0,1,0,",
-    "4404,1520,4,190.0,3,1,",
-    "4405,2870,6,470.0,8,1,",
-  ].join("\n") + "\n",
+  src: "work/자료/신규점검.csv",
 };
 
 var CH16 = {
@@ -30,7 +22,7 @@ var CH16 = {
       { path: FOREST_DOC.path, content: FOREST_DOC.content, readOnly: true },
       { path: CV_DOC.path, content: CV_DOC.content, readOnly: true },
       { path: METRIC_DOC.path, content: METRIC_DOC.content, readOnly: true },
-      { path: LOG_EXT_CSV.path, content: LOG_EXT_CSV.content, readOnly: true },
+      { path: LOG_EXT_CSV.path, src: LOG_EXT_CSV.src, readOnly: true },
     ],
 
     idleLines: [
@@ -57,7 +49,7 @@ var CH16 = {
       {
         lines: [{ who: "Aistb", text: "의뢰서입니다." }],
         addFiles: [
-          { path: NEW_CHECK_CSV.path, readOnly: true, content: NEW_CHECK_CSV.content },
+          { path: NEW_CHECK_CSV.path, readOnly: true, src: NEW_CHECK_CSV.src },
           {
             path: "work/의뢰_0021.md",
             readOnly: true,

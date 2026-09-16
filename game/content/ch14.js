@@ -58,7 +58,7 @@ var CH14 = {
     files: [
       { path: PANDAS_DOC.path, content: PANDAS_DOC.content, readOnly: true },
       { path: FOREST_DOC.path, content: FOREST_DOC.content, readOnly: true },
-      { path: LOG_CSV.path, content: LOG_CSV.content, readOnly: true },
+      { path: LOG_CSV.path, src: LOG_CSV.src, readOnly: true },
     ],
 
     idleLines: [

@@ -55,7 +55,7 @@ var CH27 = {
       { path: TEXT_DOC.path, content: TEXT_DOC.content, readOnly: true },
       { path: TREE_DOC.path, content: TREE_DOC.content, readOnly: true },
       { path: GOAL_DOC_27.path, content: GOAL_DOC_27.content, readOnly: true, kind: "goal" },
-      { path: RESPONSE_CSV.path, content: RESPONSE_CSV.content, readOnly: true },
+      { path: RESPONSE_CSV.path, src: RESPONSE_CSV.src, readOnly: true },
     ],
 
     idleLines: [

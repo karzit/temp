@@ -17,11 +17,7 @@
 var ASK_CSV = {
   path: "work/자료/물어볼것.csv",
   readOnly: true,
-  content:
-    "no,text\n" +
-    "1,axis 는 무엇입니까\n" +
-    "2,중단점은 어떻게 씁니까\n" +
-    "3,3층은 뭐 하는 곳입니까\n",
+  src: "work/자료/물어볼것.csv",
 };
 
 var GOAL_DOC_28 = {
@@ -69,8 +65,8 @@ var CH28 = {
       { path: FIND_DOC.path, content: FIND_DOC.content, readOnly: true },
       { path: RAG_DOC.path, content: RAG_DOC.content, readOnly: true },
       { path: GOAL_DOC_28.path, content: GOAL_DOC_28.content, readOnly: true, kind: "goal" },
-      { path: RESPONSE_CSV.path, content: RESPONSE_CSV.content, readOnly: true },
-      { path: ASK_CSV.path, content: ASK_CSV.content, readOnly: true },
+      { path: RESPONSE_CSV.path, src: RESPONSE_CSV.src, readOnly: true },
+      { path: ASK_CSV.path, src: ASK_CSV.src, readOnly: true },
     ],
 
     idleLines: [
