@@ -103,10 +103,16 @@ function describeWait(waitFn, beat, docs) {
   return "조건: `" + src + "`";
 }
 
+function spotOne(s) {
+  if (typeof s === "string") return s;
+  return `"${s.text}" (${s.in})`;
+}
+
 function spotText(s) {
   if (!s) return "";
-  if (typeof s === "string") return ` 〔가리킴: ${s}〕`;
-  return ` 〔가리킴: "${s.text}" (${s.in})〕`;
+  // 배열이면 여러 곳을 한꺼번에 가리킨다.
+  if (Array.isArray(s)) return ` 〔가리킴: ${s.map(spotOne).join(", ")}〕`;
+  return ` 〔가리킴: ${spotOne(s)}〕`;
 }
 
 const out = [];

@@ -192,9 +192,11 @@ var Aistb = {
 
   // ── 가리키기 ──────────────────────────────────────────
   // 대상에 테두리를 두르고, Aistb가 그 옆으로 이동한다.
-  // spot 은 두 가지 형태를 받는다.
-  //   "선택자"                        — 화면 요소 하나
-  //   { text: "찾을 말", in: "선택자" } — 그 안에 있는 특정 문장이나 단어
+  // spot 은 세 가지 형태를 받는다.
+  //   "선택자"                        — 그 선택자에 맞는 화면 요소(들)
+  //   { text: "찾을 말", in: "선택자" } — 그 범위 안에서 "처음" 나오는 문장이나 단어
+  //   [ 위의 것들을 섞은 배열 ]         — 여러 곳을 한꺼번에 (예: 문서 + 출력)
+  // 여러 곳을 가리킬 때 Aistb 는 처음으로 잡힌 대상 옆으로 간다.
   // opts.move 가 false면 표시만 남기고 Aistb는 제자리(우측 하단)로 돌아간다.
   point: function (spot, opts) {
     var move = !opts || opts.move !== false;
@@ -207,13 +209,13 @@ var Aistb = {
       return;
     }
 
+    // 배열이면 각 spot 을 모두 표시하고, 걸어갈 기준은 처음으로 잡힌 대상으로 한다.
+    var spots = Array.isArray(spot) ? spot : [spot];
     var target = null;
-    if (typeof spot === "string") {
-      target = Aistb.parent.querySelector(spot);
-      if (target) target.classList.add("spotlight");
-    } else if (spot && spot.text) {
-      target = Aistb.spotText(spot.text, spot.in);
-    }
+    spots.forEach(function (one) {
+      var el = Aistb.markSpot(one);
+      if (el && !target) target = el;
+    });
 
     if (!target) {
       Aistb._target = null;
@@ -225,7 +227,24 @@ var Aistb = {
     else Aistb.goHome();
   },
 
-  // 글 안의 특정 대목을 감싸서 표시한다. textarea 안의 글자는 감쌀 수 없어 대상이 아니다.
+  // spot 하나를 실제로 표시하고, 그 대표 요소(없으면 null)를 돌려준다.
+  //   문자열       — 맞는 요소를 모두 테두리 치고 첫 요소를 돌려준다.
+  //   { text, in } — 범위 안에서 "처음 한 곳"만 감싼다(범위 전체를 물들이지 않는다).
+  markSpot: function (one) {
+    if (!one) return null;
+    if (typeof one === "string") {
+      var els = Aistb.parent.querySelectorAll(one);
+      els.forEach(function (el) {
+        el.classList.add("spotlight");
+      });
+      return els[0] || null;
+    }
+    if (one.text) return Aistb.spotText(one.text, one.in);
+    return null;
+  },
+
+  // 글 안의 특정 대목을 감싸서 표시한다. 한 spot 은 범위 안 처음 한 곳만 잡는다.
+  // textarea 안의 글자는 감쌀 수 없어 대상이 아니다.
   spotText: function (needle, within) {
     var scope = within ? Aistb.parent.querySelector(within) : Aistb.parent;
     if (!scope) return null;

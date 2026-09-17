@@ -279,11 +279,11 @@ var CH01 = {
           { who: "Aistb", text: "좋습니다. 개수와 생김새가 나왔습니다." },
           { who: "Aistb", text: "6은 배열의 요소가 6개라는 뜻입니다. 전체 요소가 아닌, 최상위 배열 바로 아래 요소들의 개수입니다.", spot: { text: "6", in: ".out" } },
           { who: "Aistb", text: "(6,)은 하위 배열 없이 최상위 배열에 여섯 개의 요소가 존재한다는 뜻입니다.", spot: { text: "(6,)", in: ".out" } },
-          { who: "Aistb", text: "이제 배열의 요소를 꺼내는 방법을 살펴보겠습니다. ▶ 실행을 다시 누르시면 남은 줄이 끝까지 실행됩니다.", spot: ".run" },
+          { who: "Aistb", text: "이제 배열의 요소를 꺼내는 방법을 살펴보겠습니다. 8번 줄의 중단점을 다시 눌러 지운 뒤 ▶ 실행을 누르시면, 남은 줄이 끝까지 실행됩니다.", spot: ".run" },
         ],
         nudge: [
-          { text: "▶ 실행을 다시 누르면 남은 라인이 끝까지 실행됩니다.", spot: ".run" },
-          { text: "▶ 실행을 다시 누르면 남은 라인을 실행합니다.", spot: ".run" },
+          { text: "8번 줄의 중단점을 다시 눌러 지운 뒤 ▶ 실행을 누르시면 됩니다.", spot: ".run" },
+          { text: "중단점을 지우면 ▶ 실행이 남은 줄을 끝까지 실행합니다.", spot: ".run" },
           { text: "여기 케이크가 있습니다.", spot: ".run" },
           "The cake is a lie? 영문을 모르겠습니다. 영문(英文)을 잘못 입력하신 것 같습니다.",
           "worklog_GipsWToyb_0013: 폐기 요망",
@@ -294,19 +294,19 @@ var CH01 = {
         show: [{ path: NUMPY_DOC.path, pane: 1 }],
         lines: [
           { who: "Aistb", text: "한 줄 배열에서 값을 꺼내는 것은 파이썬 리스트처럼 대괄호에 번호를 넣습니다. (표 모양에서 쉼표로 여러 축을 한 번에 꺼내는 것은 NumPy만의 방식이고, 뒤에서 봅니다.)" },
-          { who: "Aistb", text: "인덱스는 0부터 셉니다.", spot: { text: "arr[0]", in: ".doc" } },
-          { who: "Aistb", text: "음수를 사용해 뒤에서부터 가져올 수도 있습니다.", spot: { text: "arr[-1]", in: ".doc" } },
-          { who: "Aistb", text: "1:3 은 1번부터 2번까지입니다. 마지막 인덱스는 포함되지 않습니다.", spot: { text: "arr[1:3]", in: ".doc" } },
-          { who: "Aistb", text: "뒤를 비워 두면 해당 인덱스부터 마지막 요소까지 가져옵니다.", spot: { text: "arr[-3:]", in: ".doc" } },
+          { who: "Aistb", text: "인덱스는 0부터 셉니다. counts[0]은 첫 번째 값 12입니다.", spot: [{ text: "arr[0]", in: ".doc" }, { text: "첫 번째     : 12", in: ".out" }] },
+          { who: "Aistb", text: "음수를 사용해 뒤에서부터 가져올 수도 있습니다. counts[-1]은 맨 끝 값 35입니다.", spot: [{ text: "arr[-1]", in: ".doc" }, { text: "맨 끝       : 35", in: ".out" }] },
+          { who: "Aistb", text: "1:3 은 1번부터 2번까지입니다. 마지막 인덱스는 포함되지 않아 30과 41만 나옵니다.", spot: [{ text: "arr[1:3]", in: ".doc" }, { text: "1~2번       : [30 41]", in: ".out" }] },
+          { who: "Aistb", text: "뒤를 비워 두면 해당 인덱스부터 마지막 요소까지 가져옵니다.", spot: [{ text: "arr[-3:]", in: ".doc" }, { text: "뒤에서 세 개: [ 9 22 35]", in: ".out" }] },
           { who: "Aistb", text: "반대로 앞을 비우면 0번부터 해당 인덱스 바로 앞까지 가져옵니다." },
         ],
       },
       {
         show: [{ path: NUMPY_DOC.path, pane: 1 }],
         lines: [
-          { who: "Aistb", text: "출력 아래쪽은 위에서부터 각각 sum, mean, max, argmax의 실행 결과입니다." },
+          { who: "Aistb", text: "출력 아래쪽은 위에서부터 각각 sum, mean, max, argmax의 실행 결과입니다.", spot: { text: "합계        : 149", in: ".out" } },
           { who: "Aistb", text: "sum은 배열의 각 요소를 모두 합한 값을, mean은 평균을, max는 최댓값을 반환합니다.", spot: { text: "arr.mean()", in: ".doc" } },
-          { who: "Aistb", text: "argmax는 조금 다르게, 값이 아니라 최댓값이 있는 자리(인덱스)를 반환합니다. 최댓값 41이 아니라 41이 있는 자리인 2가 나온 것을 확인하실 수 있습니다.", spot: { text: "arr.argmax()", in: ".doc" } },
+          { who: "Aistb", text: "argmax는 조금 다르게, 값이 아니라 최댓값이 있는 자리(인덱스)를 반환합니다. 최댓값 41이 아니라 41이 있는 자리인 2가 나온 것을 확인하실 수 있습니다.", spot: [{ text: "arr.argmax()", in: ".doc" }, { text: "그 값의 자리: 2", in: ".out" }] },
         ],
       },
 
@@ -364,9 +364,9 @@ var CH01 = {
       {
         show: [{ path: NUMPY_DOC.path, pane: 1 }],
         lines: [
-          { who: "Aistb", text: "log[0]은 0번 행 전체입니다.", spot: { text: "m[0]", in: ".doc" } },
-          { who: "Aistb", text: "쉼표 앞이 행, 뒤가 열입니다. : 는 전부라는 뜻이라 1번 열이 세로로 나왔습니다.", spot: { text: "m[:, 1]", in: ".doc" } },
-          { who: "Aistb", text: "양쪽에 번호를 다 쓰면 값 하나입니다.", spot: { text: "m[1, 2]", in: ".doc" } },
+          { who: "Aistb", text: "log[0]은 0번 행 전체입니다.", spot: [{ text: "m[0]", in: ".doc" }, { text: "0번 행        : [12 30 41  9]", in: ".out" }] },
+          { who: "Aistb", text: "쉼표 앞이 행, 뒤가 열입니다. : 는 전부라는 뜻이라 1번 열이 세로로 나왔습니다.", spot: [{ text: "m[:, 1]", in: ".doc" }, { text: "1번 열        : [30 28 33]", in: ".out" }] },
+          { who: "Aistb", text: "양쪽에 번호를 다 쓰면 값 하나입니다.", spot: [{ text: "m[1, 2]", in: ".doc" }, { text: "1번 행 2번 열 : 44", in: ".out" }] },
           { who: "Aistb", text: "남은 세 줄은 ▶ 실행으로 한 번에 보시겠습니다.", spot: ".run" },
         ],
         nudge: [
@@ -383,8 +383,8 @@ var CH01 = {
           { who: "Aistb", text: "아마 대부분 예상하신 것과 비슷한 결과였을 것입니다." },
           { who: "Aistb", text: "다만 mean에 axis가 붙은 형태는 처음이라 조금 당황스러우셨을 수 있습니다." },
           { who: "Aistb", text: "mean에 axis를 지정하면 배열 전체가 아니라 그 축을 따라 계산합니다. 지정한 축은 결과에서 사라집니다. 축 번호는 shape 순서대로 0, 1, 2 … 입니다.", spot: { text: "m.mean(axis=0)", in: ".doc" } },
-          { who: "Aistb", text: "지금은 (행, 열) 두 축짜리 표라, axis=0은 행이 사라져 열별 평균, axis=1은 열이 사라져 행별 평균이 됩니다.", spot: { text: "m.mean(axis=0)", in: ".doc" } },
-          { who: "Aistb", text: "열별은 네 개, 행별은 세 개가 나온 것을 확인하실 수 있습니다. 사라진 축의 길이만큼 빠졌습니다.", spot: { text: "열별 평균", in: ".out" } },
+          { who: "Aistb", text: "지금은 (행, 열) 두 축짜리 표라, axis=0은 행이 사라져 열별 평균, axis=1은 열이 사라져 행별 평균이 됩니다.", spot: [{ text: "m.mean(axis=0)", in: ".doc" }, { text: "열별 평균", in: ".out" }, { text: "행별 평균", in: ".out" }] },
+          { who: "Aistb", text: "열별은 네 개, 행별은 세 개가 나온 것을 확인하실 수 있습니다. 사라진 축의 길이만큼 빠졌습니다.", spot: [{ text: "열별 평균", in: ".out" }, { text: "행별 평균", in: ".out" }] },
         ],
       },
       {
@@ -498,7 +498,7 @@ var CH01 = {
       {
         show: [{ path: NUMPY_DOC.path, pane: 1 }],
         lines: [
-          { who: "Aistb", text: "그 참/거짓을 다시 대괄호에 넣으면 참인 값만 남습니다. 여섯 개에서 세 개가 되었습니다.", spot: { text: "arr[arr >= 80]", in: ".doc" } },
+          { who: "Aistb", text: "그 참/거짓을 다시 대괄호에 넣으면 참인 값만 남습니다. 여섯 개에서 세 개가 되었습니다.", spot: [{ text: "arr[arr >= 80]", in: ".doc" }, { text: "골라내면   : [84 92 80]", in: ".out" }] },
           { who: "Aistb", text: "한 번 더 눌러 주세요.", spot: ".step" },
         ],
         nudge: [
@@ -511,7 +511,7 @@ var CH01 = {
       {
         show: [{ path: NUMPY_DOC.path, pane: 1 }],
         lines: [
-          { who: "Aistb", text: "sum을 걸면 개수가 됩니다. 참이 1로 세어집니다.", spot: { text: "(arr >= 80).sum()", in: ".doc" } },
+          { who: "Aistb", text: "sum을 걸면 개수가 됩니다. 참이 1로 세어집니다.", spot: [{ text: "(arr >= 80).sum()", in: ".doc" }, { text: "몇 개인가  : 3", in: ".out" }] },
           { who: "Aistb", text: "마지막 한 줄은 ▶ 실행으로 보시겠습니다.", spot: ".run" },
         ],
         nudge: [
@@ -524,7 +524,7 @@ var CH01 = {
       {
         show: [{ path: NUMPY_DOC.path, pane: 1 }],
         lines: [
-          { who: "Aistb", text: "80 이상은 80이 되고 나머지는 그대로입니다. np.where는 개수를 줄이지 않고 값만 바꿉니다.", spot: { text: "낮춘 값", in: ".out" } },
+          { who: "Aistb", text: "80 이상은 80이 되고 나머지는 그대로입니다. np.where는 개수를 줄이지 않고 값만 바꿉니다.", spot: [{ text: "np.where", in: ".doc" }, { text: "낮춘 값    : [61 80 73 80 58 80]", in: ".out" }] },
         ],
       },
 
@@ -633,7 +633,7 @@ var CH01 = {
       {
         show: [{ path: NUMPY_DOC.path, pane: 1 }],
         lines: [
-          { who: "Aistb", text: "argsort는 값이 아니라 자리 번호를 순서대로 돌려줍니다.", spot: { text: "자리 순서", in: ".out" } },
+          { who: "Aistb", text: "argsort는 값이 아니라 자리 번호를 순서대로 돌려줍니다.", spot: [{ text: "np.argsort", in: ".doc" }, { text: "자리 순서   : [2 0 4 1 3]", in: ".out" }] },
           { who: "Aistb", text: "▶ 실행으로 마지막 줄까지 가 주세요.", spot: ".run" },
         ],
         nudge: [
@@ -646,7 +646,7 @@ var CH01 = {
       {
         show: [{ path: NUMPY_DOC.path, pane: 1 }],
         lines: [
-          { who: "Aistb", text: "숫자를 줄 세운 순서 그대로 이름이 나왔습니다.", spot: { text: "names[order]", in: ".doc" } },
+          { who: "Aistb", text: "숫자를 줄 세운 순서 그대로 이름이 나왔습니다.", spot: [{ text: "names[order]", in: ".doc" }, { text: "그 순서의 이름: ['다움' '가온' '마루' '노을' '라온']", in: ".out" }] },
         ],
       },
 

@@ -247,7 +247,6 @@ var IDE = {
       return;
     }
     IDE.newform = { kind: kind };
-    if (IDE.onChange) IDE.onChange();
     var form = document.createElement("div");
     form.className = "newform";
     var where = document.createElement("div");
@@ -299,6 +298,9 @@ var IDE = {
     form.append(where, input, ok, msg);
     slot.appendChild(form);
     input.focus();
+    // 폼(입력 칸)을 DOM 에 붙인 뒤에 알린다. 먼저 알리면 대본이 .newform input 을
+    // 가리키려 할 때 아직 그 요소가 없어 하이라이트가 잡히지 않는다.
+    if (IDE.onChange) IDE.onChange();
   },
 
   // ── 탭과 편집창 ───────────────────────────────────────
